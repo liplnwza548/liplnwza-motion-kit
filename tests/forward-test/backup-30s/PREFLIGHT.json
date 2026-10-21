@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-20",
+  "command": "python renderer/kit.py doctor",
+  "kit_root": "/workspace/scratch/f210748e30e7/work/LiplnwZa_Motion_Kit_v0.1",
+  "result": {
+    "python": "3.12.14",
+    "python_supported": true,
+    "pillow_raqm": true,
+    "ffmpeg": "/usr/bin/ffmpeg",
+    "ffprobe": "/usr/bin/ffprobe",
+    "font": true,
+    "mascot_sprites": 36,
+    "render_ready": true
+  },
+  "limitations": [
+    "doctor checks runtime only; this job has not been validated or rendered",
+    "No voice file or actual word alignment",
+    "No network/download/Drive test needed or performed"
+  ]
+}

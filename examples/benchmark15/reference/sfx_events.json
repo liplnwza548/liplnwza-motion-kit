@@ -1,0 +1,78 @@
+[
+  {
+    "time": 0.02,
+    "sound": "swish"
+  },
+  {
+    "time": 0.3,
+    "sound": "pop"
+  },
+  {
+    "time": 0.82,
+    "sound": "tap"
+  },
+  {
+    "time": 1.4,
+    "sound": "pop"
+  },
+  {
+    "time": 2.56,
+    "sound": "swish"
+  },
+  {
+    "time": 2.84,
+    "sound": "pop"
+  },
+  {
+    "time": 3.36,
+    "sound": "tap"
+  },
+  {
+    "time": 3.94,
+    "sound": "pop"
+  },
+  {
+    "time": 4.84,
+    "sound": "ding"
+  },
+  {
+    "time": 5.6,
+    "sound": "swish"
+  },
+  {
+    "time": 5.88,
+    "sound": "pop"
+  },
+  {
+    "time": 6.4,
+    "sound": "tap"
+  },
+  {
+    "time": 6.98,
+    "sound": "pop"
+  },
+  {
+    "time": 7.88,
+    "sound": "ding"
+  },
+  {
+    "time": 9.26,
+    "sound": "swish"
+  },
+  {
+    "time": 9.540000000000001,
+    "sound": "pop"
+  },
+  {
+    "time": 10.06,
+    "sound": "tap"
+  },
+  {
+    "time": 10.64,
+    "sound": "pop"
+  },
+  {
+    "time": 11.54,
+    "sound": "ding"
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "technical_pass": true,
+  "decode_errors": 0,
+  "video": {
+    "codec_name": "h264",
+    "width": 1080,
+    "height": 1920,
+    "r_frame_rate": "30/1",
+    "nb_read_frames": "450"
+  },
+  "audio": {
+    "codec_name": "aac",
+    "sample_rate": "48000",
+    "channels": 2
+  },
+  "duration": "15.000000",
+  "loudness": {
+    "input_i": "-16.14",
+    "input_tp": "-4.16",
+    "input_lra": "11.10",
+    "input_thresh": "-26.28",
+    "output_i": "-16.06",
+    "output_tp": "-4.23",
+    "output_lra": "4.60",
+    "output_thresh": "-26.13",
+    "normalization_type": "dynamic",
+    "target_offset": "0.06"
+  },
+  "sha256": "087f351eaa07bbb498b31380e6da5b60a584a82c17c6ae4bbdad94d43741e455",
+  "limits": [
+    "Automated checks do not certify factual accuracy, usage rights, subjective lip sync, or publication approval."
+  ]
+}

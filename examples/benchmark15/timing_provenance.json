@@ -1,0 +1,5 @@
+{
+  "method": "Reused prepared Pilot002 attention-aligned word cues and approximate pronunciation visemes; only offset by listed edit ranges",
+  "new_alignment": false,
+  "limits": "Not a trained Thai phoneme recognizer; new content needs new cues and visual/audio review."
+}

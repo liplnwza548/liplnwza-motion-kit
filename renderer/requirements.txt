@@ -1,0 +1,4 @@
+Pillow==12.3.0
+numpy==2.3.5
+# Python 3.11+; FFmpeg/FFprobe 5+ on PATH; Pillow must include RAQM for Thai.
+# No network or model download is used by the rendering path.

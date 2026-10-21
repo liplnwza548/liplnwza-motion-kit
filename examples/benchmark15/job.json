@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "title": "รถบินได้จริงแค่ไหน?",
+  "topic_label": "รถบินได้จริงไหม?",
+  "duration": 15,
+  "voice": "voice.wav",
+  "words": "words.json",
+  "visemes": "visemes.json",
+  "footer": "ภาพวาดประกอบ • benchmark จากเสียง Pilot002 • ไม่ใช่ฟุตเทจจริง",
+  "sfx_gain": 1,
+  "sources": [
+    {
+      "id": "car",
+      "origin": "../../assets/illustrations/red_car.png",
+      "creator": "Original Pilot002 programmatic artwork",
+      "license": "Owner project asset; private reuse",
+      "usage": "Illustration only; never event footage",
+      "checked_date": "2026-10-20"
+    }
+  ],
+  "scenes": [
+    {
+      "start": 0,
+      "end": 2.54,
+      "layout": "title",
+      "title": "รถบินได้จริงไหม?",
+      "body": "บินจริง\nแค่ไหน?",
+      "pose": "point_right",
+      "aside": "ดูหลักฐาน\nก่อนเชื่อ"
+    },
+    {
+      "start": 2.54,
+      "end": 5.58,
+      "layout": "media",
+      "title": "สิ่งที่เห็นในเดโม",
+      "pose": "explain",
+      "right": true,
+      "media": {
+        "path": "../../assets/illustrations/red_car.png",
+        "kind": "image",
+        "role": "illustration",
+        "label": "ภาพประกอบวาดใหม่ • ไม่ใช่ฟุตเทจเดโม",
+        "source_id": "car"
+      },
+      "aside": "เดโม\nช่วงสั้น"
+    },
+    {
+      "start": 5.58,
+      "end": 9.24,
+      "layout": "compare",
+      "title": "เดโม ≠ ใช้งานจริง",
+      "items": [
+        "เดโม\nช่วงสั้น",
+        "บินใช้\nทุกวัน"
+      ],
+      "pose": "magnify",
+      "aside": "ยังต้อง\nพิสูจน์"
+    },
+    {
+      "start": 9.24,
+      "end": 15,
+      "layout": "summary",
+      "title": "รถบิน หรือ รถกระโดด?",
+      "body": "คุณมองว่า\nแบบไหน?",
+      "pose": "thumbs_up",
+      "right": true,
+      "cta": "คอมเมนต์บอกกันหน่อย",
+      "aside": "เลือก\nฝั่งไหน?"
+    }
+  ]
+}

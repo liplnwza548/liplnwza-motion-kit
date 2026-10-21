@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Outputs and media
+output*/
+media_cache/
+voice_temp.wav
+*.mp4
+*.m4a
+*.aac
+*.wav
+!examples/**/voice.wav
+
+# System / OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment / Secrets
+.env
+.env.*
