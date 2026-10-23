@@ -26,10 +26,11 @@ liplnwza-motion-kit/
 ├── README.md                         ← ภาพรวมคลังโค้ด, Quickstart, และคู่มือติดตั้ง
 ├── START_HERE.md                     ← คู่มือเริ่มต้นด่วนสำหรับมนุษย์และ AI
 ├── AGENTS.md                         ← สเปกแบรนด์, จานสี Warodom, และกฎการจัดองค์ประกอบภาพ
-├── renderer/                         ← เครื่องยนต์เรนเดอร์หลัก (kit.py, rig_motion.py, text_layout.py)
-│   ├── kit.py                        ← CLI สั่งการ (doctor, validate, digest, render, qc)
-│   ├── rig_motion.py                 ← ระบบ Clean Plate Lip-sync ผสมการเคลื่อนไหว
-│   └── text_layout.py                ← ตัวจัดรูปแบบข้อความไทย (รองรับ HarfBuzz / uharfbuzz)
+├── renderer/                         ← เครื่องยนต์เรนเดอร์หลัก
+│   ├── kit.py                        ← CLI สั่งการ (doctor, validate, digest, render, qc) — รวมระบบ Clean Plate Lip-sync และตัวจัดรูปแบบข้อความไทย (HarfBuzz / uharfbuzz) ไว้ในไฟล์นี้
+│   ├── new_job.py                    ← สร้างโฟลเดอร์งานใหม่ที่ jobs/<slug>/
+│   └── prepare_cues.py               ← (ทางเลือก) จับเวลาคำ/ปากจากบทที่รู้อยู่แล้ว ต้องมีโมเดล faster-whisper แบบ local เท่านั้น ห้ามดาวน์โหลดเอง
+│   # rig_motion.py อยู่ที่ assets/mascot/mouth_rig/ ไม่ได้อยู่ใน renderer/
 ├── assets/                           ← แอสเสตมาตรฐานประจำเครื่องยนต์
 │   ├── mascot/mouth_rig/             ← รูป Clean Plate 6 ท่า + ปาก 6 รูปทรง + profiles.json
 │   └── fonts/Prompt-Bold.ttf         ← ฟอนต์มาตรฐานบังคับสำหรับภาษาไทยและอังกฤษ
@@ -62,9 +63,9 @@ liplnwza-motion-kit/
 - ส่ง Beat Sheet ให้ฟิลิปตรวจและรอคำสั่ง **"อนุมัติสร้าง"**
 
 ### ขั้นที่ 3: ประกอบไฟล์งาน (Assembly & Automation)
-เมื่อได้รับอนุมัติ ให้สร้างโฟลเดอร์งานใหม่ใน `renderer/jobs/<slug>/` หรือ `projects/<slug>/`:
+เมื่อได้รับอนุมัติ ให้สร้างโฟลเดอร์งานใหม่ด้วย `python renderer/new_job.py <slug>` (จะได้โฟลเดอร์ `jobs/<slug>/` ที่รากของ repo):
 1. วางไฟล์เสียง `voice.mp3`
-2. ถอดคำและวัดคลื่นเสียงสร้าง `words.json` (25–30 คำ) และ `visemes.json` (60–90 ท่าปาก)
+2. ถอดคำและวัดคลื่นเสียงสร้าง `words.json` (25–30 คำ) และ `visemes.json` (60–90 ท่าปาก) — ใช้ `renderer/prepare_cues.py` ช่วยได้เฉพาะเมื่อมีโมเดล faster-whisper แบบ local ในเครื่องอยู่แล้วเท่านั้น (ห้ามดาวน์โหลดเอง) และผลของมันเป็น known-script alignment ไม่ใช่การตรวจว่าเสียงพูดตรงบท เจ้าของต้องฟังเทียบเสียงจริงก่อนใช้
 3. เขียนไฟล์ `job.json` ตาม Schema v1
 4. สร้างค่าอนุมัติ:
    ```bash
@@ -80,11 +81,10 @@ python renderer/kit.py validate jobs/<slug>/job.json
 # 2. เรนเดอร์วิดีโอ
 python renderer/kit.py render jobs/<slug>/job.json --out jobs/<slug>/output
 
-# 3. มิกซ์เสียง SFX 7 จุด + ดนตรีคลอ (ถ้ามี stem)
-python jobs/<slug>/postmix.py jobs/<slug>/output/video.mp4 jobs/<slug>/output/final.mp4
+# 3. ไม่ต้องมิกซ์เสียงแยก: ขั้น render มิกซ์เสียงพากย์ + SFX และ loudnorm ให้แล้ว และรัน QC ให้ในตัว (ไม่มีไฟล์ postmix.py ในชุดปัจจุบัน)
 
-# 4. รันคำสั่งตรวจคุณภาพ
-python renderer/kit.py qc jobs/<slug>/output/final.mp4
+# 4. (ทางเลือก) รันคำสั่งตรวจคุณภาพซ้ำกับไฟล์ที่เรนเดอร์ได้
+python renderer/kit.py qc jobs/<slug>/output/video.mp4
 ```
 
 ---

@@ -5,7 +5,7 @@
 
 [![Version](https://img.shields.io/badge/version-v0.2.1-blue.svg)](https://github.com/liplnwza548/liplnwza-motion-kit/releases/tag/v0.2.1)
 [![Tests](https://img.shields.io/badge/tests-7%2F7%20passing-brightgreen.svg)](tests/test_runtime.py)
-[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue)](https://www.python.org/)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
@@ -30,10 +30,11 @@ liplnwza-motion-kit/
 ├── START_HERE.md                     # เช็กลิสต์เริ่มต้นด่วนสำหรับมนุษย์และ AI
 ├── AGENTS.md                         # สเปกแบรนด์ สัดส่วนมาสคอต และจานสี Warodom
 ├── renderer/                         # เครื่องยนต์เรนเดอร์หลัก
-│   ├── kit.py                        # Unified CLI (doctor, validate, digest, render, qc)
-│   ├── rig_motion.py                 # ระบบประกอบปาก Clean Plate และ Motion
-│   ├── text_layout.py                # ระบบจัดวางฟอนต์ไทยและป้ายข้อความ
-│   └── ...
+│   ├── kit.py                        # Unified CLI (doctor, validate, digest, render, qc) — รวมระบบจัดสระไทย (uharfbuzz) ไว้ในไฟล์นี้
+│   ├── new_job.py                    # สร้างโฟลเดอร์งานใหม่ที่ jobs/<slug>/
+│   ├── prepare_cues.py               # (ทางเลือก) จับเวลาคำ/ปากจากบทที่รู้อยู่แล้ว ดูหมายเหตุด้านล่าง
+│   └── setup.ps1 / setup.sh          # ติดตั้ง venv + dependencies
+│   # หมายเหตุ: rig_motion.py อยู่ที่ assets/mascot/mouth_rig/ ไม่ได้อยู่ใน renderer/
 ├── assets/                           # แอสเสตมาตรฐานประจำเครื่องยนต์
 │   ├── mascot/mouth_rig/             # รูปคลีนเพลต 6 ท่า + ปาก 6 ทรง + profiles.json
 │   └── fonts/Prompt-Bold.ttf         # ฟอนต์มาตรฐานบังคับ Prompt Bold
@@ -49,12 +50,9 @@ liplnwza-motion-kit/
 ## 🚀 เริ่มต้นใช้งานด่วน (Quick Start)
 
 ### 1. ความต้องการของระบบ (Prerequisites)
-- **Python 3.10+**
+- **Python 3.11+** (ตัวตรวจ `doctor` ใน `kit.py` ต้องการอย่างน้อย 3.11 — ถ้าเอกสารจุดอื่นบอก 3.10 ให้ยึด 3.11 เป็นเกณฑ์จริง)
 - **FFmpeg & FFprobe** ติดตั้งอยู่ในระบบและเรียกผ่าน PATH ได้
-- ไลบรารี Python:
-  ```bash
-  pip install Pillow uharfbuzz
-  ```
+- ไลบรารี Python: ติดตั้งผ่าน `renderer/setup.ps1` (Windows) หรือ `renderer/setup.sh` ซึ่งลงจาก `renderer/requirements.txt` ให้ (Pillow, numpy; การจัดสระไทยใช้ RAQM ใน Pillow หรือ uharfbuzz ถ้ามี)
 
 ### 2. ตรวจสอบความพร้อมของระบบ (Doctor Check)
 ```bash
@@ -106,6 +104,14 @@ python renderer/kit.py render examples/benchmark15/job.json --out output-benchma
    - **Step 3: Assembly & Automation** — สร้าง `words.json`, `visemes.json`, และ `job.json`
    - **Step 4: Render & Delivery** — เรนเดอร์วิดีโอและตรวจ QC ผ่าน `renderer/kit.py qc`
 2. อ้างอิงสเปกภาพและจานสี Warodom ได้จาก [AGENTS.md](AGENTS.md)
+
+---
+
+## 📝 หมายเหตุเรื่อง `prepare_cues.py` (การจับเวลาคำ/ปาก)
+
+- เป็นเครื่องมือ**ทางเลือก** สำหรับสร้าง `words.json` / `visemes.json` จากบทที่รู้อยู่แล้ว (known-script alignment)
+- ใช้ได้เฉพาะเมื่อมีโมเดล faster-whisper เป็น**ไฟล์ local ในเครื่องอยู่แล้ว** และต้องระบุ path ของโมเดลเองเท่านั้น — สคริปต์ไม่ดาวน์โหลดโมเดลให้ และต้องลงแพ็กเกจเสริมใน `renderer/optional-alignment-requirements.txt` แยกต่างหาก
+- ผลลัพธ์**ไม่ใช่**การถอดเสียงและไม่ใช่การตรวจว่าเสียงพากย์พูดตรงบท — ต้องให้เจ้าของงานฟังเทียบกับเสียงจริงและอนุมัติก่อนนำไปเรนเดอร์เสมอ
 
 ---
 

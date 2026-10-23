@@ -1,7 +1,7 @@
 # 🚀 START_HERE.md — คู่มือศูนย์กลางสำหรับ AI Agent ทุกตัว (BeAN Muse AI / ChatGPT / AGY)
 
 > **กฎเหล็กข้อที่ 1:** ห้ามใช้ไฟล์ใด ๆ ในโฟลเดอร์ `_archive/` เด็ดขาด (เพราะเป็นรุ่นเก่า v0.1 ที่ยังมีรอยปะขอบปากมาสคอต)
-> **กฎเหล็กข้อที่ 2:** ให้ใช้เครื่องยนต์เรนเดอร์ในโฟลเดอร์ **`engine/`** (หรือไฟล์ `releases/LiplnwZa_Motion_Kit_v0.2.1_Fixed.zip`) เท่านั้น ซึ่งได้รับการแก้ไขบั๊กปาก `thumbs_up`/`thinking`, บั๊กสระไทยบน Windows (`uharfbuzz`) และบั๊ก FFmpeg QC เรียบร้อยแล้ว
+> **กฎเหล็กข้อที่ 2:** ให้ใช้เครื่องยนต์เรนเดอร์ในโฟลเดอร์ **`renderer/`** เท่านั้น (ไม่มีโฟลเดอร์ `engine/` ในชุดปัจจุบัน) ซึ่งได้รับการแก้ไขบั๊กปาก `thumbs_up`/`thinking`, บั๊กสระไทยบน Windows (`uharfbuzz`) และบั๊ก FFmpeg QC เรียบร้อยแล้ว
 
 ---
 
@@ -14,9 +14,10 @@ liplnwza-motion-kit/
 ├── SKILL.md                          ← สเปกทักษะเต็มรูปแบบสำหรับ AI Agents
 ├── AGENTS.md                         ← สเปกแบรนด์และกฎเหล็กสไตล์ Warodom Collage
 ├── renderer/                         ← เครื่องยนต์เรนเดอร์หลัก v0.2.1
-│   ├── kit.py                        ← CLI หลัก (doctor, validate, digest, render, qc)
-│   ├── rig_motion.py                 ← ระบบ Clean Plate Lip-sync ผสมการเคลื่อนไหว (แก้รอยแก้มแล้ว)
-│   └── text_layout.py                ← ตัวจัดสระภาษาไทยผ่าน uharfbuzz
+│   ├── kit.py                        ← CLI หลัก (doctor, validate, digest, render, qc) — รวมตัวจัดสระภาษาไทยผ่าน uharfbuzz ไว้ในไฟล์นี้
+│   ├── new_job.py                    ← สร้างโฟลเดอร์งานใหม่ที่ jobs/<slug>/
+│   └── prepare_cues.py               ← (ทางเลือก) จับเวลาคำ/ปากจากบทที่รู้อยู่แล้ว ต้องมีโมเดล faster-whisper แบบ local เท่านั้น
+│   # rig_motion.py อยู่ที่ assets/mascot/mouth_rig/ ไม่ได้อยู่ใน renderer/
 ├── assets/                           ← แอสเสตประจำเครื่องยนต์
 │   ├── mascot/mouth_rig/             ← ระบบ Clean-Plate + Procedural Mouth Rig 6 ท่า
 │   └── fonts/Prompt-Bold.ttf         ← ฟอนต์มาตรฐานบังคับสำหรับภาษาไทยและอังกฤษ
