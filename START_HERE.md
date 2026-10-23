@@ -16,6 +16,7 @@ liplnwza-motion-kit/
 ├── renderer/                         ← เครื่องยนต์เรนเดอร์หลัก v0.2.1
 │   ├── kit.py                        ← CLI หลัก (doctor, validate, digest, render, qc) — รวมตัวจัดสระภาษาไทยผ่าน uharfbuzz ไว้ในไฟล์นี้
 │   ├── new_job.py                    ← สร้างโฟลเดอร์งานใหม่ที่ jobs/<slug>/
+│   ├── assemble_voice.py             ← ประกอบไฟล์ WAV ท่อนเสียงตามลำดับและสร้าง junction manifest
 │   └── prepare_cues.py               ← (ทางเลือก) จับเวลาคำ/ปากจากบทที่รู้อยู่แล้ว ต้องมีโมเดล faster-whisper แบบ local เท่านั้น
 │   # rig_motion.py อยู่ที่ assets/mascot/mouth_rig/ ไม่ได้อยู่ใน renderer/
 ├── assets/                           ← แอสเสตประจำเครื่องยนต์
@@ -31,6 +32,16 @@ liplnwza-motion-kit/
 
 ## ⚡ ขั้นตอนมาตรฐานเมื่อได้รับคำสั่ง "สร้างวิดีโอใหม่"
 
+### สัญญาชุดรับมอบเสียง
+
+ชุดรับมอบเสียงที่ต้องส่งให้ Motion Kit มี 3 รายการ:
+
+1. `inputs/voice.wav` — เสียงพากย์สำเร็จรูปที่ประกอบทุกท่อนเสร็จแล้ว
+2. `words.json` — ข้อมูลเวลาเริ่ม/จบระดับคำที่ตรวจเทียบกับเสียงจริงแล้ว
+3. `visemes.json` — ข้อมูลเวลารูปปากสำหรับเสียงเดียวกัน
+
+Motion Kit ไม่สร้างเสียงพากย์และไม่ถอดเสียงให้อัตโนมัติในขั้นรับมอบนี้ ผู้ส่งมอบต้องประกอบเสียงให้เสร็จก่อน แล้วจึงทำ/ส่งข้อมูลเวลาและรูปปากที่สอดคล้องกับ `inputs/voice.wav` เครื่องมือประกอบมาตรฐานคือ [`renderer/assemble_voice.py`](renderer/assemble_voice.py); เครื่องมือนี้ประกอบ WAV ที่มีอยู่และไม่สร้างเสียงหรือถอดคำพูด ส่วน `prepare_cues.py` เป็นตัวช่วย known-script alignment แบบเลือกใช้ ไม่ใช่ตัวถอดเสียง
+
 1. **Pre-flight Check (ตรวจความพร้อมระบบ):**
    ```bash
    python renderer/kit.py doctor
@@ -41,12 +52,11 @@ liplnwza-motion-kit/
    python renderer/kit.py render examples/benchmark15/job.json --out examples/benchmark15/output-test
    ```
 3. **สร้างโฟลเดอร์งานใหม่ใน `jobs/<slug>/`:**
-   เตรียมไฟล์ 5 รายการ:
+   เตรียมชุดรับมอบเสียง 3 รายการข้างต้น พร้อมไฟล์งานที่ Motion Kit ต้องใช้:
    - `job.json` (โครงสร้างฉาก ข้อความ และท่ามาสคอต `explain`, `point_right`, `thinking`, `magnify`, `point_left`, `thumbs_up`)
-   - `voice.wav` หรือ `voice.mp3` (เสียงพากย์จริงของฟิลิป)
-   - `words.json` (เวลาซับรายคำที่วัดจากคลื่นเสียงจริงระดับมิลลิวินาที)
-   - `visemes.json` (ตารางขยับปาก 6 ท่า: `CLOSED`, `AA`, `EE`, `OH`, `OO`, `FV` โดยต้องใส่ `CLOSED` ที่ตัวสะกดแม่กม/กบ)
    - `approval.json` (ใส่ค่า `job_digest` ที่ได้จาก `python renderer/kit.py digest jobs/<slug>/job.json`)
+   - บันทึกเสียงไว้ใน `jobs/<slug>/inputs/voice.wav` และให้ `job.json` ชี้ไปที่ `inputs/voice.wav`
+   - `words.json` เป็นเวลาซับรายคำของเสียงที่ส่งมอบ และ `visemes.json` เป็นตารางขยับปาก 6 ท่า: `CLOSED`, `AA`, `EE`, `OH`, `OO`, `FV` (ใส่ `CLOSED` ที่ตัวสะกดแม่กม/กบ)
 4. **Validate & Render:**
    ```bash
    python renderer/kit.py validate jobs/<slug>/job.json

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "title": "เมืองที่วาดขึ้นและเมืองจริง",
+  "topic_label": "ภาพสร้างกับฟุตเทจจริง",
+  "duration": 10,
+  "voice": "inputs/voice.wav",
+  "words": "inputs/words.json",
+  "visemes": "inputs/visemes.json",
+  "footer": "ภาพ AI ตัวอย่าง • ฟุตเทจ Joseph Eulo / Pexels",
+  "sfx_gain": 1,
+  "sources": [
+    {
+      "id": "ai-city-illustration",
+      "origin": "AI-generated placeholder for this example; no image file is bundled. OpenAI Terms: https://openai.com/policies/terms-of-use/",
+      "creator": "Project prompt author using OpenAI image generation; record the actual operator, tool/model, and generation date when the image is created",
+      "license": "OpenAI Terms of Use; user owns output as between user and OpenAI, subject to applicable law and terms; not a Creative Commons license. This example output is pending generation and review.",
+      "usage": "Illustration only after generation and rights review; do not present as a real photograph or factual evidence; record prompt and output in media/_ที่มา.txt",
+      "checked_date": "2026-10-23"
+    },
+    {
+      "id": "pexels-city-timelapse",
+      "origin": "https://www.pexels.com/video/traveling-through-the-city-5129233/",
+      "creator": "Joseph Eulo",
+      "license": "Pexels License (free, commercial use permitted, attribution not required); do not sell unaltered copies, redistribute on stock platforms, or imply endorsement by depicted people/brands",
+      "usage": "Edited city timelapse as illustrative footage in this video; re-check the item page and license before downloading or publishing",
+      "checked_date": "2026-10-23"
+    }
+  ],
+  "scenes": [
+    {
+      "start": 0,
+      "end": 5,
+      "layout": "media",
+      "title": "เมืองที่สร้างจากจินตนาการ",
+      "pose": "explain",
+      "media": {
+        "path": "media/ai-city-illustration.png",
+        "kind": "image",
+        "role": "illustration",
+        "label": "ภาพสร้างด้วย AI • OpenAI (ตัวอย่างยังไม่สร้างไฟล์)",
+        "source_id": "ai-city-illustration"
+      }
+    },
+    {
+      "start": 5,
+      "end": 10,
+      "layout": "media",
+      "title": "เมืองจริงที่กำลังเคลื่อนไหว",
+      "pose": "magnify",
+      "media": {
+        "path": "media/pexels-city-timelapse.mp4",
+        "kind": "video",
+        "role": "illustration",
+        "label": "ฟุตเทจ: Joseph Eulo / Pexels (5129233)",
+        "source_id": "pexels-city-timelapse"
+      }
+    }
+  ]
+}
