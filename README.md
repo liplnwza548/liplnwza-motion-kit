@@ -42,6 +42,7 @@ liplnwza-motion-kit/
 │   └── benchmark15/                  # ตัวอย่าง 15 วินาที พร้อม voice.wav และ visemes
 └── tests/                            # ชุดทดสอบระบบอัตโนมัติ
     ├── test_runtime.py               # runtime contract tests
+    ├── test_caption_motion_policy.py  # caption and motion policy tests
     ├── test_theme_runtime.py          # theme and visual runtime tests
     ├── test_event_sfx.py              # event-driven SFX tests
     ├── test_audio_mix.py              # audio mixing tests

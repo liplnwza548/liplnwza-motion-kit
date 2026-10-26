@@ -1227,10 +1227,18 @@ def qc(path):
     # decoding, or measurement fails, the sidecar must not retain a stale pass.
     write(report_path,{'technical_pass':False,'status':'incomplete','errors':['QC did not complete']})
     info=json.loads(subprocess.check_output(['ffprobe','-v','error','-count_frames','-show_streams','-show_format','-of','json',str(path)]))
+    streams=info.get('streams',[])
+    v=next((s for s in streams if s.get('codec_type')=='video'),None)
+    a=next((s for s in streams if s.get('codec_type')=='audio'),None)
+    missing=[]
+    if v is None:missing.append('Missing required video stream')
+    if a is None:missing.append('Missing required audio stream')
+    if missing:
+        write(report_path,{'technical_pass':False,'decode_errors':None,'errors':missing})
+        raise ValueError('; '.join(missing))
     run(['ffmpeg','-v','error','-xerror','-i',str(path),'-f','null','-'],stdout=subprocess.DEVNULL)
     audio=subprocess.run(['ffmpeg','-hide_banner','-i',str(path),'-af','loudnorm=I=-16:TP=-1:LRA=7:print_format=json','-f','null','-'],capture_output=True,text=True,check=True)
     pos=audio.stderr.rfind('{');end=audio.stderr.rfind('}')+1;loud=json.loads(audio.stderr[pos:end])
-    v=next(s for s in info['streams'] if s['codec_type']=='video');a=next(s for s in info['streams'] if s['codec_type']=='audio')
     errors=[]
     video_spec=(W,H,'30/1','h264')
     video_actual=(v.get('width'),v.get('height'),v.get('r_frame_rate'),v.get('codec_name'))

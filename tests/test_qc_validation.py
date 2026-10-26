@@ -60,6 +60,33 @@ class ReliabilityRegressionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "viseme cues are required"):
             kit.validate(job, job_dir)
 
+    def test_qc_reports_missing_video_or_audio_stream_without_traceback(self):
+        fixtures = {
+            "audio-only.mp4": (
+                "video",
+                ["-f", "lavfi", "-i", "sine=frequency=440:sample_rate=48000:duration=5", "-c:a", "aac", "-b:a", "192k"],
+            ),
+            "video-only.mp4": (
+                "audio",
+                ["-f", "lavfi", "-i", "color=c=black:s=1080x1920:r=30:d=5", "-an", "-c:v", "libx264", "-pix_fmt", "yuv420p"],
+            ),
+        }
+        for name, (missing_stream, inputs) in fixtures.items():
+            video = self.tmp / name
+            subprocess.run(["ffmpeg", "-y", "-v", "error", *inputs, "-t", "5", str(video)], check=True)
+            (self.tmp / "qc.json").write_text('{"technical_pass":true}\n', encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "renderer" / "kit.py"), "qc", str(video)],
+                cwd=ROOT, capture_output=True, text=True,
+            )
+            with self.subTest(file=name):
+                self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertNotIn("Traceback", result.stderr)
+                self.assertIn(f"Missing required {missing_stream} stream", result.stderr)
+                report = json.loads((self.tmp / "qc.json").read_text(encoding="utf-8"))
+                self.assertIs(report["technical_pass"], False)
+                self.assertTrue(any(f"Missing required {missing_stream} stream" in error for error in report["errors"]))
+
     def test_manifest_covers_all_non_manifest_checkout_files(self):
         tracked = subprocess.check_output([
             "git", "-c", "core.quotePath=false", "ls-files", "--cached", "--others", "--exclude-standard", "-z",
