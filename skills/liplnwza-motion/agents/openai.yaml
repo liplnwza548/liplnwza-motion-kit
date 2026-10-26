@@ -1,0 +1,4 @@
+interface:
+  display_name: "LiplnwZa Motion"
+  short_description: "สร้างคลิปโมชั่นไทยจากเนื้อหาจนส่งไฟล์ตรวจ"
+  default_prompt: "ใช้ $liplnwza-motion รับเนื้อหานี้และเสนอแนวทางวิดีโอให้ฟิลิปตรวจ"

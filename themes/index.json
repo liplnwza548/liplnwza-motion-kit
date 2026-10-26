@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "themes": [
+    {
+      "id": "base-paper",
+      "version": "v001",
+      "status": "baseline",
+      "approval_ref": "AGENTS.md and references/STYLE.md: existing Pilot002 v3 appearance approval"
+    },
+    {
+      "id": "halloween",
+      "version": "v001",
+      "status": "draft",
+      "approval_ref": "Approved board production authorization 2026-10-25 01:20; theme and assets await individual Philip review."
+    }
+  ]
+}

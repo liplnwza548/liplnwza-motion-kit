@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "title": "TEST ONLY: theme runtime",
+  "topic_label": "TEST ONLY",
+  "duration": 12,
+  "voice": "inputs/test-tone.wav",
+  "words": "words.json",
+  "visemes": "visemes.json",
+  "footer": "TEST ONLY - NOT A CLIP",
+  "sources": [],
+  "scenes": [
+    {
+      "start": 0,
+      "end": 12,
+      "layout": "title",
+      "title": "TEST ONLY",
+      "body": "SYNTHETIC CHECK",
+      "pose": "explain"
+    }
+  ]
+}

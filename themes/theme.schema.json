@@ -1,0 +1,520 @@
+{
+  "schema_version": 1,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LiplnwZa Motion Kit theme",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "version",
+    "layout_profile",
+    "font",
+    "palette",
+    "text_colors",
+    "background",
+    "cards",
+    "captions",
+    "layout",
+    "motion",
+    "audio"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^v[0-9]{3}$"
+    },
+    "layout_profile": {
+      "const": "paper-v021"
+    },
+    "font": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "const": "prompt-bold"
+        },
+        "version": {
+          "const": "v001"
+        }
+      }
+    },
+    "palette": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ink",
+        "paper",
+        "accents"
+      ],
+      "properties": {
+        "ink": {
+          "$ref": "#/$defs/color"
+        },
+        "paper": {
+          "$ref": "#/$defs/color"
+        },
+        "accents": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/$defs/color"
+          }
+        }
+      }
+    },
+    "text_colors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "paper",
+        "accents"
+      ],
+      "properties": {
+        "paper": {
+          "$ref": "#/$defs/color"
+        },
+        "accents": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/$defs/color"
+          }
+        }
+      }
+    },
+    "background": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "colors",
+        "asset",
+        "grid"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "grid",
+            "image"
+          ]
+        },
+        "colors": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "$ref": "#/$defs/color"
+          }
+        },
+        "asset": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/assetRef"
+            }
+          ]
+        },
+        "grid": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "enabled",
+            "step_px",
+            "color",
+            "opacity",
+            "width_px"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "step_px": {
+              "type": "integer",
+              "minimum": 8,
+              "maximum": 512
+            },
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "opacity": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "width_px": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            }
+          }
+        }
+      }
+    },
+    "cards": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "style",
+        "border_px",
+        "outline_px",
+        "shadow_offset_px",
+        "roughness_px",
+        "padding_px"
+      ],
+      "properties": {
+        "style": {
+          "const": "rough-paper"
+        },
+        "border_px": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 24
+        },
+        "outline_px": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "shadow_offset_px": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "integer",
+            "minimum": -32,
+            "maximum": 32
+          }
+        },
+        "roughness_px": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        },
+        "padding_px": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32
+        }
+      }
+    },
+    "captions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "preset",
+        "font_size_px",
+        "height_px",
+        "y_px",
+        "gap_px",
+        "max_width_px",
+        "padding_px",
+        "fill_palette_indexes",
+        "text_palette_keys"
+      ],
+      "properties": {
+        "preset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "font_size_px": {
+          "type": "integer",
+          "minimum": 18,
+          "maximum": 200
+        },
+        "height_px": {
+          "type": "integer",
+          "minimum": 40,
+          "maximum": 300
+        },
+        "y_px": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1920
+        },
+        "gap_px": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "max_width_px": {
+          "type": "integer",
+          "minimum": 200,
+          "maximum": 1080
+        },
+        "padding_px": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 48
+        },
+        "fill_palette_indexes": {
+          "const": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "text_palette_keys": {
+          "const": [
+            "ink",
+            "paper",
+            "paper",
+            "paper"
+          ]
+        },
+        "preset_asset": {
+          "$ref": "#/$defs/assetRef"
+        }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "brand_center_px",
+        "topic_center_px",
+        "title_center_px",
+        "content_center_px",
+        "mascot_center_px",
+        "mascot_right_center_px",
+        "aside_center_px",
+        "aside_right_center_px",
+        "cta_center_px",
+        "footer_box",
+        "progress_box"
+      ],
+      "properties": {
+        "brand_center_px": {
+          "$ref": "#/$defs/point"
+        },
+        "topic_center_px": {
+          "$ref": "#/$defs/point"
+        },
+        "title_center_px": {
+          "$ref": "#/$defs/point"
+        },
+        "content_center_px": {
+          "$ref": "#/$defs/point"
+        },
+        "mascot_center_px": {
+          "$ref": "#/$defs/point"
+        },
+        "mascot_right_center_px": {
+          "$ref": "#/$defs/point"
+        },
+        "aside_center_px": {
+          "$ref": "#/$defs/point"
+        },
+        "aside_right_center_px": {
+          "$ref": "#/$defs/point"
+        },
+        "cta_center_px": {
+          "$ref": "#/$defs/point"
+        },
+        "footer_box": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "integer"
+          }
+        },
+        "progress_box": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "motion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "seed",
+        "mascot_bob_px",
+        "mascot_bob_rate"
+      ],
+      "properties": {
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "mascot_bob_px": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32
+        },
+        "mascot_bob_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 20
+        }
+      }
+    },
+    "audio": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bgm_default",
+        "sfx_gain"
+      ],
+      "properties": {
+        "bgm_default": {
+          "const": "off"
+        },
+        "sfx_gain": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2
+        }
+      }
+    },
+    "background_variants": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "asset",
+          "intended_use"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "asset": {
+            "$ref": "#/$defs/assetRef"
+          },
+          "intended_use": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "decorations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "asset",
+          "center_px",
+          "size_px",
+          "intended_use",
+          "safe_area_blocks",
+          "collision_policy",
+          "motion"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "asset": {
+            "$ref": "#/$defs/assetRef"
+          },
+          "center_px": {
+            "$ref": "#/$defs/point"
+          },
+          "size_px": {
+            "type": "integer",
+            "minimum": 16,
+            "maximum": 256
+          },
+          "intended_use": {
+            "type": "string",
+            "minLength": 1
+          },
+          "safe_area_blocks": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 7,
+            "items": {
+              "enum": [
+                "mascot_face",
+                "mascot_mouth",
+                "evidence",
+                "logo",
+                "numbers",
+                "caption_chips",
+                "text_safe_area"
+              ]
+            }
+          },
+          "collision_policy": {
+            "const": "skip"
+          },
+          "motion": {
+            "enum": [
+              "static",
+              "drift"
+            ]
+          }
+        }
+      }
+    },
+    "mascot_concept": {
+      "$ref": "#/$defs/assetRef"
+    }
+  },
+  "$defs": {
+    "color": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "point": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "integer"
+      }
+    },
+    "assetRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^v[0-9]{3}$"
+        }
+      }
+    }
+  }
+}

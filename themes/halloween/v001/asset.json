@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "halloween",
+  "category": "themes",
+  "version": "v001",
+  "tags": [
+    "halloween",
+    "motion-kit",
+    "draft"
+  ],
+  "status": "draft",
+  "primary_file": "theme.json",
+  "files": [
+    {
+      "path": "theme.json",
+      "sha256": "9d5a4a4ec7d2e5bd48afe7ad5d3628390782d902909e97513279be3892648c2b",
+      "mime": "application/json",
+      "dimensions": null
+    }
+  ],
+  "origin": {
+    "method": "configuration derived from approved Halloween board",
+    "source_board": "theme-library-plan/halloween-board.md",
+    "board_preview_sha256": "e26e9dbf01fb28d33cc0426ef9726360fc2a6dcb1ff9fa50738e2bdc7ded60d8",
+    "external_assets_used": false
+  },
+  "creator": "Luna Max",
+  "license": "Internal theme configuration; pending Philip review.",
+  "license_evidence": {
+    "evidence": "Palette and layout derive from the owner-approved board and existing kit contracts; individual art rights are recorded per asset."
+  },
+  "checked_date": "2026-10-25",
+  "usage": "Draft review only; loader access requires allow_draft=True and does not grant production approval.",
+  "credit": "Prompt-Bold remains governed by assets/fonts/OFL.txt.",
+  "redistribution": "Pending Philip approval.",
+  "approval": {
+    "status": "pending",
+    "approved_by": null,
+    "approved_at": null,
+    "evidence": "Philip authorized production from approved halloween-board.md on 2026-10-25 01:20; individual asset/design approval is pending from Philip.",
+    "awaiting": "Philip review of the completed theme and assets."
+  },
+  "supported_renderer_version": "0.2.1"
+}

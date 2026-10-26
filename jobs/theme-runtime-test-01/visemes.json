@@ -1,0 +1,26 @@
+[
+  {
+    "start": 0.0,
+    "shape": "AA"
+  },
+  {
+    "start": 0.9,
+    "shape": "CLOSED"
+  },
+  {
+    "start": 1.2,
+    "shape": "OH"
+  },
+  {
+    "start": 1.8,
+    "shape": "CLOSED"
+  },
+  {
+    "start": 6.0,
+    "shape": "EE"
+  },
+  {
+    "start": 6.8,
+    "shape": "CLOSED"
+  }
+]
