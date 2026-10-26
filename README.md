@@ -1,10 +1,9 @@
 # 🎨 LiplnwZa Motion Kit (v0.2.1)
 
-> **Autonomous Short-Form Motion Graphics Engine & AI Agent Skill**  
+> **Short-Form Motion Graphics Renderer & AI Agent Toolkit**
 > ออกแบบมาเพื่อสร้างวิดีโอแนวตั้ง (9:16, 1080×1920, 30fps) สไตล์ **Warodom Paper-Cut Collage** โดยอัตโนมัติ ผสานมาสคอต LiplnwZa, ระบบปากขยับ Procedural Lip-sync, การจัดสระภาษาไทยไร้รอยต่อ และระบบตรวจคุณภาพ (QC) อัตโนมัติ
 
 [![Version](https://img.shields.io/badge/version-v0.2.1-blue.svg)](https://github.com/liplnwza548/liplnwza-motion-kit/releases/tag/v0.2.1)
-[![Tests](https://img.shields.io/badge/tests-7%2F7%20passing-brightgreen.svg)](tests/test_runtime.py)
 [![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue)](https://www.python.org/)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -13,11 +12,11 @@
 
 ## ✨ จุดเด่นสำคัญ (Key Highlights)
 
-- 🎭 **Clean-Plate Procedural Mouth Rig:** ระบบมาสคอต 6 ท่าหลัก (`explain`, `point_right`, `thinking`, `magnify`, `point_left`, `thumbs_up`) ผสานระบบ Clean-Plate ลบปากเก่าเนียนสนิท ไร้รอยแผลที่มุมแก้ม พร้อมสเกลปากที่รองรับการอ้ากว้างอย่างเป็นธรรมชาติ
-- 🇹🇭 **HarfBuzz Thai Typography:** ระบบจัดสระและวรรณยุกต์ภาษาไทยขั้นสูง รองรับ OpenType `GSUB`/`GPOS` อัตโนมัติผ่าน `uharfbuzz` หมดปัญหาสระลอยหรือสระซ้อนทับกันบนระบบปฏิบัติการ Windows, macOS และ Linux
-- ⚡ **100% Deterministic Repeatability:** เรนเดอร์ซ้ำได้ผลลัพธ์ระดับบิตต่อบิต (Byte-for-byte SHA-256 match)
+- 🎭 **Clean-Plate Procedural Mouth Rig:** ระบบประกอบภาพปากตาม viseme ที่เตรียมไว้ สำหรับมาสคอต 6 ท่าหลัก (`explain`, `point_right`, `thinking`, `magnify`, `point_left`, `thumbs_up`) โดยแทนที่ภาพปากภายในพื้นที่ซ่อมที่กำหนด
+- 🇹🇭 **Thai Typography:** ใช้ Pillow RAQM เมื่อมี หรือใช้ `uharfbuzz` เป็นทางเลือก ต้องตรวจผลบนเครื่องเป้าหมายก่อนส่งงาน
+- ⚡ **Repeatable Rendering:** สร้าง movement และ SFX จากข้อมูลกับ seed ที่กำหนด; ความเหมือนกันระดับไบต์ยังไม่ได้ยืนยันข้ามระบบหรือ toolchain
 - 📊 **Automated Technical QC:** ตรวจสอบความดังเสียงมาตรฐาน (-18 ถึง -14 LUFS, True Peak ≤ -1.0 dBTP), เช็ก Decode Error, สร้าง Contact Sheet สรุปภาพรวม และ Contact Cards สำหรับส่งตรวจงาน
-- 🤖 **Universal AI Skill Spec (`SKILL.md`):** พร้อมใช้งานร่วมกับ AI Agents ทุกตัว เช่น **BeAN Muse AI, ChatGPT, Claude, Google Gemini Spark, Antigravity (AGY)**
+- 🤖 **Provider-Neutral Agent Instructions (`SKILL.md`):** มีคำแนะนำกลางสำหรับ agent; การเชื่อมต่อและสิทธิ์ใช้งานต้องตรวจในระบบ agent แต่ละตัว
 
 ---
 
@@ -42,7 +41,11 @@ liplnwza-motion-kit/
 ├── examples/                         # ตัวอย่างงานมาตรฐาน
 │   └── benchmark15/                  # ตัวอย่าง 15 วินาที พร้อม voice.wav และ visemes
 └── tests/                            # ชุดทดสอบระบบอัตโนมัติ
-    └── test_runtime.py               # รัน 7 การทดสอบครอบคลุมทุกฟังก์ชัน
+    ├── test_runtime.py               # runtime contract tests
+    ├── test_theme_runtime.py          # theme and visual runtime tests
+    ├── test_event_sfx.py              # event-driven SFX tests
+    ├── test_audio_mix.py              # audio mixing tests
+    └── test_qc_validation.py          # QC, validator, and manifest regressions
 ```
 
 ---
@@ -70,9 +73,9 @@ python renderer/kit.py doctor
 
 ### 3. รันชุดทดสอบระบบ (Run Tests)
 ```bash
-python -m unittest tests/test_runtime.py
+python -m unittest discover -s tests
 ```
-*(ผลลัพธ์ต้องขึ้น `OK` ผ่านครบ 7/7 ข้อ)*
+ผลลัพธ์จะแสดงจำนวนผ่าน ล้มเหลว และ skipped ของ checkout นั้น
 
 ### 4. ทดสอบเรนเดอร์ Benchmark (15 วินาที)
 ```bash
@@ -90,7 +93,7 @@ python renderer/kit.py render examples/benchmark15/job.json --out output-benchma
 | `validate` | `python renderer/kit.py validate <job.json>` | ตรวจสอบโครงสร้างไฟล์ JSON และความถูกต้องของ Asset ที่ใช้อ้างอิง |
 | `digest` | `python renderer/kit.py digest <job.json>` | คำนวณ SHA-256 แฮชของ Job เพื่อใช้ล็อกการอนุมัติใน `approval.json` |
 | `render` | `python renderer/kit.py render <job.json> --out <dir>` | เรนเดอร์วิดีโอตัวเต็มความละเอียด 1080×1920 30fps |
-| `preview` | `python renderer/kit.py render <job.json> --preview` | เรนเดอร์พรีวิวรวดเร็ว 540×960 |
+| `preview` | `python renderer/kit.py preview <job.json> --out <dir>` | สร้างภาพตัวอย่างแต่ละฉากและ contact sheet สำหรับตรวจข้อความ/องค์ประกอบ |
 | `qc` | `python renderer/kit.py qc <video.mp4>` | ตรวจสอบคุณภาพเชิงเทคนิค ความดังเสียง และ Decode Errors |
 
 ---

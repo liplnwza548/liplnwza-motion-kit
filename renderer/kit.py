@@ -487,6 +487,7 @@ def validate(j,d,approved=False,resolved_theme=None):
         need(float(voice_info['format']['duration'])<=duration+.03,'Voice is longer than video; do not cut speech implicitly')
         words=read(resolve(d,j['words']));v=read(resolve(d,j['visemes']))
         need(bool(words),'word cues required')
+        need(bool(v),'viseme cues are required; visemes must not be empty')
         for i,s in enumerate(j.get('scenes',[])):
             errors.extend(validate_scene_visuals(s,i,words,j,resolved_theme))
         for i,w in enumerate(words):
@@ -1221,17 +1222,36 @@ class Composition:
         return target
 
 def qc(path):
+    report_path=Path(path).parent/'qc.json'
+    # Invalidate any previous pass report before starting a new check. If probing,
+    # decoding, or measurement fails, the sidecar must not retain a stale pass.
+    write(report_path,{'technical_pass':False,'status':'incomplete','errors':['QC did not complete']})
     info=json.loads(subprocess.check_output(['ffprobe','-v','error','-count_frames','-show_streams','-show_format','-of','json',str(path)]))
     run(['ffmpeg','-v','error','-xerror','-i',str(path),'-f','null','-'],stdout=subprocess.DEVNULL)
     audio=subprocess.run(['ffmpeg','-hide_banner','-i',str(path),'-af','loudnorm=I=-16:TP=-1:LRA=7:print_format=json','-f','null','-'],capture_output=True,text=True,check=True)
     pos=audio.stderr.rfind('{');end=audio.stderr.rfind('}')+1;loud=json.loads(audio.stderr[pos:end])
     v=next(s for s in info['streams'] if s['codec_type']=='video');a=next(s for s in info['streams'] if s['codec_type']=='audio')
-    assert (v['width'],v['height'],v['r_frame_rate'],v['codec_name'])==(W,H,'30/1','h264')
-    assert a['sample_rate']=='48000' and a['channels']==2
-    assert int(v['nb_read_frames'])==round(float(info['format']['duration'])*30)
-    assert -18<=float(loud['input_i'])<=-14 and float(loud['input_tp'])<=-1
-    r={'technical_pass':True,'decode_errors':0,'video':{k:v[k] for k in ['codec_name','width','height','r_frame_rate','nb_read_frames']},'audio':{k:a[k] for k in ['codec_name','sample_rate','channels']},'duration':info['format']['duration'],'loudness':loud,'sha256':sha(path),'limits':['Automated checks do not certify factual accuracy, usage rights, subjective lip sync, or publication approval.']}
-    write(path.parent/'qc.json',r);return r
+    errors=[]
+    video_spec=(W,H,'30/1','h264')
+    video_actual=(v.get('width'),v.get('height'),v.get('r_frame_rate'),v.get('codec_name'))
+    if video_actual!=video_spec:
+        errors.append(f'Video must be H.264 {W}x{H} at 30 fps; found {video_actual[3]} {video_actual[0]}x{video_actual[1]} at {video_actual[2]} fps')
+    if a.get('sample_rate')!='48000' or a.get('channels')!=2:
+        errors.append(f'Audio must be 48000 Hz stereo; found {a.get("sample_rate")} Hz, {a.get("channels")} channels')
+    expected_frames=round(float(info['format']['duration'])*FPS)
+    actual_frames=int(v.get('nb_read_frames',-1))
+    if actual_frames!=expected_frames:
+        errors.append(f'Video frame count must match duration at {FPS} fps; found {actual_frames}, expected {expected_frames}')
+    integrated=float(loud['input_i']);true_peak=float(loud['input_tp'])
+    if not -18<=integrated<=-14:
+        errors.append(f'Integrated loudness must be between -18 and -14 LUFS; found {integrated:.2f} LUFS')
+    if true_peak>-1:
+        errors.append(f'True peak must be at or below -1 dBTP; found {true_peak:.2f} dBTP')
+    report={'technical_pass':not errors,'decode_errors':0,'video':{k:v.get(k) for k in ['codec_name','width','height','r_frame_rate','nb_read_frames']},'audio':{k:a.get(k) for k in ['codec_name','sample_rate','channels']},'duration':info['format']['duration'],'loudness':loud,'sha256':sha(path),'limits':['Automated checks do not certify factual accuracy, usage rights, subjective lip sync, or publication approval.']}
+    if errors:report['errors']=errors
+    write(report_path,report)
+    if errors:raise ValueError('; '.join(errors))
+    return report
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('command',choices=['doctor','validate','digest','preview','render','qc']);p.add_argument('path',nargs='?');p.add_argument('--out');args=p.parse_args()

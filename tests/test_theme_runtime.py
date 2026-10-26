@@ -264,6 +264,11 @@ class ThemeRuntimeTests(unittest.TestCase):
         self.assertEqual(resolved["layout"]["progress_box"], [90, 1850, 990, 1860])
         self.assertTrue(Path(resolved["font"]["path"]).is_file())
 
+    @unittest.skipUnless(
+        (ROOT / "library" / "index.json").is_file(),
+        "Halloween art library is absent from this checkout while asset rights are pending; "
+        "asset resolution remains covered by synthetic fixtures.",
+    )
     def test_halloween_draft_theme_and_assets_resolve_only_in_explicit_review_mode(self):
         config_module = self.require_theme_config()
         asset_module = self.require_theme_assets()
