@@ -4,7 +4,7 @@
   "CHANGELOG.md": "33755d7974c72b29ad2829d5ed558d642700223327905192fed5e5ea2912c1bc",
   "LICENSE": "160aa2854519b6cb0f1db3dc062a996bcd73ae9bd75dad9f7eec40bdfa39cd3c",
   "README.md": "e3f9088fb2d73e6b1b0263e303cac9b36c87e74faf3840a473e3528ce04c009d",
-  "SKILL.md": "32dbd426180c82c5835aabfec16beb701d7c835375219a94fac16ea38eb010b3",
+  "SKILL.md": "5c0d38f53ce6fbe7c907f10b946c5da2caaeaa36ac9486022e6e65498039dd27",
   "START_HERE.md": "6921f050e882337933ae2110a7991ea650ac787173b2358bab5cd915e6b9b651",
   "adapters/AI_ENTRYPOINTS.md": "a3e108fb766fd7c056132a82c51d8b9a0068b2bcccc2602c55a6f46bd2c1f5f3",
   "assets/ASSET_RIGHTS.md": "52ade0b17b1616e61d618b2230bfa2ab2cce110856934060f3412b10fd93de14",
@@ -116,7 +116,7 @@
   "renderer/setup.sh": "ebd3444206028025e24f4af232d8d17ec68e80ee7848749743850eb5f6ea9d23",
   "renderer/theme_assets.py": "0f0722f13d38d79ecde8eb94da08ee131f0af0682eaa382c87528c905100e9a1",
   "renderer/theme_config.py": "d53bcee0ca426fd0629bd4ed7e1875e1bfda56f74592f8745ee2a1018bbf9f7b",
-  "renderer/verify_manifest.py": "7334e8b0d7e5af3147430df0c3906af3e6c7a72bc6ef2567fa2ff5c2e0c48a6a",
+  "renderer/verify_manifest.py": "36738328fb9b9a3b748c898f59aeffd976782d9b820c11358011c274b3b94489",
   "skills/liplnwza-motion/SKILL.md": "0744ea8db4a5a555e31d8666605185d7dc82b5072a0699e8cbe3cafb37977a6d",
   "skills/liplnwza-motion/agents/openai.yaml": "5994ad55dfbb84daa687f0e6a4721ced128baa6bc0ce2a33d88e53bea4519c92",
   "skills/liplnwza-motion/references/runtime.md": "f23bbc8f939a4b283967aeb6aba2023aaee4df0bf9e81cb3268b2719b26924a0",
@@ -142,5 +142,11 @@
   "themes/halloween/v001/asset.json": "503d84db1c4156a6ac0c01e2120a9dffd6cf79520856a1132479b452ceb07233",
   "themes/halloween/v001/theme.json": "9d5a4a4ec7d2e5bd48afe7ad5d3628390782d902909e97513279be3892648c2b",
   "themes/index.json": "5062a31ec0ec45ebcb3aac4bb8ee30f2df147923c6628141304a1e93f2fb0551",
-  "themes/theme.schema.json": "383cee7436e56764115f276629f87b9e91256ed612e56c0079e037c5bc3249cd"
+  "themes/theme.schema.json": "383cee7436e56764115f276629f87b9e91256ed612e56c0079e037c5bc3249cd",
+  "renderer/dedup_visemes.py": "d6e87286e9dc4fdfed58e1e7ca0619b7c6b0b20ceb273b345f92a6c0060fa692",
+  "renderer/mfa_to_cues.py": "72191689966a722adb9b205d8fafd57983d8b083f3c3f99a838d09ad7d00784b",
+  "renderer/post_render_gate.py": "cfaa8489929132d8a898b53571339843484515380801d36cbbe0760abcd78730",
+  "renderer/preflight.py": "478be8861a35d90b829787aa8ea243c90fd617ebd651afd45e728b6211a3c488",
+  "tests/qc.py": "8c9404bd7614089dd0170b688a2b2f9bc01478fbb6b9b334ef704d81a6c29039",
+  "tests/test_port_gates.py": "e024d39a26945a2c9c139df2c4748d4380c24f0ab7b8c1f1739223bc2cf6aa43"
 }
