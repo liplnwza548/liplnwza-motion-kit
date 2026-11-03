@@ -5,3 +5,6 @@
 
 ## 0.1.0 — 2026-10-20
 First portable single-style kit extracted from accepted Pilot002 v3: parameterized scenes, captions, registered mascot mouths, original SFX, local media composition, preflight/validation/QC, owner approval record, fresh-folder benchmark and cross-agent protocol. Cross-product compatibility is pending owner tests; no model weights/API keys bundled.
+
+## aot-v001 — 2026-11-03
+เพิ่มเลย์เอาต์ AoT เป็นสไตล์หลักของงานใหม่ (บนกรอบภาพ / กลางซับชิป / ล่างมาสคอต, 1080x1920, 30fps) พร้อมตัวประกอบ generic ใน layouts/aot/compose.py, สเปกใน layouts/aot/SPEC.md, ตัวอย่าง placeholder ใน layouts/aot/example/ และเทสต์เลย์เอาต์ใน tests/test_aot_layout.py; เลย์เอาต์กระดาษ paper-v021 และ benchmark15 เหลือเป็นเทสต์เทคนิค legacy เท่านั้น ไม่ใช่ต้นแบบสไตล์งานใหม่; ไม่แตะโค้ด renderer/kit.py เดิม

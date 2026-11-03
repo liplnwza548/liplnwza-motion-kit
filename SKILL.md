@@ -7,6 +7,8 @@ description: "Autonomous Warodom paper-cut collage motion graphics video product
 
 > **สำหรับ AI Agent ทุกตัว (BeAN Muse AI, ChatGPT, Gemini Spark, AGY):**  
 > โฟลเดอร์นี้คือชุดสกิลแบบ All-in-One เมื่อได้รับมอบหมายให้สร้างวิดีโอโมชันกราฟิก ให้ทำตามคู่มือฉบับนี้อย่างเคร่งครัด
+>
+> **สไตล์หลักของงานใหม่ (ล็อก 2026-11-02, ยืนยัน 2026-11-03): เลย์เอาต์ AoT ใน `layouts/aot/SPEC.md` — บนกรอบภาพ / กลางซับชิป / ล่างมาสคอต — ใช้ `layouts/aot/compose.py` สำหรับงานใหม่ ไม่ใช่ `renderer/kit.py` แบบกระดาษ และไม่ใช่ `examples/benchmark15/` เป็นต้นแบบสไตล์ (benchmark เป็นแค่เทสต์เทคนิคของเครื่องเก่าเท่านั้น)**
 
 ---
 

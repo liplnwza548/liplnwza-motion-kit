@@ -1,5 +1,10 @@
 # 🎨 LiplnwZa Motion Kit (v0.2.1)
 
+> **Default layout for new work: AoT layout — see `layouts/aot/SPEC.md` first.**
+> Top image frame / middle word chips / bottom mascot (1080×1920, 30fps).
+> The paper layout (`paper-v021`) and `examples/benchmark15/` are a legacy
+> technical smoke test only, NOT a style reference for new clips.
+>
 > **Short-Form Motion Graphics Renderer & AI Agent Toolkit**
 > ออกแบบมาเพื่อสร้างวิดีโอแนวตั้ง (9:16, 1080×1920, 30fps) สไตล์ **Warodom Paper-Cut Collage** โดยอัตโนมัติ ผสานมาสคอต LiplnwZa, ระบบปากขยับ Procedural Lip-sync, การจัดสระภาษาไทยไร้รอยต่อ และระบบตรวจคุณภาพ (QC) อัตโนมัติ
 

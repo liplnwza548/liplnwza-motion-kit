@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "layout": "aot-v001",
+  "title": "AoT layout example (placeholder images only, do not publish)",
+  "voice": "../../../examples/benchmark15/voice.wav",
+  "words": "../../../examples/benchmark15/words.json",
+  "visemes": "../../../examples/benchmark15/visemes.json",
+  "beats": [
+    {
+      "name": "B01",
+      "start": 0.0,
+      "end": 2.54
+    },
+    {
+      "name": "B02",
+      "start": 2.54,
+      "end": 5.58
+    },
+    {
+      "name": "B03",
+      "start": 5.58,
+      "end": 9.24
+    },
+    {
+      "name": "B04",
+      "start": 9.24,
+      "end": 12.5
+    }
+  ],
+  "images": {
+    "B01": {
+      "file": "placeholder-01.png",
+      "status": "accepted",
+      "sha256": "d5db6817af51fe7cd44af0e8032c90dbe8f24c8652448f504a2bebfa22da71ea"
+    },
+    "B02": {
+      "file": "placeholder-02.png",
+      "status": "accepted",
+      "sha256": "dba7a985921d92c25ed86e78ef8c97dc88b8b48b3490c3428e6bcb0d56b04782"
+    },
+    "B03": {
+      "file": "placeholder-03.png",
+      "status": "accepted",
+      "sha256": "65cdc525d690059fe4163698a194a99d56ab13b42dc6cb458f42959231be7295"
+    },
+    "B04": {
+      "file": "placeholder-04.png",
+      "status": "accepted",
+      "sha256": "54ca542ab4ab8e98d45ad2a03cb881be925deb0e936759f7a70824ea05f8d09c"
+    }
+  },
+  "poses": [
+    {
+      "at": 0.0,
+      "pose": "thinking"
+    },
+    {
+      "at": 2.54,
+      "pose": "magnify"
+    },
+    {
+      "at": 5.58,
+      "pose": "point_right"
+    },
+    {
+      "at": 9.24,
+      "pose": "explain"
+    }
+  ]
+}
