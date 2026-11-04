@@ -60,15 +60,110 @@ the top frame. The mascot gap below is the hard rule (see the table).
   sentence as one chip is the old mistake this layout fixes. Rule used by
   the compositor: at most 3 words per row, and at most 1.2 seconds from
   the first word's start to the last word's end in the same row. If the
-  job gives sentence junctions, rows never mix sentences.
-- A chip pops in 0.14s with a back-out overshoot, rotated -2 or +2
+  job gives sentence junctions, rows never mix sentences. Rows
+  accumulate left to right (Progressive Word Pills, locked 2026-11-05)
+  and the whole row clears at the last word's end + OFF.
+- **Word-role colours (locked 2026-11-05, optional):** a word in
+  `words.json` may carry a `"role"` field, and the role alone decides
+  its chip colour — the renderer never guesses a role from the text:
+  `emphasis` (condition/emphasis) = yellow #FFD648, `tool` (tool name /
+  command) = blue #2264D8, `result` (good result) = green #38B577,
+  `verb` (key verb) = red #F44336, `connector` (connector word) =
+  paper #FFFDF6 with dark ink. A word with no role, or an unknown role,
+  falls back to the cycling palette. The job author owns the roles;
+  a missing role is never an error.
+- A chip springs in **0.13s: 0.6x -> ~1.08x -> 1.0x** (locked
+  2026-11-05, replacing the old 0.14s back-out pop), rotated -2 or +2
   degrees alternating, with a dark shadow offset. It appears at
   `word.start + OFF` and the row clears at the last word's end + OFF.
+- **Stagger (locked 2026-11-05):** sub-elements of a single widget
+  appear **0.12s** apart, never all at once. Chips themselves are
+  already staggered by their word timings, so the 0.12s stagger does
+  not apply to chips.
 - A chip must never end with a bare negation word hanging in the middle
   of a phrase. The job author fixes the row split; the renderer does not
   guess.
 - Text on screen comes only from the approved script. Never invent new
   on-screen wording.
+
+## Beat banner and background (locked 2026-11-05, optional)
+
+- A beat may carry `"banner"` (text, **at most 4 tokens** — more is a
+  hard error, never silently truncated) and `"bg"` (a pastel hex colour,
+  e.g. `"#DDEBFF"`). When present, the banner is drawn centred in the
+  top frame's header bar (shrinking until it fits beside the three
+  dots) and the background colour changes at exactly the same beat
+  boundary; the dot grid is redrawn on the new colour. The banner never
+  covers the image below the header.
+- When a beat has no banner/bg, the old behaviour is kept exactly:
+  cream #FFF6E8 background and a dots-only header bar.
+
+## Poses per clause (locked 2026-11-05)
+
+- The compositor already supports pose switches as `{"at", "pose"}`
+  entries, so no new code was needed for this formula. The rule is on
+  the job author: list pose switches **per clause, roughly every
+  1.5–3.0s**, not only per beat. The example job demonstrates this
+  (8 switches over 12.5s). Poses still come only from the rig's
+  supported set; the compositor never invents a pose.
+
+## Story widgets (locked 2026-11-05, optional per beat)
+
+- A beat may carry a `"widgets"` list. Each widget has `"type"`,
+  `"start"` and `"end"` (absolute times that must lie inside the beat,
+  or the job fails loudly) plus its own fields below. **If a beat
+  lists no widgets, nothing extra is drawn.** Panel widgets are drawn
+  over the top panel for their window only; they never cover the chip
+  strip or the mascot. All widget text comes from the job.
+- `highlight` — a contrasting sweep across the header bar: a
+  translucent red band sweeps left to right over 1.2s, then tints the
+  bar and underlines it. (The first locked test used a yellow band on
+  the yellow header and was nearly invisible; red on yellow is the
+  fix, verified on a real frame.)
+- `container` — fields `"items"` (list of short texts), `"box"`
+  (box label), `"target"` (target-window label). Items pop in
+  staggered 0.12s, shrink into the box, then the box slides into the
+  target window and a green tick pops. Drawn with pills, boxes and
+  text only — no source footage or artwork.
+- `typewriter` — field `"text"`. A command box in the panel types
+  the text character by character, then shows a green tick with
+  burst lines.
+- `cta` — fields `"profile"` (name text only, never a photo),
+  `"keyword"`, optional `"pill"` (pill text, defaults to the keyword)
+  and optional `"below_mascot": true`. A profile card in the panel
+  pops in, the follow button flips to "ติดตามแล้ว" after one stagger,
+  and the keyword types into the comment box. If `below_mascot` is
+  set, a pill is also drawn in the strip below the mascot, and the
+  mascot anchor rule in "Mascot" (1835 during the pill) applies —
+  that rule is now implemented in `compose.py` itself, not just in
+  this spec: while a below-mascot CTA pill is on screen, the
+  mascot's bottom anchor is 1835 instead of 1872.
+
+## Sound: event-driven SFX and BGM bed (locked 2026-11-05, optional)
+
+- A job may carry `"sfx": [{"at", "file", "gain"}]` and/or
+  `"bgm": {"file", "gain"}`. Files are resolved relative to the job
+  folder and must exist, or the job fails. The compositor mixes them
+  with the voice (SFX delayed to their `at` time, BGM looped under
+  the voice at its gain) and nothing else changes. **No audio file is
+  bundled in this repo, and no synthesised tone is ever presented as
+  a real SFX** — a synthetic tone may only be used in `/tmp` to test
+  the mixing code, and such a test proves the code, not SFX quality.
+- If a job gives no sfx/bgm, the output is the voice alone, exactly
+  as before.
+- **Only the principle is locked:** SFX tied to visual events, BGM
+  kept low under the voice. The SFX timestamps and the ~79.5 BPM /
+  F-major figures measured from the rea-video file set are
+  low-confidence measurements and are **not** locked constants.
+  Real SFX/BGM must be files with clear rights.
+
+## Backward compatibility
+
+- Every new field above is optional. A job without them renders
+  exactly as before — **except** the chip spring, which Philip
+  locked as the new 0.6x -> 1.08x -> 1.0x in 0.13s for all jobs.
+  The old-job render test in the commit that introduced these fields
+  verified that nothing else changed for a field-free job.
 
 ## Mascot
 
@@ -96,9 +191,11 @@ the top frame. The mascot gap below is the hard rule (see the table).
   the pill stays **>= 10px** (measured worst case: 11px at bob +7).
   The resulting 37px upward jump when the pill appears is accepted
   per Philip's 2026-11-05 decision — it is not a bug to smooth away
-  in this layout. The generic `compose.py` does not implement this
-  shift itself, because it has no CTA widget; a project compositor
-  that adds a CTA pill must implement the 1835 anchor itself.
+  in this layout. Since the 6-formula lock, the generic `compose.py`
+  implements this shift itself for any `cta` widget with
+  `"below_mascot": true` (see "Story widgets"); projects using an
+  older project compositor must still implement the 1835 anchor
+  themselves.
 
 ## Voice and loudness
 

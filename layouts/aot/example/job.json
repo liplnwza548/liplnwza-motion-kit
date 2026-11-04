@@ -1,70 +1,132 @@
 {
-  "schema_version": 1,
-  "layout": "aot-v001",
-  "title": "AoT layout example (placeholder images only, do not publish)",
-  "voice": "../../../examples/benchmark15/voice.wav",
-  "words": "../../../examples/benchmark15/words.json",
-  "visemes": "../../../examples/benchmark15/visemes.json",
   "beats": [
     {
+      "banner": "รถบินได้จริงไหม?",
+      "bg": "#FFF6E8",
+      "end": 2.54,
       "name": "B01",
-      "start": 0.0,
-      "end": 2.54
+      "start": 0.0
     },
     {
+      "banner": "สิ่งที่เห็นในเดโม",
+      "bg": "#DDEBFF",
+      "end": 5.58,
       "name": "B02",
       "start": 2.54,
-      "end": 5.58
+      "widgets": [
+        {
+          "end": 5.4,
+          "start": 3.0,
+          "text": "สรุป: เดโม ≠ ใช้งานจริง",
+          "type": "typewriter"
+        }
+      ]
     },
     {
+      "banner": "เดโม ≠ ใช้งานจริง",
+      "bg": "#DFF3E4",
+      "end": 9.24,
       "name": "B03",
       "start": 5.58,
-      "end": 9.24
+      "widgets": [
+        {
+          "box": "เดโม",
+          "end": 9.0,
+          "items": [
+            "ดีดตัว",
+            "หมุน",
+            "กลางอากาศ"
+          ],
+          "start": 6.0,
+          "target": "บินจริงไหม?",
+          "type": "container"
+        }
+      ]
     },
     {
+      "banner": "รถบิน หรือ รถกระโดด?",
+      "bg": "#FDE3EC",
+      "end": 12.5,
       "name": "B04",
       "start": 9.24,
-      "end": 12.5
+      "widgets": [
+        {
+          "end": 12.5,
+          "start": 9.24,
+          "type": "highlight"
+        },
+        {
+          "below_mascot": true,
+          "end": 12.5,
+          "keyword": "รถบิน",
+          "pill": "คอมเมนต์บอกกันหน่อย",
+          "profile": "LipInwZa",
+          "start": 11.46,
+          "type": "cta"
+        }
+      ]
     }
   ],
   "images": {
     "B01": {
       "file": "placeholder-01.png",
-      "status": "accepted",
-      "sha256": "d5db6817af51fe7cd44af0e8032c90dbe8f24c8652448f504a2bebfa22da71ea"
+      "sha256": "d5db6817af51fe7cd44af0e8032c90dbe8f24c8652448f504a2bebfa22da71ea",
+      "status": "accepted"
     },
     "B02": {
       "file": "placeholder-02.png",
-      "status": "accepted",
-      "sha256": "dba7a985921d92c25ed86e78ef8c97dc88b8b48b3490c3428e6bcb0d56b04782"
+      "sha256": "dba7a985921d92c25ed86e78ef8c97dc88b8b48b3490c3428e6bcb0d56b04782",
+      "status": "accepted"
     },
     "B03": {
       "file": "placeholder-03.png",
-      "status": "accepted",
-      "sha256": "65cdc525d690059fe4163698a194a99d56ab13b42dc6cb458f42959231be7295"
+      "sha256": "65cdc525d690059fe4163698a194a99d56ab13b42dc6cb458f42959231be7295",
+      "status": "accepted"
     },
     "B04": {
       "file": "placeholder-04.png",
-      "status": "accepted",
-      "sha256": "54ca542ab4ab8e98d45ad2a03cb881be925deb0e936759f7a70824ea05f8d09c"
+      "sha256": "54ca542ab4ab8e98d45ad2a03cb881be925deb0e936759f7a70824ea05f8d09c",
+      "status": "accepted"
     }
   },
+  "layout": "aot-v001",
   "poses": [
     {
       "at": 0.0,
       "pose": "thinking"
     },
     {
-      "at": 2.54,
+      "at": 1.2,
       "pose": "magnify"
     },
     {
-      "at": 5.58,
+      "at": 2.54,
       "pose": "point_right"
+    },
+    {
+      "at": 4.0,
+      "pose": "explain"
+    },
+    {
+      "at": 5.58,
+      "pose": "point_left"
+    },
+    {
+      "at": 7.0,
+      "pose": "thinking"
     },
     {
       "at": 9.24,
       "pose": "explain"
+    },
+    {
+      "at": 10.5,
+      "pose": "thumbs_up"
     }
-  ]
+  ],
+  "schema_version": 1,
+  "title": "AoT layout example with locked formulas (placeholder images only, do not publish)",
+  "visemes": "../../../examples/benchmark15/visemes.json",
+  "voice": "../../../examples/benchmark15/voice.wav",
+  "words": "words_roles.json"
 }
