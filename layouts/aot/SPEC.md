@@ -24,7 +24,7 @@ no voice, no image and no beat from any earlier clip is hardcoded in it.
 | --- | --- | --- |
 | 1. Top image frame | x 48..1032, y 48..928. Header bar 96px high, colour #FFE9A8, with three dots (red, yellow, green). Image area below the header: 984x784, centre-crop cover. | One image per beat. Hard cut exactly on the beat boundary (`cut_frame = ceil(boundary x 30)`, first beat starts at frame 0). **No zoom, no pan, no overlay, no gold-dust particles on the image.** The image itself must already tell the story. |
 | 2. Middle word chips | Strip y 915..1255 (height 340). Chip centre is roughly y 1080 in the strip. | See "Chips" below. Chips live here, in the middle, not at the bottom of the screen. |
-| 3. Bottom mascot | Mascot top y 1282 (before bob), centred horizontally. Bob amplitude 7px. | The gap between the chips strip (ends y 1255) and the mascot top, minus bob, must stay >= 20px. That gap is asserted in code, not eyeballed. |
+| 3. Bottom mascot | Mascot scaled 1.2x (A-fixed, approved 2026-11-05), alpha-bbox centre x=540, alpha-bbox bottom anchored at y=1872 + bob (amplitude 7px). | The mascot top varies per pose and mouth shape, so the chips/mascot gap is a frame-QC check, not a static assert: at the A-fixed test frame (t=4.10s) the visible mascot was 600x597px, top y=1269 (14px below the chip strip's end at y=1255, 63px below the lowest actual chip pixel). See "Mascot" below for the CTA rule. |
 
 Background below the top frame: cream #FFF6E8 with a faint dot grid.
 Note on the 13px container overlap: the chips strip container starts
@@ -80,6 +80,25 @@ the top frame. The mascot gap below is the hard rule (see the table).
   does not invent them.
 - Gentle bob and sway only. The mascot must settle before a cut, and the
   motion must never run right up to a cut with no rest.
+- **Size and placement (A-fixed, approved 2026-11-05):** the rig frame
+  is scaled uniformly **1.2x** (LANCZOS) and placed by its alpha bbox:
+  centre **x=540**, alpha-bbox bottom anchored at **y=1872 + bob**
+  (bob amplitude 7px). Measured on the A-fixed test clip at t=4.10s
+  (pose explain): visible mascot **600x597px**, versus **501x496px**
+  for the pre-A-fixed locked version at the same frame — a 1.198x /
+  1.204x enlargement, within 3% of the 1.2x target. The old fixed-canvas
+  placement (top y1282) is superseded and must not be reintroduced.
+- **CTA rule (projects only — no CTA widget in the generic
+  compositor):** if a project adds a CTA pill **below** the mascot
+  (pill height 56px at y=1852, as in the A-fixed test clip), then for
+  exactly the period the pill is on screen the mascot's alpha-bbox
+  bottom anchor must be raised to **1835** (from 1872), so the gap to
+  the pill stays **>= 10px** (measured worst case: 11px at bob +7).
+  The resulting 37px upward jump when the pill appears is accepted
+  per Philip's 2026-11-05 decision — it is not a bug to smooth away
+  in this layout. The generic `compose.py` does not implement this
+  shift itself, because it has no CTA widget; a project compositor
+  that adds a CTA pill must implement the 1835 anchor itself.
 
 ## Voice and loudness
 

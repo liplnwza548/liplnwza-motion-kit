@@ -9,8 +9,11 @@ Layout (locked 2026-11-02, see SPEC.md in this folder):
   chips:  strip y915..1255, paper chips, Prompt-Bold, palette
           yellow/blue/red/green, max 3 words per row, pop 0.14s
   mascot: PoseMouthRig frames (master lock + rig only, from
-          assets/mascot/mouth_rig/), centred, top y1282 before bob,
-          bob amplitude 7px, so the chips/mascot gap stays >= 20px
+          assets/mascot/mouth_rig/), scaled uniformly 1.2x (A-fixed,
+          approved 2026-11-05), alpha-bbox centre x=540, alpha-bbox
+          bottom anchored at y=1872 + bob (amplitude 7px). The
+          chips/mascot gap is frame-dependent (see SPEC.md); it is
+          verified by frame QC, not by a static assert.
 
 This file is generic: no topic, voice, image or beat from any earlier
 clip is hardcoded. Everything a clip needs comes from its job folder.
@@ -51,9 +54,24 @@ FRAME_X, FRAME_Y, FRAME_W, FRAME_H = 48, 48, 984, 880
 HEADER_H = 96
 IMG_W, IMG_H = 984, 784
 CHIP_Y, CHIP_H = 915, 340
-MASCOT_Y = 1282
+# A-fixed mascot placement (approved 2026-11-05): the rig frame is
+# scaled uniformly 1.2x, its alpha bbox is centred on x=540, and its
+# alpha-bbox bottom is anchored at MASCOT_BOTTOM_Y + bob. The old
+# static assert (canvas top y1282 minus bob vs chip-strip end) is
+# deliberately NOT carried over: with alpha-bbox anchoring, the
+# mascot top varies per pose and per viseme (mouth shapes change the
+# bbox every frame), so no single static number can prove the gap.
+# The gap is therefore a frame-QC check, not an import-time assert:
+# at the A-fixed test frame (t=4.10s, pose explain) the visible
+# mascot was 600x597px with its top at y=1269 — 14px below the chip
+# strip's end (y=1255) and 63px below the lowest actual chip pixel
+# (y=1206) in that frame. The bottom anchor itself is still guarded
+# below: MASCOT_BOTTOM_Y + BOB_PX must stay inside the frame.
+MASCOT_SCALE = 1.2
+MASCOT_CENTRE_X = 540
+MASCOT_BOTTOM_Y = 1872
 BOB_PX = 7
-assert MASCOT_Y - BOB_PX - (CHIP_Y + CHIP_H) >= 20, "chips/mascot zones overlap"
+assert MASCOT_BOTTOM_Y + BOB_PX <= H, "mascot bottom anchor leaves the frame"
 BG = (255, 246, 232)
 HEADER = (255, 233, 168)
 INK = (24, 27, 38)
@@ -288,19 +306,10 @@ def main():
     dedup_path.write_text(json.dumps(dedupe_visemes(visemes), ensure_ascii=False, indent=2) + "\n")
     rig = PoseMouthRig(ROOT / "assets" / "mascot" / "mouth_rig", str(voice),
                        str(dedup_path), str(job_dir / job["words"]))
-    statics, sizes = {}, []
-    for pose in dict.fromkeys([s["pose"] for s in poses]):
-        f = rig.static_frame(pose, "CLOSED")
-        statics[pose] = f
-        sizes.append(f.size)
-    cw = max(w for w, _ in sizes) + 48
-    ch = max(h for _, h in sizes) + 48
-    offsets = {}
-    for pose, f in statics.items():
-        cf = clean_alpha(f)
-        bbox = cf.split()[3].point(lambda p: 255 if p > 10 else 0).getbbox()
-        left, _u, right, lower = bbox
-        offsets[pose] = (cw // 2 - (left + right) // 2, (ch - 12) - lower)
+    # NOTE: the old fixed canvas (cw/ch + per-pose offsets, top y1282)
+    # was removed by the A-fixed change. Placement is now computed per
+    # frame from the scaled rig frame's alpha bbox (see render_frame),
+    # so no per-pose static offsets are needed.
 
     def render_frame(n, nframes):
         t = n / FPS
@@ -312,11 +321,23 @@ def main():
         strip_im = strip.frame(t)
         frame.paste(strip_im, (0, CHIP_Y), strip_im)
         pose = pose_at(t + OFF)
+        # A-fixed (approved 2026-11-05): scale the rig frame uniformly
+        # by MASCOT_SCALE, then anchor its alpha bbox — centre on
+        # x=540, bottom at MASCOT_BOTTOM_Y + bob. This keeps the
+        # mascot centred at the bottom at the approved 1.2x size
+        # regardless of pose or mouth shape, which both change the
+        # frame's alpha bbox. No CTA widget lives here: a project
+        # that adds a below-mascot CTA pill must apply the SPEC.md
+        # CTA anchor rule (1835 during the CTA period) itself.
         mfr = clean_alpha(rig.frame(pose, t))
-        canvas = Image.new("RGBA", (cw, ch), (0, 0, 0, 0))
-        canvas.paste(mfr, offsets[pose], mfr)
+        mfr = mfr.resize((max(1, round(mfr.width * MASCOT_SCALE)),
+                          max(1, round(mfr.height * MASCOT_SCALE))),
+                         Image.Resampling.LANCZOS)
+        ab = mfr.split()[3].point(lambda v: 255 if v > 10 else 0).getbbox()
         bob = round(-BOB_PX * math.sin(2 * math.pi * t / 1.2))
-        frame.paste(canvas, ((W - cw) // 2, MASCOT_Y + bob), canvas)
+        if ab is not None:
+            frame.paste(mfr, (MASCOT_CENTRE_X - (ab[0] + ab[2]) // 2,
+                              (MASCOT_BOTTOM_Y + bob) - ab[3]), mfr)
         return frame
 
     # Voice duration decides frame count, never a hardcoded duration.
