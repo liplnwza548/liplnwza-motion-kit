@@ -140,6 +140,11 @@ the top frame. The mascot gap below is the hard rule (see the table).
   lists no widgets, nothing extra is drawn.** Panel widgets are drawn
   over the top panel for their window only; they never cover the chip
   strip or the mascot. All widget text comes from the job.
+- **At most ONE panel widget per beat** (`container` / `typewriter` /
+  `cta`). `highlight` is header-only and may co-exist with one panel
+  widget. Two panel widgets in one beat put too many moving focal
+  points on screen at once (procrastination demo B05+B07, 2026-11-05);
+  the job fails loudly instead of rendering the clutter.
 - `highlight` — a contrasting sweep across the header bar: a
   translucent red band sweeps left to right over 1.2s, then tints the
   bar and underlines it. (The first locked test used a yellow band on
@@ -149,10 +154,19 @@ the top frame. The mascot gap below is the hard rule (see the table).
   (box label), `"target"` (target-window label). Items pop in
   staggered 0.12s, shrink into the box, then the box slides into the
   target window and a green tick pops. Drawn with pills, boxes and
-  text only — no source footage or artwork.
-- `typewriter` — field `"text"`. A command box in the panel types
-  the text character by character, then shows a green tick with
-  burst lines.
+  text only — no source footage or artwork. **Labels sit 12px above
+  their box, never on its border** (the old centred labels had their
+  lower half clipped by the box edge — procrastination B05,
+  2026-11-05). The items row must fit the panel width (984px) or the
+  job fails loudly.
+- `typewriter` — field `"text"`. A command box **at the panel
+  bottom, sized to its content** (height = lines only, never a fixed
+  260px slab over the image centre — procrastination B07, 2026-11-05)
+  types the text one grapheme cluster per step, then shows a green
+  tick badge on the box's bottom-right corner. **The full text must
+  wrap to at most 3 lines at 48px, with the last line short enough
+  to leave room for the tick badge** — otherwise the job fails loudly
+  instead of truncating the text silently.
 - `cta` — fields `"profile"` (name text only, never a photo),
   `"keyword"`, optional `"pill"` (pill text, defaults to the keyword)
   and optional `"below_mascot": true`. A profile card in the panel
