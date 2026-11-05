@@ -128,5 +128,6 @@
   "title": "AoT layout example with locked formulas (placeholder images only, do not publish)",
   "visemes": "../../../examples/benchmark15/visemes.json",
   "voice": "../../../examples/benchmark15/voice.wav",
-  "words": "words_roles.json"
+  "words": "words_roles.json",
+  "fixture": true
 }

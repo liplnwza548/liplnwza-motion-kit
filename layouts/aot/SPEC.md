@@ -63,6 +63,20 @@ the top frame. The mascot gap below is the hard rule (see the table).
   job gives sentence junctions, rows never mix sentences. Rows
   accumulate left to right (Progressive Word Pills, locked 2026-11-05)
   and the whole row clears at the last word's end + OFF.
+- **Words come only from the MFA pipeline (locked 2026-11-05).**
+  Approved script + real voice → MFA alignment → `renderer/mfa_to_cues.py`
+  (PyThaiNLP newmm tokenisation + per-job merge map) → `words.json` +
+  `<words-stem>.provenance.json` (voice/script SHA-256, MFA model, chip
+  count). Never hand-write `words.json`, never write a per-project
+  build script that invents phrases or guesses times from character
+  length — that is exactly how the 2026-11-05 procrastination clip
+  shipped 37 phrase chips with estimated times. `compose.py` enforces
+  this at load: a chip may have at most 12 grapheme clusters, 16
+  characters, 600px rendered width at 80px, and 1.2s duration; times
+  must be monotonic; and a real job without its provenance sidecar
+  fails. The only exemption is a job with `"fixture": true`, reserved
+  for the checked-in layout example. If the load fails, re-run the
+  MFA pipeline — never hand-edit a time to make it pass.
 - **Word-role colours (locked 2026-11-05, optional):** a word in
   `words.json` may carry a `"role"` field, and the role alone decides
   its chip colour — the renderer never guesses a role from the text:
@@ -80,6 +94,17 @@ the top frame. The mascot gap below is the hard rule (see the table).
   appear **0.12s** apart, never all at once. Chips themselves are
   already staggered by their word timings, so the 0.12s stagger does
   not apply to chips.
+- **Thai stacked marks (locked 2026-11-05).** Words like "ซื้อ" and
+  "รื้อ" stack a sara and a tone mark above one base letter: 4
+  codepoints but only 2 grapheme clusters. The compositor therefore
+  never slices text by codepoint — typewriter and CTA typing advance
+  one grapheme cluster per step — and never centres text by its bbox:
+  chips, pills and centred labels are anchored by their baseline, so
+  words with stacked marks sit on the same line as words without
+  them. Thai shaping needs Pillow with RAQM; `compose.py` fails
+  loudly before rendering when RAQM is missing. Never work around
+  that by dropping the RAQM flag — install a Pillow with RAQM
+  (`renderer/requirements.txt`) and re-run.
 - A chip must never end with a bare negation word hanging in the middle
   of a phrase. The job author fixes the row split; the renderer does not
   guess.
@@ -231,9 +256,22 @@ the top frame. The mascot gap below is the hard rule (see the table).
 
 1. Philip approves the script and the voice first. No rendering before
    that approval.
-2. Write a job folder (see `example/`): `job.json` with beats, images
-   manifest, words, visemes, and pose switches. All paths are relative
-   to the job folder.
+2. Build the words with the MFA pipeline only — never a per-project
+   build script, never hand-written phrases, never times guessed from
+   character length:
+   ```bash
+   # 1. MFA-align the approved script against voice.wav (thai_mfa)
+   # 2. Convert the alignment into chips + provenance:
+   python3 renderer/mfa_to_cues.py --mfa-out mfa_out.json --script script.txt \
+       --voice voice.wav \
+       --out-words words.json --out-provenance words.provenance.json
+   ```
+   The merge map (`--merge-map`, `{"newmm_merges": [{"parts": [...],
+   "chip": "..."}]}`) is the only place a multi-token chip is ever
+   defined, and the chip concatenation must equal the script exactly
+   or the run fails. Then write the job folder (see `example/`):
+   `job.json` with beats, images manifest, words, visemes, and pose
+   switches. All paths are relative to the job folder.
 3. Run `python layouts/aot/compose.py --job <job.json> --out <video.mp4>`.
    For a quick layout check, render stills first:
    `python layouts/aot/compose.py --job <job.json> --stills <dir>`.
