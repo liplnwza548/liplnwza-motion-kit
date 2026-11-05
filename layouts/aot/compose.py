@@ -33,9 +33,14 @@ Job format (all paths relative to the job folder):
     # "bg" (pastel hex, e.g. "#DDEBFF"), "widgets" (list, see SPEC.md).
     # Optional top level: "sfx": [{"at": 1.2, "file": "pop.wav", "gain": 1.0}],
     # "bgm": {"file": "bed.wav", "gain": 0.3}. Audio files come from the
-    # job only; nothing is bundled in this repo. No new field is ever
-    # required: a job without them renders exactly as before, except
-    # for the locked chip spring (see spring_scale).
+    # job only; nothing is bundled in this repo.
+    # Words provenance (locked 2026-11-05): a real job must ship
+    # <words-stem>.provenance.json from renderer/mfa_to_cues.py next
+    # to words.json, or load_job fails. The only exemption is a job
+    # with "fixture": true — reserved for the checked-in layout
+    # example, whose hand-written words are for layout testing only.
+    # Optional fields other than provenance never change old renders,
+    # except for the locked chip spring (see spring_scale).
   }
 Words are a bare list [{"word": ..., "start": ..., "end": ...}] or
 {"words": [...]}. Visemes are [{"start": ..., "shape": ...}].
@@ -53,9 +58,10 @@ import json
 import math
 import subprocess
 import sys
+import unicodedata
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, features
 
 ROOT = Path(__file__).resolve().parents[2]
 FPS, W, H = 30, 1080, 1920
@@ -102,6 +108,75 @@ WIDGET_TYPES = ("highlight", "container", "typewriter", "cta")
 POSES = ("explain", "point_right", "thinking", "magnify", "point_left", "thumbs_up")
 FONT_PATH = ROOT / "assets" / "fonts" / "Prompt-Bold.ttf"
 
+# Words gates (locked 2026-11-05, fix/aot-words-thai-gates): a chip is one
+# short word, never a whole phrase. The AoT example job passes these
+# with headroom (max 10 clusters / 449px at 80px / 13 chars / 0.74s);
+# the 2026-11-05 procrastination job failed them on 8+ chips
+# (up to 18 clusters / 858px / 21 chars). Any single violation fails
+# the whole job loudly — the author must re-run the MFA pipeline,
+# never hand-edit a time or silently shrink the text.
+MAX_CHIP_CLUSTERS = 12
+MAX_CHIP_WIDTH_PX = 600  # rendered width at 80px, via font(80).getbbox
+MAX_CHIP_CHARS = 16
+MAX_CHIP_DURATION_S = 1.2
+
+
+def grapheme_clusters(text):
+    """Split text into grapheme clusters (one base + its marks).
+
+    Thai stacked words are the case this exists for: "ซื้อ" is 4
+    codepoints but 2 clusters (["ซื้", "อ"]); slicing it by codepoint
+    cuts between a base and its sara/tone mark, and the mark then
+    floats onto the neighbouring letter. Never slice Thai text by
+    len()/index — slice by these clusters instead.
+    """
+    clusters = []
+    for ch in text:
+        if clusters and (unicodedata.combining(ch) or unicodedata.category(ch) in ("Mn", "Mc")):
+            clusters[-1] += ch
+        else:
+            clusters.append(ch)
+    return clusters
+
+
+def grapheme_slice(text, n_clusters):
+    """First n_clusters grapheme clusters of text ('' when n <= 0)."""
+    if n_clusters <= 0:
+        return ""
+    return "".join(grapheme_clusters(text)[:n_clusters])
+
+
+def check_thai_shaping():
+    """Fail loudly when Pillow cannot shape Thai (no RAQM).
+
+    The earlier Thai-overlap fix was RAQM shaping in this file's
+    font(); it only survives as long as the Pillow on the rendering
+    machine actually has RAQM. Without it, stacked sara/tone marks
+    ("ซื้อ", "รื้อ") render on top of each other. Never work around
+    this by dropping the RAQM flag — install a Pillow with RAQM
+    (see renderer/requirements.txt) and re-run.
+    """
+    if not features.check("raqm"):
+        raise RuntimeError(
+            "Thai shaping unavailable: Pillow was built without RAQM. "
+            "Install a Pillow with RAQM (renderer/requirements.txt) "
+            "and re-run; do not remove layout_engine=RAQM from font()."
+        )
+
+
+def baseline_y_for_centre(fnt, centre_y):
+    """Baseline y that centres the font's em box on centre_y.
+
+    Text must be anchored by its baseline, never by its bbox centre:
+    bbox height depends on whether the word has stacked marks above
+    (86px for "ซื้อ" vs 47px for "หลอกสมอง" at 80px), so bbox-centring
+    put chips in one row up to 19px apart vertically. Baseline
+    anchoring keeps every chip's baseline on the same line; only the
+    tops vary, as they should.
+    """
+    ascent, descent = fnt.getmetrics()
+    return centre_y + (ascent - descent) // 2
+
 
 def read_json(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
@@ -147,9 +222,12 @@ def dot_color_for(bg_rgb):
 
 
 def draw_text_centred(draw, cx, cy, text, fnt, fill):
-    bb = fnt.getbbox(text)
-    w, h = bb[2] - bb[0], bb[3] - bb[1]
-    draw.text((cx - w / 2 - bb[0], cy - h / 2 - bb[1]), text, font=fnt, fill=fill)
+    # Baseline-anchored, horizontally centred by advance width
+    # (anchor "ms"): see baseline_y_for_centre — bbox-centring put
+    # Thai words with stacked marks on a different line from words
+    # without them. Returns the advance width.
+    w = fnt.getbbox(text)[2] - fnt.getbbox(text)[0]
+    draw.text((cx, baseline_y_for_centre(fnt, cy)), text, font=fnt, fill=fill, anchor="ms")
     return w
 
 
@@ -163,6 +241,7 @@ def cover_crop(im, tw, th):
 
 
 def font(size):
+    check_thai_shaping()
     return ImageFont.truetype(str(FONT_PATH), size, layout_engine=ImageFont.Layout.RAQM)
 
 
@@ -237,9 +316,10 @@ class ChipStrip:
                     d = ImageDraw.Draw(chip)
                     d.rounded_rectangle((6, 6, width - 6, 134), radius=18, fill=col, outline=INK, width=4)
                     f = font(round(80 * scale))
-                    bb = f.getbbox(w["word"])
-                    d.text(((width - (bb[2] - bb[0])) / 2 - bb[0], (140 - (bb[3] - bb[1])) / 2 - bb[1]),
-                           w["word"], font=f, fill=txt_col)
+                    # Baseline-anchored (anchor "ms"): bbox-centring
+                    # misaligned Thai chips in one row by up to 19px.
+                    d.text((width / 2, baseline_y_for_centre(f, 70)),
+                           w["word"], font=f, fill=txt_col, anchor="ms")
                     self._base[key] = chip
                 if t < w["start"] + OFF:
                     pass
@@ -257,6 +337,106 @@ class ChipStrip:
                                               round(165 - chip.height / 2)))
                 x += width + 18 * scale
         return im
+
+
+def validate_words(words):
+    """Fail loudly on words.json that cannot be real word chips.
+
+    This is the gate the 2026-11-05 procrastination job needed: its
+    37 entries were hand-written phrases with times guessed from
+    character length, and the compositor rendered them without a
+    word of complaint. Every check below passes the checked-in AoT
+    example (max 10 clusters / 449px / 13 chars / 0.74s) and fails
+    that job on 8+ entries. A failure here means: re-run the MFA
+    pipeline (renderer/mfa_to_cues.py), never hand-edit a time.
+    """
+    if not isinstance(words, list) or not words:
+        raise ValueError("words.json must be a non-empty list of word chips")
+    prev = None
+    for i, w in enumerate(words):
+        if not isinstance(w, dict) or not isinstance(w.get("word"), str) or not w["word"].strip():
+            raise ValueError(f"words[{i}] must have a non-empty 'word': {w!r}")
+        text = w["word"]
+        if text != text.strip():
+            raise ValueError(f"words[{i}] has leading/trailing space: {text!r}")
+        try:
+            start, end = float(w["start"]), float(w["end"])
+        except (KeyError, TypeError, ValueError):
+            raise ValueError(f"words[{i}] {text!r} needs numeric start/end: {w!r}")
+        if not (0 <= start < end):
+            raise ValueError(f"words[{i}] {text!r} has bad times [{start}, {end}]")
+        if end - start > MAX_CHIP_DURATION_S:
+            raise ValueError(
+                f"words[{i}] {text!r} lasts {end - start:.2f}s (> {MAX_CHIP_DURATION_S}s): "
+                "a chip is one short word, not a phrase — re-run mfa_to_cues.py")
+        if prev is not None and start < prev["end"] - 0.001:
+            raise ValueError(
+                f"words[{i}] {text!r} starts at {start} before words[{i - 1}] ends at {prev['end']}: "
+                "word times must be monotonic")
+        n_clusters = len(grapheme_clusters(text))
+        if n_clusters > MAX_CHIP_CLUSTERS:
+            raise ValueError(
+                f"words[{i}] {text!r} has {n_clusters} grapheme clusters "
+                f"(> {MAX_CHIP_CLUSTERS}): a chip is one short word, not a phrase — "
+                "split it with mfa_to_cues.py (PyThaiNLP newmm)")
+        if len(text) > MAX_CHIP_CHARS:
+            raise ValueError(
+                f"words[{i}] {text!r} has {len(text)} characters (> {MAX_CHIP_CHARS}): "
+                "a chip is one short word, not a phrase")
+        width = font(80).getbbox(text)[2] - font(80).getbbox(text)[0]
+        if width > MAX_CHIP_WIDTH_PX:
+            raise ValueError(
+                f"words[{i}] {text!r} is {width}px wide at 80px (> {MAX_CHIP_WIDTH_PX}px): "
+                "a chip is one short word, not a phrase")
+        prev = {"start": start, "end": end}
+
+
+def validate_words_provenance(words, words_path, job_dir, job):
+    """Require the MFA provenance sidecar for real jobs.
+
+    renderer/mfa_to_cues.py writes <words-stem>.provenance.json
+    (voice/script SHA-256, MFA model, chip count). A job without it
+    has no proof its times came from the real voice — exactly how
+    the procrastination job's guessed times slipped through. The
+    only exemption is a job with "fixture": true, which is reserved
+    for the checked-in layout example (hand-written words, layout
+    testing only, never a real clip).
+    """
+    if job.get("fixture") is True:
+        return
+    words_path = Path(words_path)
+    sidecar = words_path.parent / (words_path.stem + ".provenance.json")
+    if not sidecar.exists():
+        raise ValueError(
+            f"words provenance missing: {sidecar.name} not found next to {words_path.name}. "
+            "Real jobs must generate words.json with renderer/mfa_to_cues.py, "
+            "which writes the provenance sidecar; hand-written words.json "
+            "with guessed times is not accepted.")
+    prov = read_json(sidecar)
+    if prov.get("chips") != len(words):
+        raise ValueError(
+            f"provenance chip count {prov.get('chips')} != words.json count {len(words)} "
+            f"in {sidecar.name}: re-run mfa_to_cues.py, do not edit words.json by hand")
+    if not prov.get("mfa_model"):
+        raise ValueError(f"provenance {sidecar.name} has no mfa_model: re-run mfa_to_cues.py")
+    voice_sha = prov.get("voice_sha256")
+    voice_path = job_dir / job["voice"] if job.get("voice") else None
+    if voice_sha and voice_path is not None and voice_path.exists():
+        if sha256_file(voice_path) != voice_sha:
+            raise ValueError(
+                f"provenance voice_sha256 does not match {voice_path.name}: "
+                "the voice changed after timing — re-run mfa_to_cues.py")
+    script_sha = prov.get("script_sha256")
+    script_ref = prov.get("script")
+    if script_sha and script_ref:
+        candidates = [Path(script_ref), job_dir / script_ref, job_dir / Path(script_ref).name]
+        for cand in candidates:
+            if cand.exists():
+                if sha256_file(cand) != script_sha:
+                    raise ValueError(
+                        f"provenance script_sha256 does not match {cand.name}: "
+                        "the script changed after timing — re-run mfa_to_cues.py")
+                break
 
 
 def load_job(job_path):
@@ -332,6 +512,8 @@ def load_job(job_path):
     words = read_json(job_dir / job["words"])
     if isinstance(words, dict):
         words = words["words"]
+    validate_words(words)
+    validate_words_provenance(words, job_dir / job["words"], job_dir, job)
     visemes = read_json(job_dir / job["visemes"])
     if isinstance(visemes, dict):
         visemes = visemes["visemes"]
@@ -440,8 +622,11 @@ def widget_frame(frame, beat, t):
             od = ImageDraw.Draw(ov)
             od.rounded_rectangle((bx, by, bx + bw, by + bh), radius=20,
                                  fill=(255, 253, 246), outline=INK, width=4)
-            n_chars = min(len(text), int((t - wdg["start"]) / 0.08))
-            shown = text[:n_chars]
+            # Type one grapheme cluster per step, never one codepoint:
+            # slicing Thai by codepoint cuts "ซื้อ" into "ซ" / "ซื" /
+            # "ซื้", leaving a bare sara/tone mark floating on screen.
+            n_clusters = min(len(grapheme_clusters(text)), int((t - wdg["start"]) / 0.08))
+            shown = grapheme_slice(text, n_clusters)
             # Simple wrap by tokens so long Thai phrases stay inside.
             lines, cur = [], ""
             for tok in shown.split(" "):
@@ -455,7 +640,7 @@ def widget_frame(frame, beat, t):
                 lines.append(cur)
             for li, line in enumerate(lines[:3]):
                 od.text((bx + 32, by + 32 + li * 62), line, font=font(48), fill=INK)
-            if n_chars >= len(text):
+            if n_clusters >= len(grapheme_clusters(text)):
                 tx, ty = bx + bw - 70, by + bh - 70
                 od.ellipse((tx - 34, ty - 34, tx + 34, ty + 34), fill=(56, 181, 119), outline=INK, width=4)
                 od.line((tx - 18, ty, tx - 5, ty + 14), fill=(255, 253, 246), width=6)
@@ -489,12 +674,14 @@ def widget_frame(frame, beat, t):
                 fb = font(40).getbbox(follow)
                 fw = fb[2] - fb[0] + 56
                 draw_pill(od, bx + bw - fw - 36, by + 44, fw, 64, follow, font(40), fcol, (255, 253, 246))
-                # Comment box: keyword typed from start + 2 staggers.
+                # Comment box: keyword typed from start + 2 staggers,
+                # one grapheme cluster per step (see typewriter).
                 kw = str(wdg["keyword"])
-                n_chars = min(len(kw), int(max(0, t - (wdg["start"] + 2 * STAGGER_S)) / 0.12))
+                kw_clusters = grapheme_clusters(kw)
+                n_kw = min(len(kw_clusters), int(max(0, t - (wdg["start"] + 2 * STAGGER_S)) / 0.12))
                 od.rounded_rectangle((bx + 36, by + 176, bx + bw - 36, by + 260),
                                      radius=16, outline=INK, width=3)
-                od.text((bx + 56, by + 196), kw[:n_chars], font=font(44), fill=INK)
+                od.text((bx + 56, by + 196), "".join(kw_clusters[:n_kw]), font=font(44), fill=INK)
             frame.paste(ov, (0, 0), ov)
 
 
@@ -515,9 +702,8 @@ def cta_pill_frame(frame, beat, t):
         pd = ImageDraw.Draw(pill)
         pd.rounded_rectangle((3, 3, w2 - 3, h2 - 3), radius=16, fill=(255, 214, 72), outline=INK, width=4)
         bf = font(round(44 * sc))
-        bb2 = bf.getbbox(txt)
-        pd.text(((w2 - (bb2[2] - bb2[0])) / 2 - bb2[0], (h2 - (bb2[3] - bb2[1])) / 2 - bb2[1]),
-                txt, font=bf, fill=INK)
+        pd.text((w2 / 2, baseline_y_for_centre(bf, h2 / 2)),
+                txt, font=bf, fill=INK, anchor="ms")
         frame.paste(pill, ((W - w2) // 2, 1852 + (ph - h2) // 2), pill)
 
 

@@ -5,7 +5,10 @@ This folder proves the AoT layout runs. It is not a clip.
 - Voice, words and visemes are borrowed from `examples/benchmark15/`
   **only as a technical fixture**, so the layout can be checked without
   any real clip's voice. The benchmark's topic and its paper layout are
-  not part of this example.
+  not part of this example. That is why this job carries
+  `"fixture": true` — it exempts the example from the provenance
+  sidecar that real jobs must ship. Never copy that flag into a real
+  job.
 - Images are synthetic placeholders (plain shapes, no text, no story).
   They exist only so the top frame, the chips strip and the mascot can
   be checked for overlap and position.

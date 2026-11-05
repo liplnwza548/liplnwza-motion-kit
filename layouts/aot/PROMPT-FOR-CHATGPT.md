@@ -25,3 +25,15 @@
 > into words, max 3 per row; mascot is master-lock + rig only, never
 > AI-generated; sales clips use real recorded voice only, never clone
 > voice; OFF = 0.08 must not change; never overwrite an old file.
+>
+> Words are the strictest rule in this repo. NEVER write a per-project
+> build script and NEVER hand-write words.json. Words come only from
+> the MFA pipeline in `layouts/aot/SPEC.md` ("Words come only from the
+> MFA pipeline"): approved script + real voice → MFA alignment →
+> `renderer/mfa_to_cues.py` → `words.json` + `words.provenance.json`.
+> `compose.py` rejects phrase chips (max 12 grapheme clusters, 16
+> characters, 600px at 80px, 1.2s) and rejects any real job without
+> its provenance sidecar. If the load fails, re-run the MFA pipeline;
+> never hand-edit a time, never guess a time from character length,
+> and never copy `"fixture": true` from the example job — that flag
+> is for the checked-in layout example only.
