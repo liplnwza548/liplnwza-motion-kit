@@ -504,7 +504,13 @@ def validate_widgets(beat):
       the tick badge — otherwise the render used to truncate the text
       to 3 lines without telling anyone.
     """
-    panel_widgets = [w for w in beat.get("widgets", []) if w.get("type") in ("container", "typewriter", "cta")]
+    def _is_panel(w):
+        if w.get("type") in ("container", "typewriter"):
+            return True
+        if w.get("type") == "cta":
+            return bool(w.get("show_panel", True))
+        return False
+    panel_widgets = [w for w in beat.get("widgets", []) if _is_panel(w)]
     if len(panel_widgets) > 1:
         raise ValueError(
             f"beat {beat['name']} has {len(panel_widgets)} panel widgets "
@@ -570,8 +576,11 @@ def load_job(job_path):
                 raise ValueError(f"beat {beat['name']} container widget needs items, box and target")
             if wdg["type"] == "typewriter" and not wdg.get("text"):
                 raise ValueError(f"beat {beat['name']} typewriter widget needs text")
-            if wdg["type"] == "cta" and (not wdg.get("profile") or not wdg.get("keyword")):
-                raise ValueError(f"beat {beat['name']} cta widget needs profile and keyword")
+            if wdg["type"] == "cta":
+                if not wdg.get("profile") or not wdg.get("keyword"):
+                    raise ValueError(f"beat {beat['name']} cta widget needs profile and keyword")
+                if "show_panel" in wdg and not isinstance(wdg["show_panel"], bool):
+                    raise ValueError(f"beat {beat['name']} cta widget show_panel must be a boolean")
         validate_widgets(beat)
     for ev in job.get("sfx", []):
         if not isinstance(ev, dict) or "at" not in ev or "file" not in ev:
@@ -741,6 +750,8 @@ def widget_frame(frame, beat, t):
                             fill=(244, 67, 54), width=5)
             frame.paste(ov, (0, 0), ov)
         elif wdg["type"] == "cta":
+            if not wdg.get("show_panel", True):
+                continue
             # A profile card in the panel (text/initial only, never a
             # real photo): card pops, follow button flips after a
             # stagger, keyword types into the comment box. The pill
