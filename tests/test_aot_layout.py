@@ -257,5 +257,43 @@ class AoTWidgetTests(unittest.TestCase):
             compose.validate_widgets(beat)
 
 
+    def test_cta_show_panel_false_does_not_draw_panel_card(self):
+        beat = {"name": "B08", "start": 0.0, "end": 4.0, "widgets": [
+            {"type": "cta", "start": 0.0, "end": 4.0,
+             "profile": "LipInwZa", "keyword": "หลอกสมอง",
+             "show_panel": False, "below_mascot": True}]}
+        frame = self._blank_frame()
+        compose.widget_frame(frame, beat, 1.0)
+        # Panel centre (x=540, y=536): no white card pixels should exist
+        px = frame.load()
+        panel_pixels = [px[x, y] for x in range(300, 780, 50) for y in range(300, 700, 50)]
+        self.assertNotIn((255, 253, 246), panel_pixels, "CTA panel card drawn despite show_panel=False")
+
+    def test_cta_show_panel_false_not_counted_as_panel_widget(self):
+        beat = {"name": "B", "widgets": [
+            {"type": "container", "items": ["a"], "box": "b", "target": "t"},
+            {"type": "cta", "profile": "P", "keyword": "k", "show_panel": False}]}
+        compose.validate_widgets(beat)  # must not raise
+
+    def test_cta_show_panel_true_plus_container_fails(self):
+        beat = {"name": "B", "widgets": [
+            {"type": "container", "items": ["a"], "box": "b", "target": "t"},
+            {"type": "cta", "profile": "P", "keyword": "k", "show_panel": True}]}
+        with self.assertRaises(ValueError):
+            compose.validate_widgets(beat)
+
+    def test_cta_pill_drawn_when_show_panel_false(self):
+        beat = {"name": "B08", "start": 0.0, "end": 4.0, "widgets": [
+            {"type": "cta", "start": 0.0, "end": 4.0,
+             "profile": "LipInwZa", "keyword": "หลอกสมอง", "pill": "ป้าย",
+             "show_panel": False, "below_mascot": True}]}
+        frame = self._blank_frame()
+        compose.cta_pill_frame(frame, beat, 1.0)
+        px = frame.load()
+        # Pill is drawn at y=1852 in the below-mascot strip
+        pill_pixels = [px[x, 1860] for x in range(300, 780, 20)]
+        self.assertIn((255, 214, 72), pill_pixels, "CTA pill missing below mascot")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

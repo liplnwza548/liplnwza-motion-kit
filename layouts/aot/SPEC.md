@@ -137,7 +137,10 @@ the top frame. The mascot gap below is the hard rule (see the table).
 - A beat may carry a `"widgets"` list. Each widget has `"type"`,
   `"start"` and `"end"` (absolute times that must lie inside the beat,
   or the job fails loudly) plus its own fields below. **If a beat
-  lists no widgets, nothing extra is drawn.** Panel widgets are drawn
+  lists no widgets, nothing extra is drawn.** Storytelling beats with
+  rich illustrations default to no panel widgets, letting the image
+  tell the story unobstructed; full panel widgets are suited for beats
+  with plain backgrounds designed for diagrams. Panel widgets are drawn
   over the top panel for their window only; they never cover the chip
   strip or the mascot. All widget text comes from the job.
 - **At most ONE panel widget per beat** (`container` / `typewriter` /
@@ -168,15 +171,16 @@ the top frame. The mascot gap below is the hard rule (see the table).
   to leave room for the tick badge** — otherwise the job fails loudly
   instead of truncating the text silently.
 - `cta` — fields `"profile"` (name text only, never a photo),
-  `"keyword"`, optional `"pill"` (pill text, defaults to the keyword)
-  and optional `"below_mascot": true`. A profile card in the panel
-  pops in, the follow button flips to "ติดตามแล้ว" after one stagger,
-  and the keyword types into the comment box. If `below_mascot` is
-  set, a pill is also drawn in the strip below the mascot, and the
-  mascot anchor rule in "Mascot" (1835 during the pill) applies —
-  that rule is now implemented in `compose.py` itself, not just in
-  this spec: while a below-mascot CTA pill is on screen, the
-  mascot's bottom anchor is 1835 instead of 1872.
+  `"keyword"`, optional `"pill"` (pill text, defaults to the keyword),
+  optional `"below_mascot": true`, and optional `"show_panel": bool`
+  (defaults to `true`). A profile card in the panel pops in, the follow
+  button flips to "ติดตามแล้ว" after one stagger, and the keyword types
+  into the comment box. Setting `"show_panel": false` suppresses the
+  card on the image so the illustration remains unobstructed. If
+  `below_mascot` is set, a pill is also drawn in the strip below the
+  mascot, and the mascot anchor rule in "Mascot" (1835 during the pill)
+  applies regardless of `show_panel`: while a below-mascot CTA pill is
+  on screen, the mascot's bottom anchor is 1835 instead of 1872.
 
 ## Sound: event-driven SFX and BGM bed (locked 2026-11-05, optional)
 
