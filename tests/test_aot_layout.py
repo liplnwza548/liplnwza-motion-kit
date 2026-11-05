@@ -176,5 +176,86 @@ class AoTWordsGateTests(unittest.TestCase):
         self.assertEqual(len(set(bottoms)), 1, f"ink bottoms differ: {bottoms}")
 
 
+class AoTWidgetTests(unittest.TestCase):
+    def _blank_frame(self):
+        from PIL import Image
+        return Image.new("RGB", (compose.W, compose.H), (255, 255, 255))
+
+    def _dark_rows(self, frame, x0, x1, y0, y1):
+        px = frame.load()
+        return [y for y in range(y0, y1) for x in range(x0, x1)
+                if px[x, y][0] < 60 and px[x, y][1] < 60 and px[x, y][2] < 60]
+
+    def test_draw_text_above_leaves_gap(self):
+        from PIL import ImageDraw
+        frame = self._blank_frame()
+        d = ImageDraw.Draw(frame)
+        bottom = compose.draw_text_above(d, 540, 600, "งานทั้งหมด", compose.font(44), compose.INK)
+        self.assertEqual(bottom, 588)
+        self.assertFalse(self._dark_rows(frame, 200, 900, 589, 599),
+                         "ink must not reach into the 12px gap above the box")
+
+    def test_container_labels_sit_above_boxes_with_clear_gap(self):
+        # Procrastination B05 data, phase 1 (u=0.125).
+        beat = {"name": "B05", "start": 0.0, "end": 4.0, "widgets": [
+            {"type": "container", "start": 0.0, "end": 4.0,
+             "items": ["งานค้าง", "การบ้าน", "เป้าหมาย"],
+             "box": "งานทั้งหมด", "target": "กองไว้ก่อน"}]}
+        frame = self._blank_frame()
+        compose.widget_frame(frame, beat, 0.5)
+        # Box top y=530 (centre x=363), target top y=520 (centre x=776).
+        # Check each label in its own x-window, so the other box's top
+        # edge cannot intrude into this label's gap band.
+        for top, cx, half in ((530, 363, 160), (520, 776, 140)):
+            self.assertTrue(self._dark_rows(frame, cx - half, cx + half, top - 60, top - 12),
+                            f"label ink missing above box top {top}")
+            self.assertFalse(self._dark_rows(frame, cx - half, cx + half, top - 11, top - 2),
+                             f"ink touches box top {top} — the gap must be clear")
+
+    def test_typewriter_box_is_content_sized_and_bottom_anchored(self):
+        beat = {"name": "B07", "start": 0.0, "end": 3.0, "widgets": [
+            {"type": "typewriter", "start": 0.0, "end": 3.0,
+             "text": "กฎ 2 นาที: เริ่มให้ได้ก่อน"}]}
+        frame = self._blank_frame()
+        compose.widget_frame(frame, beat, 2.9)  # full text typed
+        px = frame.load()
+        # Cream box pixels on a column clear of the text and the tick
+        # badge (the badge's cream checkmark sticks below the box).
+        ys = [y for y in range(144, 928) if px[150, y] == (255, 253, 246)]
+        self.assertTrue(ys, "typewriter box not drawn")
+        top, bottom = min(ys), max(ys)
+        self.assertLess(bottom - top, 200, "box must be content-sized, not the old 260px slab")
+        self.assertAlmostEqual(bottom, 900, delta=3,
+                               msg="box bottom fill must sit ~24px above panel bottom (928); "
+                                   "the 4px outline occupies the last 4px")
+        self.assertGreater(top, 536, "box must not cover the panel centre (focal point)")
+
+    def test_two_panel_widgets_in_one_beat_fail(self):
+        beat = {"name": "B", "widgets": [
+            {"type": "container", "items": ["a"], "box": "b", "target": "t"},
+            {"type": "typewriter", "text": "x"}]}
+        with self.assertRaises(ValueError):
+            compose.validate_widgets(beat)
+
+    def test_highlight_plus_one_panel_widget_passes(self):
+        beat = {"name": "B", "widgets": [
+            {"type": "highlight"},
+            {"type": "cta", "profile": "P", "keyword": "k"}]}
+        compose.validate_widgets(beat)  # must not raise
+
+    def test_typewriter_text_too_long_fails(self):
+        beat = {"name": "B", "widgets": [
+            {"type": "typewriter", "text": "คำยาว " * 40}]}
+        with self.assertRaises(ValueError):
+            compose.validate_widgets(beat)
+
+    def test_container_items_too_wide_fail(self):
+        beat = {"name": "B", "widgets": [
+            {"type": "container", "items": ["คำยาวมากๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆ"] * 6,
+             "box": "b", "target": "t"}]}
+        with self.assertRaises(ValueError):
+            compose.validate_widgets(beat)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

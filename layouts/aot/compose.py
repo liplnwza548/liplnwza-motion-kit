@@ -231,6 +231,57 @@ def draw_text_centred(draw, cx, cy, text, fnt, fill):
     return w
 
 
+def draw_text_above(draw, cx, top_y, text, fnt, fill, gap=12):
+    """Draw text so its ink bottom sits `gap` px ABOVE `top_y`.
+
+    Used for widget labels that name a box: the old code centred the
+    label on the box's top edge, so the lower half of the letters was
+    clipped by the box border (procrastination B05, 2026-11-05).
+    Returns the ink bottom y.
+    """
+    _, descent = fnt.getmetrics()
+    baseline = top_y - gap - descent
+    draw.text((cx, baseline), text, font=fnt, fill=fill, anchor="ms")
+    return top_y - gap
+
+
+def wrap_typewriter_lines(text, fnt, max_width):
+    """Wrap text by space tokens so each line fits `max_width`.
+
+    Uses the FULL text, not the typed-so-far prefix: the box is sized
+    once from the full text and must not resize while typing.
+    """
+    lines, cur = [], ""
+    for tok in str(text).split(" "):
+        trial = (cur + " " + tok).strip()
+        if fnt.getbbox(trial)[2] - fnt.getbbox(trial)[0] > max_width and cur:
+            lines.append(cur)
+            cur = tok
+        else:
+            cur = trial
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def typewriter_box(text, panel_x, panel_y, panel_w, panel_h):
+    """Content-sized typewriter box, anchored to the panel BOTTOM.
+
+    The old box was a fixed 260px-high rectangle centred on the panel:
+    for a 1-line command it was a mostly-empty white slab covering the
+    image's focal point (procrastination B07, 2026-11-05). The new box
+    is only as tall as its lines need and sits at the bottom of the
+    panel, clear of the image centre.
+    Returns (bx, by, bw, bh, lines).
+    """
+    bw = panel_w - 144
+    lines = wrap_typewriter_lines(text, font(48), bw - 64)
+    bh = 32 + len(lines) * 62 + 32
+    bx = panel_x + 72
+    by = panel_y + panel_h - bh - 24
+    return bx, by, bw, bh, lines
+
+
 def cover_crop(im, tw, th):
     w, h = im.size
     s = max(tw / w, th / h)
@@ -439,6 +490,48 @@ def validate_words_provenance(words, words_path, job_dir, job):
                 break
 
 
+def validate_widgets(beat):
+    """Widget policy, enforced at load time (never silently degraded).
+
+    - At most ONE panel widget per beat (container / typewriter / cta).
+      `highlight` is header-only and may co-exist with one panel widget.
+      Two panel widgets in one beat is how B05+B07 ended up with four
+      moving focal points at once (procrastination demo, 2026-11-05).
+    - Container: the items row must fit the panel width, or the pills
+      run off the panel edge instead of being clipped silently.
+    - Typewriter: the full text must wrap to at most 3 lines at 48px
+      inside the box, with the last line short enough to leave room for
+      the tick badge — otherwise the render used to truncate the text
+      to 3 lines without telling anyone.
+    """
+    panel_widgets = [w for w in beat.get("widgets", []) if w.get("type") in ("container", "typewriter", "cta")]
+    if len(panel_widgets) > 1:
+        raise ValueError(
+            f"beat {beat['name']} has {len(panel_widgets)} panel widgets "
+            f"({[w['type'] for w in panel_widgets]}); at most 1 per beat — "
+            "highlight may co-exist, it is header-only")
+    for wdg in beat.get("widgets", []):
+        if wdg["type"] == "container":
+            widths = [font(44).getbbox(str(it))[2] - font(44).getbbox(str(it))[0] + 56
+                      for it in wdg["items"]]
+            total = sum(widths) + 16 * (len(widths) - 1)
+            if total > IMG_W:
+                raise ValueError(
+                    f"beat {beat['name']} container items row is {total}px wide, "
+                    f"panel is {IMG_W}px — shorten the items")
+        if wdg["type"] == "typewriter":
+            lines = wrap_typewriter_lines(str(wdg["text"]), font(48), IMG_W - 144 - 64)
+            if len(lines) > 3:
+                raise ValueError(
+                    f"beat {beat['name']} typewriter text wraps to {len(lines)} lines "
+                    f"(max 3): {wdg['text']!r} — shorten the text")
+            last_w = font(48).getbbox(lines[-1])[2] - font(48).getbbox(lines[-1])[0]
+            if last_w > IMG_W - 144 - 64 - 140:
+                raise ValueError(
+                    f"beat {beat['name']} typewriter last line is {last_w}px wide, "
+                    "leaving no room for the tick badge — shorten the text")
+
+
 def load_job(job_path):
     job_path = Path(job_path)
     job_dir = job_path.parent
@@ -479,6 +572,7 @@ def load_job(job_path):
                 raise ValueError(f"beat {beat['name']} typewriter widget needs text")
             if wdg["type"] == "cta" and (not wdg.get("profile") or not wdg.get("keyword")):
                 raise ValueError(f"beat {beat['name']} cta widget needs profile and keyword")
+        validate_widgets(beat)
     for ev in job.get("sfx", []):
         if not isinstance(ev, dict) or "at" not in ev or "file" not in ev:
             raise ValueError(f"sfx events need at and file: {ev!r}")
@@ -567,7 +661,7 @@ def widget_frame(frame, beat, t):
             # Target window (always visible during the widget window).
             od.rounded_rectangle((tgt_cx - 130, tgt_cy - 110, tgt_cx + 130, tgt_cy + 110),
                                  radius=20, outline=INK, width=4)
-            draw_text_centred(od, tgt_cx, tgt_cy - 130, str(wdg["target"]), font(44), INK)
+            draw_text_above(od, tgt_cx, tgt_cy - 110, str(wdg["target"]), font(44), INK)
             if u < 0.4:
                 # Phase 1: items in a row, staggered.
                 row_y = panel_y + 190
@@ -588,13 +682,13 @@ def widget_frame(frame, beat, t):
                 # Box, empty for now.
                 od.rounded_rectangle((box_cx - 150, box_cy - 100, box_cx + 150, box_cy + 100),
                                      radius=20, fill=(255, 253, 246), outline=INK, width=4)
-                draw_text_centred(od, box_cx, box_cy - 120, str(wdg["box"]), font(44), INK)
+                draw_text_above(od, box_cx, box_cy - 100, str(wdg["box"]), font(44), INK)
             elif u < 0.7:
                 # Phase 2: items shrink into the box (drawn as dots).
                 f = (u - 0.4) / 0.3
                 od.rounded_rectangle((box_cx - 150, box_cy - 100, box_cx + 150, box_cy + 100),
                                      radius=20, fill=(255, 253, 246), outline=INK, width=4)
-                draw_text_centred(od, box_cx, box_cy - 120, str(wdg["box"]), font(44), INK)
+                draw_text_above(od, box_cx, box_cy - 100, str(wdg["box"]), font(44), INK)
                 for j in range(len(items)):
                     cx = box_cx - 60 + j * 60
                     od.ellipse((cx - 14 * (1 - f * 0.5), box_cy - 14 * (1 - f * 0.5),
@@ -614,10 +708,13 @@ def widget_frame(frame, beat, t):
                     draw_text_centred(od, tgt_cx, tgt_cy + 140, "✓", font(56), (56, 181, 119))
             frame.paste(ov, (0, 0), ov)
         elif wdg["type"] == "typewriter":
-            # A command box in the panel: text typed char by char, then
-            # a green tick with burst lines.
+            # A command box at the panel bottom, sized to its content:
+            # text typed cluster by cluster, then a green tick badge on
+            # the box's bottom-right corner (outside the text area, so
+            # it can never cover the typed text).
             text = str(wdg["text"])
-            bx, by, bw, bh = panel_x + 72, panel_y + panel_h // 2 - 130, panel_w - 144, 260
+            bx, by, bw, bh, full_lines = typewriter_box(
+                text, panel_x, panel_y, panel_w, panel_h)
             ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
             od = ImageDraw.Draw(ov)
             od.rounded_rectangle((bx, by, bx + bw, by + bh), radius=20,
@@ -627,28 +724,20 @@ def widget_frame(frame, beat, t):
             # "ซื้", leaving a bare sara/tone mark floating on screen.
             n_clusters = min(len(grapheme_clusters(text)), int((t - wdg["start"]) / 0.08))
             shown = grapheme_slice(text, n_clusters)
-            # Simple wrap by tokens so long Thai phrases stay inside.
-            lines, cur = [], ""
-            for tok in shown.split(" "):
-                trial = (cur + " " + tok).strip()
-                if font(48).getbbox(trial)[2] - font(48).getbbox(trial)[0] > bw - 64 and cur:
-                    lines.append(cur)
-                    cur = tok
-                else:
-                    cur = trial
-            if cur:
-                lines.append(cur)
+            # Wrap the shown prefix with the same wrapper as the full
+            # text, so lines never reflow while typing.
+            lines = wrap_typewriter_lines(shown, font(48), bw - 64)
             for li, line in enumerate(lines[:3]):
                 od.text((bx + 32, by + 32 + li * 62), line, font=font(48), fill=INK)
             if n_clusters >= len(grapheme_clusters(text)):
-                tx, ty = bx + bw - 70, by + bh - 70
-                od.ellipse((tx - 34, ty - 34, tx + 34, ty + 34), fill=(56, 181, 119), outline=INK, width=4)
-                od.line((tx - 18, ty, tx - 5, ty + 14), fill=(255, 253, 246), width=6)
-                od.line((tx - 5, ty + 14, tx + 20, ty - 16), fill=(255, 253, 246), width=6)
+                tx, ty = bx + bw, by + bh
+                od.ellipse((tx - 30, ty - 30, tx + 30, ty + 30), fill=(56, 181, 119), outline=INK, width=4)
+                od.line((tx - 15, ty, tx - 4, ty + 12), fill=(255, 253, 246), width=6)
+                od.line((tx - 4, ty + 12, tx + 17, ty - 14), fill=(255, 253, 246), width=6)
                 for k in range(8):
                     ang = 2 * math.pi * k / 8
-                    od.line((tx + 44 * math.cos(ang), ty + 44 * math.sin(ang),
-                             tx + 66 * math.cos(ang), ty + 66 * math.sin(ang)),
+                    od.line((tx + 38 * math.cos(ang), ty + 38 * math.sin(ang),
+                             tx + 58 * math.cos(ang), ty + 58 * math.sin(ang)),
                             fill=(244, 67, 54), width=5)
             frame.paste(ov, (0, 0), ov)
         elif wdg["type"] == "cta":
