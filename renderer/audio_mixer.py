@@ -6,7 +6,7 @@
   3) mystery_pulse: 104 BPM investigative bass pulse + tension pluck
 - Real external VO (vo_path) + optional custom BGM override (bgm_path)
 - Broadband (-3 dB) + Mid-Band (300Hz-4kHz, -7 dB) VO-driven ducking
-- Event-synced procedural Foley + 2-pass FFmpeg loudnorm (-14.5 LUFS, TP -1.2 dBTP)
+- Event-synced procedural Foley + 2-pass FFmpeg loudnorm (-14.5 LUFS, TP -2.0 dBTP target + alimiter -2.0 dB)
 """
 import sys
 sys.dont_write_bytecode = True
@@ -423,14 +423,14 @@ def build_audio_track(spec: dict, duration: float, out_wav: Path):
 
     res = subprocess.run([
         "ffmpeg", "-y", "-i", str(raw_wav),
-        "-af", "loudnorm=I=-14.5:TP=-1.2:LRA=11:print_format=json", "-f", "null", "-"
+        "-af", "loudnorm=I=-14.5:TP=-2.0:LRA=11:print_format=json", "-f", "null", "-"
     ], stderr=subprocess.PIPE, text=True, check=True)
     m = json.loads(res.stderr[res.stderr.rfind("{"):res.stderr.rfind("}") + 1])
     af = (
-        f"loudnorm=I=-14.5:TP=-1.2:LRA=11:linear=true:"
+        f"loudnorm=I=-14.5:TP=-2.0:LRA=11:linear=true:"
         f"measured_I={m['input_i']}:measured_TP={m['input_tp']}:"
         f"measured_LRA={m['input_lra']}:measured_thresh={m['input_thresh']}:"
-        f"offset={m['target_offset']}"
+        f"offset={m['target_offset']},alimiter=limit=-2.0dB:level=false:attack=5:release=50"
     )
     subprocess.run([
         "ffmpeg", "-y", "-i", str(raw_wav), "-af", af,

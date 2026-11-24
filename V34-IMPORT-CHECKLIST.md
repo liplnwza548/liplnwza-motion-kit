@@ -71,3 +71,5 @@
 9. ✅ grep ไฟล์ที่นำเข้าทั้งหมด: ไม่มี voice ID / ชื่อโมเดลเสียง / stability / similarity / API key หลุดมา
 
 ยังไม่ได้ตรวจ (อยู่นอกขอบเขต smoke test): Lip-Sync โหมด Studio (visemes.json จาก MFA) และ Express (สกัดจากเสียงจริง) กับเสียงพากย์จริง — smoke test ใช้เสียง BGM อย่างเดียว ไทม์ไลน์ปากจึงเป็นโหมด demo — ต้องตรวจอีกครั้งกับงานจริงงานแรก
+
+**อัปเดต 2026-11-24 — แก้ True Peak แล้ว (ข้อ 5 ข้างบนปิดแล้ว):** ตามคำสั่งฟิลิปผ่านคำตอบของ Gemini แก้ `renderer/audio_mixer.py` 2 จุด (TP=-1.2 → TP=-2.0 ในคำสั่ง loudnorm ทั้ง pass 1 และ pass 2 + ต่อ `alimiter=limit=-2.0dB:level=false:attack=5:release=50` ท้ายฟิลเตอร์ pass 2) — ตรวจซ้ำบน VM นี้ด้วยสเปกทดสอบเดิม: MP4 6 วิได้ True Peak **−1.76 dBTP ผ่านเกณฑ์ ≤ −1.0** (เดิม −0.48) ความดัง −15.08 LUFS อยู่ในเกณฑ์ ±1 ของเป้า −14.5 — เกณฑ์ QC ในสเปก (`TRUE_PEAK_MAX_DBTP = -1.0`) ไม่ได้เปลี่ยน ที่เปลี่ยนคือเป้าภายในของมิกเซอร์เท่านั้น — manifest รีเจน + verify + unittest 100 ข้อผ่านแล้วก่อน push
