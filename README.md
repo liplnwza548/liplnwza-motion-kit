@@ -1,13 +1,13 @@
-# 🎬 LiplnwZa Motion Kit (v3.4 — spec locked, engine import pending)
+# 🎬 LiplnwZa Motion Kit (v3.4)
 
 > **มาตรฐานงานใหม่: v3.4 "Lean & Punchy" (ฟิลิปล็อก 2026-11-24) — ดู `SKILL.md`**
 > Full-Canvas Paper Stage 9:16 `720x1280 @ 24fps` + Headless Chromium CDP,
 > มาสคอตเต็มตัว 16 ท่า + ปาก SVG 6 ทรง, 12 Animated Micro-Widgets,
 > ช่องทีวี Lemo, ซับสีรายคำกลางจอ `y=672` + Auto-Fit, 2-pass `-14.5 LUFS`
 >
-> ⚠️ **เอนจิน v3.4 ยังไม่ได้อยู่ใน repo นี้** — ติดตั้งอยู่บน Gemini Task Web
-> เท่านั้น ดูรายการนำเข้าที่ `V34-IMPORT-CHECKLIST.md`
-> เครื่องยนต์ที่อยู่ใน repo นี้คือเครื่องยนต์เก่า (legacy แช่แข็ง):
+> ✅ **เอนจิน v3.4 นำเข้า repo นี้แล้ว (2026-11-24)** — ดูรายการตรวจรับที่
+> `V34-IMPORT-CHECKLIST.md`
+> เครื่องยนต์เก่าที่ยังอยู่ใน repo นี้คือ legacy แช่แข็ง:
 > `renderer/kit.py` v0.2.1 (กระดาษ, 1080×1920 @ 30fps) และ
 > `layouts/aot/compose.py` (AoT layout, 1080×1920 @ 30fps) — ใช้กับงานเดิมและเทสต์เท่านั้น
 > สเปกตัวประกอบเดิมดูที่ `layouts/aot/SPEC.md`
@@ -24,7 +24,7 @@
 
 ## ✨ จุดเด่นสำคัญ (Key Highlights)
 
-- 🎬 **v3.4 "Lean & Punchy" (มาตรฐานงานใหม่):** Full-Canvas Paper Stage 720×1280 @ 24fps (Headless Chromium CDP), มาสคอตเต็มตัว 16 ท่า + ปาก SVG 6 ทรง, 12 Animated Micro-Widgets, ช่องทีวี Lemo สำหรับคลิปสั้น 4–6 วิ, ซับสีรายคำกลางจอ y=672 + Auto-Fit, Lip-Sync 2 โหมด, BGM ลิขสิทธิ์ตัวเอง 3 แนว + 2-pass −14.5 LUFS — สเปกฉบับเต็มใน [SKILL.md](SKILL.md) (เอนจินรอนำเข้า ดู [V34-IMPORT-CHECKLIST.md](V34-IMPORT-CHECKLIST.md))
+- 🎬 **v3.4 "Lean & Punchy" (มาตรฐานงานใหม่):** Full-Canvas Paper Stage 720×1280 @ 24fps (Headless Chromium CDP), มาสคอตเต็มตัว 16 ท่า + ปาก SVG 6 ทรง, 12 Animated Micro-Widgets, ช่องทีวี Lemo สำหรับคลิปสั้น 4–6 วิ, ซับสีรายคำกลางจอ y=672 + Auto-Fit, Lip-Sync 2 โหมด, BGM ลิขสิทธิ์ตัวเอง 3 แนว + 2-pass −14.5 LUFS — สเปกฉบับเต็มใน [SKILL.md](SKILL.md) (เอนจินนำเข้าแล้ว 2026-11-24 ดู [V34-IMPORT-CHECKLIST.md](V34-IMPORT-CHECKLIST.md))
 - 🎭 **Clean-Plate Procedural Mouth Rig (เครื่องยนต์เก่า):** ระบบประกอบภาพปากตาม viseme ที่เตรียมไว้ สำหรับมาสคอต 6 ท่าหลัก (`explain`, `point_right`, `thinking`, `magnify`, `point_left`, `thumbs_up`) โดยแทนที่ภาพปากภายในพื้นที่ซ่อมที่กำหนด
 - 🇹🇭 **Thai Typography:** ใช้ Pillow RAQM เมื่อมี หรือใช้ `uharfbuzz` เป็นทางเลือก ต้องตรวจผลบนเครื่องเป้าหมายก่อนส่งงาน
 - ⚡ **Repeatable Rendering:** สร้าง movement และ SFX จากข้อมูลกับ seed ที่กำหนด; ความเหมือนกันระดับไบต์ยังไม่ได้ยืนยันข้ามระบบหรือ toolchain
@@ -39,18 +39,24 @@
 liplnwza-motion-kit/
 ├── README.md                         # คู่มือภาพรวมและวิธีใช้งาน
 ├── SKILL.md                          # สเปกหลัก v3.4 ฉบับเดียวสำหรับ AI Agents
-├── V34-IMPORT-CHECKLIST.md           # รายการไฟล์เอนจิน/แอสเสต v3.4 ที่ต้องนำเข้า
+├── V34-IMPORT-CHECKLIST.md           # รายการตรวจรับการนำเข้าเอนจิน/แอสเสต v3.4
 ├── START_HERE.md                     # เช็กลิสต์เริ่มต้นด่วนสำหรับมนุษย์และ AI
 ├── AGENTS.md                         # สเปกยุคแรก (legacy) — อ่านหมายเหตุหัวไฟล์ก่อนใช้
 ├── renderer/                         # เครื่องยนต์ใน repo
 │   ├── v34_spec.py                   # ค่าคงที่สเปก v3.4 ที่ล็อกไว้ (ไม่ใช่เอนจินเรนเดอร์)
+│   ├── render_liplnwza_v3.py         # [v3.4] เอนจินเรนเดอร์ CDP หลัก
+│   ├── audio_mixer.py                # [v3.4] มิกซ์เสียง + BGM + Foley + loudnorm
+│   ├── stage_template.html           # [v3.4] เทมเพลต Full-Canvas Paper Stage
+│   ├── widgets.js                    # [v3.4] 12 วิดเจ็ต + ปาก SVG แบบ procedural
 │   ├── kit.py                        # [LEGACY แช่แข็ง] Unified CLI เครื่องยนต์กระดาษ v0.2.1
 │   ├── new_job.py                    # สร้างโฟลเดอร์งานใหม่ที่ jobs/<slug>/
 │   ├── prepare_cues.py               # (ทางเลือก) จับเวลาคำ/ปากจากบทที่รู้อยู่แล้ว ดูหมายเหตุด้านล่าง
 │   └── setup.ps1 / setup.sh          # ติดตั้ง venv + dependencies (เครื่องยนต์เก่า)
 │   # หมายเหตุ: rig_motion.py อยู่ที่ assets/mascot/mouth_rig/ ไม่ได้อยู่ใน renderer/
-│   # เอนจิน v3.4 รอนำเข้า: render_liplnwza_v3.py, audio_mixer.py,
-│   # stage_template.html, widgets.js, mouth_anchors.json
+├── assets_v3/                        # [v3.4] มาสคอต 16 ท่า + พร็อพ 12 ชิ้น (WebP) + mouth_anchors.json
+│   ├── mascot/                       # clean plates 16 ท่า + mouth_anchors.json
+│   └── props/                        # พร็อพ/บอทสมทบ 12 ชิ้น
+├── references/                       # JOB_FORMAT / AUDIO_AND_TIMING / QUALITY / STYLE / WORKFLOW + scene_spec_schema.md (v3.4)
 ├── skills/liplnwza-motion/           # ตัวชี้สเปกหลัก + กติกาควบคุมงาน
 ├── layouts/aot/                      # [LEGACY แช่แข็ง] ตัวประกอบ AoT (compose.py) + SPEC.md
 ├── assets/                           # แอสเสตมาตรฐานประจำเครื่องยนต์เดิม
@@ -74,7 +80,7 @@ liplnwza-motion-kit/
 ## 🚀 เริ่มต้นใช้งานด่วน (Quick Start)
 
 ### 0. ตรวจสถานะเอนจิน v3.4 ก่อน
-เอนจิน v3.4 ยังไม่ได้อยู่ใน repo นี้ — งานใหม่ทำได้แค่ระดับแผน + Beat Sheet ตาม [SKILL.md](SKILL.md) จนกว่าการนำเข้าจะเสร็จ (ดู [V34-IMPORT-CHECKLIST.md](V34-IMPORT-CHECKLIST.md)) คำสั่งด้านล่างนี้เป็นของเครื่องยนต์เก่า ใช้ตรวจงานเดิม/เทสต์เท่านั้น
+เอนจิน v3.4 อยู่ใน repo นี้แล้ว (`renderer/render_liplnwza_v3.py` + แอสเสตใน `assets_v3/`) — งานใหม่เรนเดอร์ตาม [SKILL.md](SKILL.md) ได้เลย โดยเรนเดอร์แผ่น QA (`--qa-only`) ตรวจภาพก่อนเรนเดอร์เต็มเสมอ (ดู [V34-IMPORT-CHECKLIST.md](V34-IMPORT-CHECKLIST.md)) คำสั่งด้านล่างนี้เป็นของเครื่องยนต์เก่า ใช้ตรวจงานเดิม/เทสต์เท่านั้น
 
 ### 1. ความต้องการของระบบ (Prerequisites — เครื่องยนต์เก่า)
 - **Python 3.11+** (ตัวตรวจ `doctor` ใน `kit.py` ต้องการอย่างน้อย 3.11 — ถ้าเอกสารจุดอื่นบอก 3.10 ให้ยึด 3.11 เป็นเกณฑ์จริง)

@@ -8,9 +8,10 @@
 > ซับสีรายคำกึ่งกลางจอ `y=672` + Auto-Fit, Lip-Sync 2 โหมด (Studio/MFA, Express/24fps),
 > BGM ลิขสิทธิ์ตัวเอง 3 แนว + 2-pass `-14.5 LUFS`
 >
-> ⚠️ **สถานะเอนจิน: IMPORT PENDING** — เอนจิน v3.4 ยังไม่ได้อยู่ใน repo นี้
-> (ติดตั้งอยู่บน Gemini Task Web) ดูรายการนำเข้าที่ `V34-IMPORT-CHECKLIST.md`
-> จนกว่าจะนำเข้าเสร็จ งาน v3.4 ทำได้แค่ระดับแผน + ตรวจสเปก ห้ามอ้างว่าเรนเดอร์ได้
+> ✅ **สถานะเอนจิน: IMPORTED 2026-11-24** — เอนจิน v3.4 อยู่ใน repo นี้แล้ว
+> (`renderer/render_liplnwza_v3.py` + แอสเสตใน `assets_v3/`)
+> ตรวจรับตาม `V34-IMPORT-CHECKLIST.md` แล้ว เรนเดอร์แผ่น QA (`--qa-only`)
+> ตรวจภาพก่อนเรนเดอร์เต็มเสมอ
 > คำสั่ง `renderer/kit.py` ด้านล่างเป็นของเครื่องยนต์เก่า (legacy แช่แข็ง)
 > ใช้ตรวจงานเดิม/เทสต์เท่านั้น ห้ามใช้เป็นเส้นทางหลักของงานใหม่
 >
@@ -27,16 +28,20 @@ liplnwza-motion-kit/
 ├── README.md                         ← ภาพรวมคลังโค้ดและการติดตั้ง
 ├── START_HERE.md                     ← [อ่านไฟล์นี้เป็นอันดับแรก!]
 ├── SKILL.md                          ← สเปกหลัก v3.4 ฉบับเดียวสำหรับ AI Agents
-├── V34-IMPORT-CHECKLIST.md           ← รายการไฟล์เอนจิน/แอสเสต v3.4 ที่ต้องนำเข้า
+├── V34-IMPORT-CHECKLIST.md           ← รายการตรวจรับการนำเข้าเอนจิน/แอสเสต v3.4
 ├── AGENTS.md                         ← สเปกยุคแรก (legacy) สำหรับสไตล์กระดาษ — อ่านหมายเหตุหัวไฟล์ก่อนใช้
 ├── renderer/                         ← เครื่องยนต์ใน repo
 │   ├── v34_spec.py                   ← ค่าคงที่สเปก v3.4 ที่ล็อกไว้ (อ่านอย่างเดียว ไม่ใช่เอนจินเรนเดอร์)
+│   ├── render_liplnwza_v3.py         ← [v3.4] เอนจินเรนเดอร์ CDP หลัก
+│   ├── audio_mixer.py                ← [v3.4] มิกซ์เสียง + BGM + Foley + loudnorm
+│   ├── stage_template.html           ← [v3.4] เทมเพลต Full-Canvas Paper Stage
+│   ├── widgets.js                    ← [v3.4] 12 วิดเจ็ต + ปาก SVG แบบ procedural
 │   ├── kit.py                        ← [LEGACY แช่แข็ง] CLI เครื่องยนต์กระดาษ v0.2.1
 │   ├── new_job.py / prepare_cues.py / preflight.py / mfa_to_cues.py / ...
 │   │                               ← [LEGACY] เครื่องมือด่านตรวจ/ประกอบเดิม — ใช้กับงานเดิมเท่านั้น
 │   └── verify_manifest.py            ← ตรวจ manifest-sha256.json ของ repo + บัญชีภาพของงาน
-│   # เอนจิน v3.4 รอนำเข้า: render_liplnwza_v3.py, audio_mixer.py,
-│   # stage_template.html, widgets.js, mouth_anchors.json
+├── assets_v3/                        ← [v3.4] มาสคอต 16 ท่า + พร็อพ 12 ชิ้น (WebP) + mouth_anchors.json
+├── references/                       ← JOB_FORMAT / AUDIO_AND_TIMING / QUALITY / STYLE / WORKFLOW + scene_spec_schema.md (v3.4)
 ├── layouts/aot/                      ← [LEGACY แช่แข็ง] ตัวประกอบ AoT (compose.py, 1080x1920 @ 30fps) + SPEC.md
 ├── skills/liplnwza-motion/           ← ตัวชี้สเปกหลัก (SKILL.md) + กติกาควบคุมงาน + runtime/locate
 ├── assets/                           ← แอสเสตประจำเครื่องยนต์เดิม (mouth_rig, ฟอนต์ Prompt-Bold)
@@ -62,7 +67,7 @@ Motion Kit ไม่สร้างเสียงพากย์และไม
 ### ลำดับงาน
 
 1. **อ่านสเปกหลัก:** `SKILL.md` (v3.4) → `layouts/aot/SPEC.md` (กฎภาพประกอบ/ชิป — ส่วนที่ขัดกับ v3.4 ให้ยึด v3.4 สำหรับงานใหม่)
-2. **ตรวจสถานะเอนจิน:** ถ้าไฟล์เอนจิน v3.4 ยังไม่ได้นำเข้า ให้หยุดที่แผน + Beat Sheet แล้วรายงานให้ฟิลิปทราบ ห้ามเรนเดอร์ปลอม
+2. **ตรวจสถานะเอนจิน:** ไฟล์เอนจิน v3.4 ต้องครบ (`renderer/render_liplnwza_v3.py`, `assets_v3/mascot/` 16 ท่า, `assets_v3/props/` 12 ชิ้น) ถ้าขาดให้รายงานให้ฟิลิปทราบ ห้ามเรนเดอร์ปลอม
 3. **Pre-production Beat Sheet:** แบ่งฉาก 5–6 ฉากตามจังหวะเสียง กำหนดวิดเจ็ต กล้อง ทรานซิชั่น ช่องทีวี และท่ามาสคอต 16 ท่า ส่งให้ฟิลิปตรวจและรอคำสั่ง **"อนุมัติสร้าง"**
 4. **ประกอบไฟล์งาน:** เตรียมชุดรับมอบเสียง 3 รายการ + job spec ตาม schema ของเอนจิน v3.4 + `approval.json` (job digest จากหลักฐานการอนุมัติของเจ้าของงานจริง ห้ามอนุมัติตัวเอง)
 5. **เรนเดอร์และตรวจ QC (เมื่อเอนจินพร้อม):** เรนเดอร์ 720×1280 @ 24fps แบบ `--chunk-frames 120` ตรวจ QC จากไฟล์ MP4 จริงตามเกณฑ์ v3.4 ใน `SKILL.md` (ซับกลางจอ y=672 + Auto-Fit, มาสคอตนิ่งนอก Camera Rig, 2-pass −14.5 LUFS, faststart)

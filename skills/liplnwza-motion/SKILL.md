@@ -15,22 +15,22 @@ description: สร้างวิดีโอโมชั่นแนวตั�
 > ซับสีรายคำกึ่งกลางจอ `y=672` + Auto-Fit, Lip-Sync 2 โหมด
 > (Studio/MFA และ Express/24fps), BGM ลิขสิทธิ์ตัวเอง 3 แนว + 2-pass `-14.5 LUFS`
 >
-> ⚠️ **สถานะเอนจิน: IMPORT PENDING** — สคริปต์/แอสเสต v3.4
-> (`render_liplnwza_v3.py`, `stage_template.html`, `widgets.js`,
-> `audio_mixer.py`, `mouth_anchors.json`, WebP 16 ท่า + 12 พร็อพ)
-> ติดตั้งอยู่บน Gemini Task Web เท่านั้น ยังไม่มีใน repo นี้
-> ถ้าไฟล์เอนจิน v3.4 ไม่อยู่ใน kit root ให้รายงานว่าเป็น planning-only
-> สำหรับงาน v3.4 อย่าอ้างว่าเรนเดอร์ผ่าน เครื่องยนต์เก่า `renderer/kit.py`
-> ใช้ได้เฉพาะงานเดิมที่ฟิลิประบุชื่อไว้เท่านั้น ห้ามสร้างงานใหม่บน SOP กระดาษเก่า
-> รายการนำเข้าดูที่ `V34-IMPORT-CHECKLIST.md` ที่ราก repo
+> ✅ **สถานะเอนจิน: IMPORTED 2026-11-24** — สคริปต์/แอสเสต v3.4
+> (`renderer/render_liplnwza_v3.py`, `renderer/stage_template.html`,
+> `renderer/widgets.js`, `renderer/audio_mixer.py`,
+> `assets_v3/mascot/mouth_anchors.json`, WebP 16 ท่า + 12 พร็อพใน `assets_v3/`)
+> อยู่ใน repo นี้แล้ว ตรวจรับตาม `V34-IMPORT-CHECKLIST.md` ที่ราก repo
+> ถ้าไฟล์เอนจิน v3.4 ขาดหาย ให้รายงานให้ Philip ทราบ ห้ามเรนเดอร์ปลอม
+> เครื่องยนต์เก่า `renderer/kit.py` ใช้ได้เฉพาะงานเดิมที่ฟิลิประบุชื่อไว้เท่านั้น
+> ห้ามสร้างงานใหม่บน SOP กระดาษเก่า
 
 1. หา kit root แบบจำกัด: ใช้ LIP_MOTION_ROOT หากกำหนด หรือ kit ใน workspace ที่ผู้ใช้แนบ ให้มี START_HERE.md และ SKILL.md ที่ราก ถ้าไม่พบ ใช้โฟลเดอร์ที่เจ้าของระบุ https://drive.google.com/drive/folders/1sbnVgJ-w9AfzKlm35wJQXO-vhJPSCRK5 เพื่อดาวน์โหลดชุด หรือขอให้แนบ ZIP อย่าค้น private filesystem ทั้งเครื่อง สำหรับ installed skill ให้เปิด references/runtime.md เมื่อไม่แน่ใจการหา runtime และใช้ scripts/locate_kit.py ตรวจเฉพาะตำแหน่งที่ระบุ
 2. อ่าน SKILL.md ที่ราก repo (สเปกหลัก v3.4) แล้ว START_HERE.md, `layouts/aot/SPEC.md` (สเปกตัวประกอบเดิม — ส่วนที่ขัดกับ v3.4 ให้ยึด v3.4 สำหรับงานใหม่), references/WORKFLOW.md, STYLE.md; โหลด JOB_FORMAT.md เมื่อวางฉาก, AUDIO_AND_TIMING.md เมื่อเตรียมเสียง/คำ, ASSET_SOURCES.md เมื่อหาสื่อ, QUALITY.md ก่อนส่งออก
-3. ตรวจความสามารถที่มีจริง: เปิดต้นฉบับ/Drive, ดาวน์โหลด, filesystem, Python/FFmpeg, render และส่งไฟล์ได้หรือไม่ ถ้าเอนจิน v3.4 ยังไม่ได้นำเข้า ให้รายงาน planning-only สำหรับงาน v3.4 อย่าอ้าง render pass; `python renderer/kit.py doctor` พิสูจน์เฉพาะเครื่องยนต์เก่าเท่านั้น
+3. ตรวจความสามารถที่มีจริง: เปิดต้นฉบับ/Drive, ดาวน์โหลด, filesystem, Python/FFmpeg, render และส่งไฟล์ได้หรือไม่ ถ้าไฟล์เอนจิน v3.4 ขาดหาย ให้รายงานให้ Philip ทราบ ห้ามอ้าง render pass; `python renderer/kit.py doctor` พิสูจน์เฉพาะเครื่องยนต์เก่าเท่านั้น
 4. รับเนื้อหา เก็บต้นทางและตรวจข้อกล่าวสำคัญ ห้ามใช้ชื่อ/thumbnail แทนเนื้อหาทั้ง YouTube ถ้าเข้าถึงไม่ได้บอกข้อจำกัดและขอ transcript/ไฟล์ที่จำเป็น
 5. สร้างงานตาม SOP ใน SKILL.md หลัก เสนอประเด็น บท เสียง ความยาว แนวภาพและสื่อ ต้นทุน/ข้อจำกัด ให้ Philip อนุมัติก่อนผลิตเต็ม ตัวอย่าง benchmark อนุมัติเฉพาะ technical test ของเครื่องเก่าเท่านั้น ห้ามใช้เป็นต้นแบบสไตล์
 6. หลังอนุมัติ ทำงานย่อยที่ย้อนกลับได้เองให้จบ ใช้ assets ของ Philip ก่อน แล้วค่อยหาสื่อที่มีสิทธิ์ตรงงาน จดที่มา และ label evidence/illustration/screen_recording ชัด ภาพประกอบงานใหม่ต้องเป็นภาพโค้ดล้วน + ช่องทีวี Lemo ตามสเปกหลัก ห้ามใช้ภาพ AI-generated เป็นภาพหลัก ไม่ใส่ Warodom likeness/voice/footage/course assets
 7. เตรียมเสียง words.json และ visemes.json จากเสียงจริง ไม่ใช้เวลาหารเท่าอ้าง sync ปากเป็น raster pronunciation approximation ไม่ใช่ rig 3D หรือ acoustic phoneme-perfect หากขาด alignment tools ให้บอกและเลือกทางที่มีจริง (Studio Mode ใช้ visemes.json จาก MFA; Express Mode สกัดท่าปาก 24fps จากเสียงอัตโนมัติ)
 8. เติม job spec ตรวจ validate และ preview บันทึก approval.json จากหลักฐาน owner จริง พร้อม digest ของ job/inputs รุ่นนั้น ห้ามอนุมัติตัวเอง ถ้าสาระ/เสียงหลักเปลี่ยนให้กลับตรวจใหม่ แต่ไม่ขออนุมัติซ้ำเพียงเพราะรายละเอียดประกอบงานเดิมเสร็จแล้ว
-9. Render ด้วยเอนจิน v3.4 เมื่อนำเข้าแล้ว แล้วดู/ฟังและตรวจ QC ตาม QUALITY.md และเกณฑ์ v3.4 ใน SKILL.md หลัก ส่ง MP4, SRT, ซอร์สที่ส่งต่อได้, sources และรายงานสิ่งที่ตรวจจริง เก็บ SESSION.md ให้ AI ตัวถัดไปทำต่อได้
+9. Render ด้วยเอนจิน v3.4 (เรนเดอร์แผ่น QA `--qa-only` ตรวจภาพก่อนเรนเดอร์เต็มเสมอ) แล้วดู/ฟังและตรวจ QC ตาม QUALITY.md และเกณฑ์ v3.4 ใน SKILL.md หลัก ส่ง MP4, SRT, ซอร์สที่ส่งต่อได้, sources และรายงานสิ่งที่ตรวจจริง เก็บ SESSION.md ให้ AI ตัวถัดไปทำต่อได้
 10. ห้ามเผยแพร่ ซื้อบริการ ส่งหาคนอื่น โคลนเสียงใหม่ หรือเขียนทับต้นฉบับโดยไม่มีคำสั่งครอบคลุม ห้ามเรียกพร้อมโพสต์หากสิทธิ์/เนื้อหาค้างหรือฉบับเต็มยังไม่ผ่าน Philip ห้ามเผยแพร่รายละเอียดการโคลนเสียง (voice ID, ชื่อโมเดล, ค่า stability/similarity, ไฟล์เสียงอ้างอิง) ใน repo นี้หรือที่สาธารณะเด็ดขาด

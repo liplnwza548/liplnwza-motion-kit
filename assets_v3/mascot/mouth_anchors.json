@@ -1,0 +1,82 @@
+{
+  "wave": {
+    "mx": 0.545,
+    "my": 0.365,
+    "scale": 1.0
+  },
+  "pointer": {
+    "mx": 0.375,
+    "my": 0.368,
+    "scale": 1.0
+  },
+  "clipboard": {
+    "mx": 0.568,
+    "my": 0.368,
+    "scale": 1.0
+  },
+  "confident": {
+    "mx": 0.528,
+    "my": 0.368,
+    "scale": 1.0
+  },
+  "magnify": {
+    "mx": 0.54,
+    "my": 0.368,
+    "scale": 1.0
+  },
+  "laptop_focus": {
+    "mx": 0.44,
+    "my": 0.388,
+    "scale": 0.96
+  },
+  "laptop_smile": {
+    "mx": 0.555,
+    "my": 0.388,
+    "scale": 0.96
+  },
+  "cheer": {
+    "mx": 0.502,
+    "my": 0.362,
+    "scale": 1.04
+  },
+  "facepalm": {
+    "mx": 0.54,
+    "my": 0.37,
+    "scale": 0.96
+  },
+  "thinking_chin": {
+    "mx": 0.515,
+    "my": 0.365,
+    "scale": 0.96
+  },
+  "shocked": {
+    "mx": 0.505,
+    "my": 0.37,
+    "scale": 1.02
+  },
+  "holding_card": {
+    "mx": 0.56,
+    "my": 0.368,
+    "scale": 1.0
+  },
+  "thumbs_up_full": {
+    "mx": 0.555,
+    "my": 0.368,
+    "scale": 1.0
+  },
+  "newspaper_hold": {
+    "mx": 0.46,
+    "my": 0.378,
+    "scale": 0.96
+  },
+  "shrug": {
+    "mx": 0.502,
+    "my": 0.372,
+    "scale": 0.98
+  },
+  "idea_finger": {
+    "mx": 0.55,
+    "my": 0.368,
+    "scale": 1.0
+  }
+}

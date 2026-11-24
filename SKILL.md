@@ -17,12 +17,12 @@ description: "LiplnwZa Motion Kit v3.4 (Lean & Punchy): vertical 9:16 720x1280 @
 > 2026-11-24 เนื้อหาที่ Gemini เขียนไว้ใน Notion ถือเป็นข้อเสนอจนกว่าฟิลิป
 > จะยืนยันเอง — สเปกในไฟล์นี้คือส่วนที่ฟิลิปสั่งให้บันทึกไว้แล้ว
 >
-> ⚠️ **สถานะเอนจิน: IMPORT PENDING — เอนจิน v3.4 ยังไม่ได้อยู่ใน repo นี้**
-> สคริปต์และแอสเสต v3.4 ติดตั้งอยู่เป็นสกิล `liplnwza-motion` บน
-> Gemini Task Web เท่านั้น ยังไม่มีไฟล์ใดใน checkout นี้
-> จนกว่าการนำเข้าจะเสร็จ (ดู `V34-IMPORT-CHECKLIST.md`) **ห้ามอ้างว่า
-> เรนเดอร์ v3.4 จาก repo นี้ได้** — งาน v3.4 ที่ยังไม่มีเอนจินให้ส่งเป็น
-> แผน + ตรวจสเปกเท่านั้น ห้ามเรนเดอร์ปลอม ห้ามสร้างแอสเสตปลอม
+> ✅ **สถานะเอนจิน: IMPORTED 2026-11-24** — เอนจิน v3.4 นำเข้า repo นี้
+> แล้วจาก export ของสกิล `liplnwza-motion` บน Gemini Task Web
+> (คัดลอกแบบ byte-for-byte ตรวจรับตาม `V34-IMPORT-CHECKLIST.md`)
+> เรนเดอร์ด้วย `renderer/render_liplnwza_v3.py` ได้เลย แต่ต้องผ่าน
+> เกตเดียวในไฟล์นี้ก่อนเสมอ: ส่ง Beat Sheet ให้ฟิลิปอนุมัติก่อนสร้างงานจริง
+> ห้ามเรนเดอร์ปลอม ห้ามสร้างแอสเสตปลอม
 
 ---
 
@@ -42,7 +42,7 @@ description: "LiplnwZa Motion Kit v3.4 (Lean & Punchy): vertical 9:16 720x1280 @
 - **Tier 2 — ตัวละคร + วิดเจ็ต + จอทีวี:** มาสคอต LiplnwZa เต็มตัว + 12 Animated Micro-Widgets + ช่องจอทีวี `media_clip_frame` สำหรับฉายคลิปสั้นจากสกิล Lemo-Opuscar โดยไม่ทำให้เอกลักษณ์ช่องแตก
 - **เอนจินเรนเดอร์:** Offline Headless Chromium CDP (`JPEG q=92`, Lazy WebP Loading, เร็ว ~7.2 fps, ใช้ฟอนต์ระบบ `NotoSansThai-Bold.ttf` ไม่ต้องพกไฟล์ `.ttf`)
 - **เอาต์พุต:** H.264, `-movflags +faststart`, แบ่งเรนเดอร์ `--chunk-frames 120`
-- **ไฟล์เอนจินที่ต้องนำเข้า:** `render_liplnwza_v3.py`, `stage_template.html`, `widgets.js`, `audio_mixer.py`, `mouth_anchors.json` + แอสเสต WebP (ดูรายการใน `V34-IMPORT-CHECKLIST.md`)
+- **ไฟล์เอนจิน (นำเข้าแล้ว 2026-11-24):** `renderer/render_liplnwza_v3.py`, `renderer/stage_template.html`, `renderer/widgets.js`, `renderer/audio_mixer.py`, `assets_v3/mascot/mouth_anchors.json` + แอสเสต WebP ใน `assets_v3/` (ดูรายการตรวจรับใน `V34-IMPORT-CHECKLIST.md`) — ปาก 6 ทรงเป็น SVG แบบ procedural ที่ `widgets.js` สร้างขึ้น ไม่ใช่ไฟล์ SVG แยก
 
 ---
 
@@ -120,11 +120,11 @@ description: "LiplnwZa Motion Kit v3.4 (Lean & Punchy): vertical 9:16 720x1280 @
 
 ### ขั้นที่ 3: ประกอบไฟล์งาน (Assembly & Automation)
 1. เตรียมชุดรับมอบเสียง: `voice.wav` + `words.json` (เวลาระดับคำที่ตรวจเทียบเสียงจริงแล้ว) + `visemes.json` (Studio Mode) — Express Mode สกัดท่าปากจากเสียงอัตโนมัติแทนได้
-2. เขียน job spec ของงาน (ฉาก ข้อความ ท่า วิดเจ็ต กล้อง ทีวีสล็อต) ตาม schema ของเอนจิน v3.4 เมื่อนำเข้าแล้ว
+2. เขียน job spec ของงาน (ฉาก ข้อความ ท่า วิดเจ็ต กล้อง ทีวีสล็อต) ตาม schema ของเอนจิน v3.4 ใน `references/scene_spec_schema.md`
 3. สร้างค่าอนุมัติ (job digest) ใส่ใน `approval.json` (`status: "approved"`) จากหลักฐานการอนุมัติของเจ้าของงานจริง ห้ามอนุมัติตัวเอง
 
 ### ขั้นที่ 4: สั่งเรนเดอร์และตรวจ QC (Render & Delivery)
-1. เรนเดอร์ด้วยเอนจิน v3.4 (`render_liplnwza_v3.py` — **รอการนำเข้า**) ที่ 720×1280 @ 24fps แบบ `--chunk-frames 120`
+1. เรนเดอร์ด้วยเอนจิน v3.4 (`renderer/render_liplnwza_v3.py`) ที่ 720×1280 @ 24fps แบบ `--chunk-frames 120` — เรนเดอร์แผ่น QA (`--qa-only`) ตรวจภาพก่อนเรนเดอร์เต็มเสมอ
 2. ตรวจ QC ตามเกณฑ์ด้านล่างจากไฟล์ MP4 จริง ไม่ใช่จากแผน
 3. ส่ง MP4, SRT, ซอร์สที่ส่งต่อได้, sources และรายงานสิ่งที่ตรวจจริง เก็บ SESSION.md ให้ AI ตัวถัดไปทำต่อได้
 
@@ -164,17 +164,20 @@ liplnwza-motion-kit/
 ├── SKILL.md                          ← [สเปกหลักฉบับนี้ — แหล่งความจริงเดียวของ v3.4]
 ├── skills/liplnwza-motion/SKILL.md   ← ตัวชี้มาที่ SKILL.md หลัก + กติกาควบคุมงาน (ห้ามตีความแยก)
 ├── START_HERE.md                     ← คู่มือเริ่มต้นด่วน (อ่านไฟล์นี้ก่อนเมื่อเริ่มงานใหม่)
-├── V34-IMPORT-CHECKLIST.md           ← รายการไฟล์เอนจิน/แอสเสต v3.4 ที่ต้องนำเข้า + วิธีตรวจรับ
+├── V34-IMPORT-CHECKLIST.md           ← รายการตรวจรับการนำเข้าเอนจิน/แอสเสต v3.4
 ├── README.md                         ← ภาพรวมคลังโค้ด, Quickstart, และคู่มือติดตั้ง
 ├── AGENTS.md                         ← สเปกยุคแรก (legacy) สำหรับสไตล์กระดาษ — อ่านหมายเหตุหัวไฟล์ก่อนใช้
 ├── renderer/                         ← เครื่องยนต์ใน repo
 │   ├── v34_spec.py                   ← ค่าคงที่สเปก v3.4 ที่ล็อกไว้ (อ่านอย่างเดียว ไม่ใช่เอนจินเรนเดอร์)
+│   ├── render_liplnwza_v3.py         ← [v3.4] เอนจินเรนเดอร์ CDP หลัก
+│   ├── audio_mixer.py                ← [v3.4] มิกซ์เสียง + BGM + Foley + loudnorm
+│   ├── stage_template.html           ← [v3.4] เทมเพลต Full-Canvas Paper Stage
+│   ├── widgets.js                    ← [v3.4] 12 วิดเจ็ต + ปาก SVG แบบ procedural
 │   ├── kit.py                        ← [LEGACY แช่แข็ง] CLI เครื่องยนต์กระดาษ v0.2.1
 │   ├── new_job.py / prepare_cues.py / preflight.py / mfa_to_cues.py / ...
 │   │                               ← [LEGACY] เครื่องมือด่านตรวจ/ประกอบเดิม — ใช้กับงานเดิมเท่านั้น
 │   └── verify_manifest.py            ← ตรวจ manifest-sha256.json ของ repo + บัญชีภาพของงาน
-│   # เอนจิน v3.4 รอนำเข้า: render_liplnwza_v3.py, audio_mixer.py,
-│   # stage_template.html, widgets.js, mouth_anchors.json (ดู V34-IMPORT-CHECKLIST.md)
+├── assets_v3/                        ← [v3.4] มาสคอต 16 ท่า + พร็อพ 12 ชิ้น (WebP) + mouth_anchors.json
 ├── layouts/aot/                      ← [LEGACY แช่แข็ง] ตัวประกอบ AoT (compose.py, 1080x1920 @ 30fps) + SPEC.md
 ├── assets/                           ← แอสเสตมาตรฐาน (มาสคอต mouth_rig เดิม, ฟอนต์ Prompt-Bold)
 ├── brand/                            ← คลังภาพมาสคอต LiplnwZa ต้นฉบับ
@@ -189,4 +192,4 @@ liplnwza-motion-kit/
 
 - **v0.2.1** — เครื่องยนต์กระดาษ `renderer/kit.py` + Clean Plate rig 6 ท่า (สเปกเดิมอยู่ใน `AGENTS.md`)
 - **AoT layout (ล็อก 2026-11-02)** — เลย์เอาต์หลักของงานเดิม: บนกรอบภาพ / กลางซับชิป / ล่างมาสคอต 1080×1920 @ 30fps ตัวประกอบ `layouts/aot/compose.py`
-- **v3.4 (ล็อก 2026-11-24)** — มาตรฐานงานใหม่ในไฟล์นี้: Full-Canvas Paper Stage 720×1280 @ 24fps + CDP + 12 วิดเจ็ต + ช่องทีวี Lemo — เอนจินรอนำเข้า รายละเอียดการเปลี่ยนแต่ละครั้งดูใน `CHANGELOG.md`
+- **v3.4 (ล็อก 2026-11-24; เอนจินนำเข้าแล้ว 2026-11-24)** — มาตรฐานงานใหม่ในไฟล์นี้: Full-Canvas Paper Stage 720×1280 @ 24fps + CDP + 12 วิดเจ็ต + ช่องทีวี Lemo — รายละเอียดการเปลี่ยนแต่ละครั้งดูใน `CHANGELOG.md`

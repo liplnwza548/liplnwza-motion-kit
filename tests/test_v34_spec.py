@@ -1,10 +1,11 @@
 """Guard tests for the locked v3.4 spec constants in renderer/v34_spec.py.
 
 These tests pin the recorded standard so a later edit cannot silently
-drift a number, rename a pose, or drop a prop. They do NOT test the v3.4
-engine itself: the engine has not been imported into this repo yet
-(ENGINE_STATUS must stay "import_pending" until the import lands).
+drift a number, rename a pose, or drop a prop. The engine-file tests
+verify the imported v3.4 engine actually exists in this repo
+(ENGINE_STATUS is "imported" since 2026-11-24).
 """
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -15,8 +16,8 @@ import v34_spec
 
 
 class V34SpecTests(unittest.TestCase):
-    def test_engine_status_is_import_pending(self):
-        self.assertEqual(v34_spec.ENGINE_STATUS, "import_pending")
+    def test_engine_status_is_imported(self):
+        self.assertEqual(v34_spec.ENGINE_STATUS, "imported")
         self.assertEqual(v34_spec.SPEC_VERSION, "3.4")
 
     def test_output_geometry(self):
@@ -127,7 +128,39 @@ class V34SpecTests(unittest.TestCase):
         self.assertIn("renderer/stage_template.html", v34_spec.REQUIRED_ENGINE_FILES)
         self.assertIn("renderer/widgets.js", v34_spec.REQUIRED_ENGINE_FILES)
         self.assertIn("renderer/audio_mixer.py", v34_spec.REQUIRED_ENGINE_FILES)
-        self.assertIn("renderer/mouth_anchors.json", v34_spec.REQUIRED_ENGINE_FILES)
+        self.assertIn(
+            "assets_v3/mascot/mouth_anchors.json", v34_spec.REQUIRED_ENGINE_FILES
+        )
+        self.assertIn("assets_v3/mascot/", v34_spec.REQUIRED_ENGINE_FILES)
+        self.assertIn("assets_v3/props/", v34_spec.REQUIRED_ENGINE_FILES)
+
+    def test_engine_files_present(self):
+        """The imported v3.4 engine files exist with the locked inventory."""
+        for rel in v34_spec.REQUIRED_ENGINE_FILES:
+            self.assertTrue((ROOT / rel).exists(), f"missing: {rel}")
+        mascot_dir = ROOT / "assets_v3" / "mascot"
+        props_dir = ROOT / "assets_v3" / "props"
+        mascot_files = sorted(p.stem for p in mascot_dir.glob("*.webp"))
+        props_files = sorted(p.stem for p in props_dir.glob("*.webp"))
+        self.assertEqual(mascot_files, sorted(v34_spec.POSES))
+        self.assertEqual(props_files, sorted(v34_spec.PROPS))
+        anchors = json.loads(
+            (mascot_dir / "mouth_anchors.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(sorted(anchors), sorted(v34_spec.POSES))
+        for pose, anchor in anchors.items():
+            self.assertIn("mx", anchor)
+            self.assertIn("my", anchor)
+            self.assertIn("scale", anchor)
+        widgets = (ROOT / "renderer" / "widgets.js").read_text(encoding="utf-8")
+        for shape in v34_spec.MOUTH_SHAPES:
+            self.assertIn(shape, widgets)
+        template = (ROOT / "renderer" / "stage_template.html").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("ASSETS_INJECT_PLACEHOLDER", template)
+        self.assertIn("SPEC_INJECT_PLACEHOLDER", template)
+        self.assertIn("WIDGETS_JS_PLACEHOLDER", template)
 
 
 if __name__ == "__main__":

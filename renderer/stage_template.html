@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<style>
+/* FONT_INJECT_PLACEHOLDER */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 720px;
+  height: 1280px;
+  overflow: hidden;
+  font-family: 'NotoThai', 'DejaVu Sans', sans-serif;
+  background: #FFF6E8;
+  color: #181B26;
+  user-select: none;
+}
+
+#stage {
+  position: relative;
+  width: 720px;
+  height: 1280px;
+  overflow: hidden;
+}
+#camera-rig {
+  position: absolute;
+  inset: 0;
+  width: 720px;
+  height: 1280px;
+  transform-origin: 50% 42%;
+}
+#trans-curtain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 45;
+  display: none;
+}
+
+.bg-dark_navy_grid {
+  background-color: #1B2742;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.09) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, rgba(255,255,255,0.09) 1.5px, transparent 1.5px);
+  background-size: 40px 40px;
+}
+.bg-yellow_lined {
+  background-color: #FAF0D2;
+  background-image:
+    repeating-linear-gradient(transparent, transparent 36px, rgba(80,110,160,0.22) 36px, rgba(80,110,160,0.22) 38px);
+}
+.bg-cream_graph {
+  background-color: #FFF7E8;
+  background-image:
+    linear-gradient(rgba(30,45,80,0.08) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, rgba(30,45,80,0.08) 1.5px, transparent 1.5px);
+  background-size: 32px 32px;
+}
+.bg-pale_blue_grid {
+  background-color: #E7F1FC;
+  background-image:
+    linear-gradient(rgba(34,100,216,0.12) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, rgba(34,100,216,0.12) 1.5px, transparent 1.5px);
+  background-size: 36px 36px;
+}
+.bg-pale_pink_grid {
+  background-color: #FCE9EC;
+  background-image:
+    linear-gradient(rgba(217,78,59,0.12) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, rgba(217,78,59,0.12) 1.5px, transparent 1.5px);
+  background-size: 36px 36px;
+}
+.bg-pale_green_grid {
+  background-color: #E6F6EC;
+  background-image:
+    linear-gradient(rgba(56,181,119,0.14) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, rgba(56,181,119,0.14) 1.5px, transparent 1.5px);
+  background-size: 36px 36px;
+}
+
+.star-deco {
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+  filter: drop-shadow(3px 4px 0px rgba(24,27,38,0.28));
+}
+
+#ribbon-layer {
+  position: absolute;
+  top: 144px;
+  left: 0;
+  width: 720px;
+  display: flex;
+  justify-content: center;
+  z-index: 15;
+  pointer-events: none;
+}
+.torn-ribbon {
+  position: relative;
+  padding: 12px 36px;
+  font-size: 28px;
+  font-weight: 800;
+  border: 3.5px solid #181B26;
+  box-shadow: 5px 6px 0px #181B26;
+  clip-path: polygon(
+    1% 4%, 99% 0%, 97% 28%, 100% 52%, 98% 76%, 99% 98%,
+    2% 100%, 0% 74%, 3% 48%, 0% 24%
+  );
+  transform-origin: center center;
+}
+
+#widget-stage {
+  position: absolute;
+  top: 214px;
+  left: 36px;
+  width: 648px;
+  height: 445px;
+  z-index: 10;
+}
+
+.paper-card {
+  background: #FFFDF6;
+  border: 3.5px solid #181B26;
+  border-radius: 18px;
+  box-shadow: 7px 8px 0px rgba(24,27,38,0.88);
+  position: relative;
+}
+
+/* Full-Body Warodom-Scale Mascot Layer (Bottom-Left, 500px height) */
+#mascot-layer {
+  position: absolute;
+  left: 8px;
+  bottom: 20px;
+  height: 500px;
+  z-index: 20;
+  pointer-events: none;
+  transform-origin: bottom center;
+}
+#mascot-wrap {
+  position: relative;
+  display: inline-block;
+  height: 500px;
+}
+#mascot-img {
+  height: 500px;
+  width: auto;
+  display: block;
+  filter: drop-shadow(5px 8px 0 rgba(24,27,38,0.28));
+}
+#mascot-mouth-svg {
+  position: absolute;
+  pointer-events: none;
+  z-index: 22;
+  overflow: visible;
+}
+
+#sidekick-layer {
+  position: absolute;
+  right: 26px;
+  bottom: 165px;
+  width: 150px;
+  height: 150px;
+  z-index: 22;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#sidekick-img {
+  max-width: 145px;
+  max-height: 145px;
+  filter: drop-shadow(4px 6px 0 rgba(24,27,38,0.28));
+}
+
+/* Centered Progressive Word Chips with Overflow Auto-Fit Guard */
+#chips-outer {
+  position: absolute;
+  left: 43px;
+  width: 634px;
+  top: 672px;
+  height: 86px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 35;
+  pointer-events: none;
+}
+#chips-layer {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 11px;
+  transform-origin: center center;
+}
+.word-chip {
+  padding: 9px 19px;
+  border-radius: 14px;
+  border: 3.5px solid #181B26;
+  box-shadow: 4px 5px 0px #181B26;
+  font-size: 31px;
+  font-weight: 800;
+  line-height: 1.25;
+  white-space: nowrap;
+  transform-origin: center center;
+}
+</style>
+</head>
+<body>
+<div id="stage" class="bg-cream_graph">
+  <div id="camera-rig">
+    <div id="deco-layer"></div>
+    <div id="ribbon-layer"></div>
+    <div id="widget-stage"></div>
+  </div>
+  <div id="mascot-layer">
+    <div id="mascot-wrap">
+      <img id="mascot-img" alt="mascot" />
+      <svg id="mascot-mouth-svg" width="60" height="44" viewBox="-30 -22 60 44"></svg>
+    </div>
+  </div>
+  <div id="sidekick-layer">
+    <img id="sidekick-img" alt="" style="display:none;" />
+  </div>
+  <div id="trans-curtain"></div>
+  <div id="chips-outer">
+    <div id="chips-layer"></div>
+  </div>
+</div>
+<script>
+/* ASSETS_INJECT_PLACEHOLDER */
+/* SPEC_INJECT_PLACEHOLDER */
+/* WIDGETS_JS_PLACEHOLDER */
+</script>
+</body>
+</html>
