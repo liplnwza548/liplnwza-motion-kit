@@ -1,14 +1,21 @@
-# 🎨 LiplnwZa Motion Kit (v0.2.1)
+# 🎬 LiplnwZa Motion Kit (v3.4 — spec locked, engine import pending)
 
-> **Default layout for new work: AoT layout — see `layouts/aot/SPEC.md` first.**
-> Top image frame / middle word chips / bottom mascot (1080×1920, 30fps).
-> The paper layout (`paper-v021`) and `examples/benchmark15/` are a legacy
-> technical smoke test only, NOT a style reference for new clips.
+> **มาตรฐานงานใหม่: v3.4 "Lean & Punchy" (ฟิลิปล็อก 2026-11-24) — ดู `SKILL.md`**
+> Full-Canvas Paper Stage 9:16 `720x1280 @ 24fps` + Headless Chromium CDP,
+> มาสคอตเต็มตัว 16 ท่า + ปาก SVG 6 ทรง, 12 Animated Micro-Widgets,
+> ช่องทีวี Lemo, ซับสีรายคำกลางจอ `y=672` + Auto-Fit, 2-pass `-14.5 LUFS`
+>
+> ⚠️ **เอนจิน v3.4 ยังไม่ได้อยู่ใน repo นี้** — ติดตั้งอยู่บน Gemini Task Web
+> เท่านั้น ดูรายการนำเข้าที่ `V34-IMPORT-CHECKLIST.md`
+> เครื่องยนต์ที่อยู่ใน repo นี้คือเครื่องยนต์เก่า (legacy แช่แข็ง):
+> `renderer/kit.py` v0.2.1 (กระดาษ, 1080×1920 @ 30fps) และ
+> `layouts/aot/compose.py` (AoT layout, 1080×1920 @ 30fps) — ใช้กับงานเดิมและเทสต์เท่านั้น
+> สเปกตัวประกอบเดิมดูที่ `layouts/aot/SPEC.md`
 >
 > **Short-Form Motion Graphics Renderer & AI Agent Toolkit**
-> ออกแบบมาเพื่อสร้างวิดีโอแนวตั้ง (9:16, 1080×1920, 30fps) สไตล์ **Warodom Paper-Cut Collage** โดยอัตโนมัติ ผสานมาสคอต LiplnwZa, ระบบปากขยับ Procedural Lip-sync, การจัดสระภาษาไทยไร้รอยต่อ และระบบตรวจคุณภาพ (QC) อัตโนมัติ
+> ออกแบบมาเพื่อสร้างวิดีโอแนวตั้ง (9:16) สไตล์ **Warodom Paper-Cut Collage** โดยอัตโนมัติ ผสานมาสคอต LiplnwZa, ระบบปากขยับ, การจัดสระภาษาไทยไร้รอยต่อ และระบบตรวจคุณภาพ (QC) อัตโนมัติ
 
-[![Version](https://img.shields.io/badge/version-v0.2.1-blue.svg)](https://github.com/liplnwza548/liplnwza-motion-kit/releases/tag/v0.2.1)
+[![Version](https://img.shields.io/badge/version-v3.4-blue.svg)](https://github.com/liplnwza548/liplnwza-motion-kit)
 [![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue)](https://www.python.org/)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -17,7 +24,8 @@
 
 ## ✨ จุดเด่นสำคัญ (Key Highlights)
 
-- 🎭 **Clean-Plate Procedural Mouth Rig:** ระบบประกอบภาพปากตาม viseme ที่เตรียมไว้ สำหรับมาสคอต 6 ท่าหลัก (`explain`, `point_right`, `thinking`, `magnify`, `point_left`, `thumbs_up`) โดยแทนที่ภาพปากภายในพื้นที่ซ่อมที่กำหนด
+- 🎬 **v3.4 "Lean & Punchy" (มาตรฐานงานใหม่):** Full-Canvas Paper Stage 720×1280 @ 24fps (Headless Chromium CDP), มาสคอตเต็มตัว 16 ท่า + ปาก SVG 6 ทรง, 12 Animated Micro-Widgets, ช่องทีวี Lemo สำหรับคลิปสั้น 4–6 วิ, ซับสีรายคำกลางจอ y=672 + Auto-Fit, Lip-Sync 2 โหมด, BGM ลิขสิทธิ์ตัวเอง 3 แนว + 2-pass −14.5 LUFS — สเปกฉบับเต็มใน [SKILL.md](SKILL.md) (เอนจินรอนำเข้า ดู [V34-IMPORT-CHECKLIST.md](V34-IMPORT-CHECKLIST.md))
+- 🎭 **Clean-Plate Procedural Mouth Rig (เครื่องยนต์เก่า):** ระบบประกอบภาพปากตาม viseme ที่เตรียมไว้ สำหรับมาสคอต 6 ท่าหลัก (`explain`, `point_right`, `thinking`, `magnify`, `point_left`, `thumbs_up`) โดยแทนที่ภาพปากภายในพื้นที่ซ่อมที่กำหนด
 - 🇹🇭 **Thai Typography:** ใช้ Pillow RAQM เมื่อมี หรือใช้ `uharfbuzz` เป็นทางเลือก ต้องตรวจผลบนเครื่องเป้าหมายก่อนส่งงาน
 - ⚡ **Repeatable Rendering:** สร้าง movement และ SFX จากข้อมูลกับ seed ที่กำหนด; ความเหมือนกันระดับไบต์ยังไม่ได้ยืนยันข้ามระบบหรือ toolchain
 - 📊 **Automated Technical QC:** ตรวจสอบความดังเสียงมาตรฐาน (-18 ถึง -14 LUFS, True Peak ≤ -1.0 dBTP), เช็ก Decode Error, สร้าง Contact Sheet สรุปภาพรวม และ Contact Cards สำหรับส่งตรวจงาน
@@ -30,23 +38,30 @@
 ```text
 liplnwza-motion-kit/
 ├── README.md                         # คู่มือภาพรวมและวิธีใช้งาน
-├── SKILL.md                          # สเปกทักษะแบบละเอียดสำหรับ AI Agents
+├── SKILL.md                          # สเปกหลัก v3.4 ฉบับเดียวสำหรับ AI Agents
+├── V34-IMPORT-CHECKLIST.md           # รายการไฟล์เอนจิน/แอสเสต v3.4 ที่ต้องนำเข้า
 ├── START_HERE.md                     # เช็กลิสต์เริ่มต้นด่วนสำหรับมนุษย์และ AI
-├── AGENTS.md                         # สเปกแบรนด์ สัดส่วนมาสคอต และจานสี Warodom
-├── renderer/                         # เครื่องยนต์เรนเดอร์หลัก
-│   ├── kit.py                        # Unified CLI (doctor, validate, digest, render, qc) — รวมระบบจัดสระไทย (uharfbuzz) ไว้ในไฟล์นี้
+├── AGENTS.md                         # สเปกยุคแรก (legacy) — อ่านหมายเหตุหัวไฟล์ก่อนใช้
+├── renderer/                         # เครื่องยนต์ใน repo
+│   ├── v34_spec.py                   # ค่าคงที่สเปก v3.4 ที่ล็อกไว้ (ไม่ใช่เอนจินเรนเดอร์)
+│   ├── kit.py                        # [LEGACY แช่แข็ง] Unified CLI เครื่องยนต์กระดาษ v0.2.1
 │   ├── new_job.py                    # สร้างโฟลเดอร์งานใหม่ที่ jobs/<slug>/
 │   ├── prepare_cues.py               # (ทางเลือก) จับเวลาคำ/ปากจากบทที่รู้อยู่แล้ว ดูหมายเหตุด้านล่าง
-│   └── setup.ps1 / setup.sh          # ติดตั้ง venv + dependencies
+│   └── setup.ps1 / setup.sh          # ติดตั้ง venv + dependencies (เครื่องยนต์เก่า)
 │   # หมายเหตุ: rig_motion.py อยู่ที่ assets/mascot/mouth_rig/ ไม่ได้อยู่ใน renderer/
-├── assets/                           # แอสเสตมาตรฐานประจำเครื่องยนต์
+│   # เอนจิน v3.4 รอนำเข้า: render_liplnwza_v3.py, audio_mixer.py,
+│   # stage_template.html, widgets.js, mouth_anchors.json
+├── skills/liplnwza-motion/           # ตัวชี้สเปกหลัก + กติกาควบคุมงาน
+├── layouts/aot/                      # [LEGACY แช่แข็ง] ตัวประกอบ AoT (compose.py) + SPEC.md
+├── assets/                           # แอสเสตมาตรฐานประจำเครื่องยนต์เดิม
 │   ├── mascot/mouth_rig/             # รูปคลีนเพลต 6 ท่า + ปาก 6 ทรง + profiles.json
-│   └── fonts/Prompt-Bold.ttf         # ฟอนต์มาตรฐานบังคับ Prompt Bold
+│   └── fonts/Prompt-Bold.ttf         # ฟอนต์มาตรฐานบังคับ Prompt Bold (งานเดิม)
 ├── brand/                            # คลังภาพมาสคอต LiplnwZa ต้นฉบับ
 ├── examples/                         # ตัวอย่างงานมาตรฐาน
-│   └── benchmark15/                  # ตัวอย่าง 15 วินาที พร้อม voice.wav และ visemes
+│   └── benchmark15/                  # ตัวอย่าง 15 วินาที พร้อม voice.wav และ visemes (เทสต์เครื่องเก่า)
 └── tests/                            # ชุดทดสอบระบบอัตโนมัติ
-    ├── test_runtime.py               # runtime contract tests
+    ├── test_runtime.py               # runtime contract tests (เครื่องยนต์เก่า)
+    ├── test_v34_spec.py              # guard tests สำหรับค่าคงที่สเปก v3.4
     ├── test_caption_motion_policy.py  # caption and motion policy tests
     ├── test_theme_runtime.py          # theme and visual runtime tests
     ├── test_event_sfx.py              # event-driven SFX tests
@@ -58,7 +73,10 @@ liplnwza-motion-kit/
 
 ## 🚀 เริ่มต้นใช้งานด่วน (Quick Start)
 
-### 1. ความต้องการของระบบ (Prerequisites)
+### 0. ตรวจสถานะเอนจิน v3.4 ก่อน
+เอนจิน v3.4 ยังไม่ได้อยู่ใน repo นี้ — งานใหม่ทำได้แค่ระดับแผน + Beat Sheet ตาม [SKILL.md](SKILL.md) จนกว่าการนำเข้าจะเสร็จ (ดู [V34-IMPORT-CHECKLIST.md](V34-IMPORT-CHECKLIST.md)) คำสั่งด้านล่างนี้เป็นของเครื่องยนต์เก่า ใช้ตรวจงานเดิม/เทสต์เท่านั้น
+
+### 1. ความต้องการของระบบ (Prerequisites — เครื่องยนต์เก่า)
 - **Python 3.11+** (ตัวตรวจ `doctor` ใน `kit.py` ต้องการอย่างน้อย 3.11 — ถ้าเอกสารจุดอื่นบอก 3.10 ให้ยึด 3.11 เป็นเกณฑ์จริง)
 - **FFmpeg & FFprobe** ติดตั้งอยู่ในระบบและเรียกผ่าน PATH ได้
 - ไลบรารี Python: ติดตั้งผ่าน `renderer/setup.ps1` (Windows) หรือ `renderer/setup.sh` ซึ่งลงจาก `renderer/requirements.txt` ให้ (Pillow, numpy; การจัดสระไทยใช้ RAQM ใน Pillow หรือ uharfbuzz ถ้ามี)
@@ -91,7 +109,7 @@ python renderer/kit.py render examples/benchmark15/job.json --out output-benchma
 
 ---
 
-## 🛠 คำสั่ง CLI ทั้งหมด (CLI Reference)
+## 🛠 คำสั่ง CLI ทั้งหมด (CLI Reference — เครื่องยนต์เก่า `kit.py` เท่านั้น)
 
 | คำสั่ง | ตัวอย่างการใช้งาน | คำอธิบาย |
 | :--- | :--- | :--- |
@@ -107,12 +125,12 @@ python renderer/kit.py render examples/benchmark15/job.json --out output-benchma
 ## 🤖 วิธีติดตั้งทักษะให้กับ AI Agents (AI Skill Integration)
 
 หากคุณใช้งาน AI Agents เช่น **BeAN Muse AI, ChatGPT (Custom GPTs / Project), Claude Projects, Gemini Spark, หรือ AGY**:
-1. ให้ AI Agent อ่านไฟล์ [SKILL.md](SKILL.md) เพื่อทำความเข้าใจระเบียบการทำงาน 4 ขั้นตอน:
+1. ให้ AI Agent อ่านไฟล์ [SKILL.md](SKILL.md) (สเปกหลัก v3.4) เพื่อทำความเข้าใจระเบียบการทำงาน 4 ขั้นตอน:
    - **Step 1: Ingest & Analyze** — รับไฟล์เสียงจริง `voice.mp3` ของฟิลิป + Topic Brief
-   - **Step 2: Pre-production Beat Sheet** — ออกแบบฉากและท่ามาสคอตส่งให้ฟิลิปอนุมัติ
-   - **Step 3: Assembly & Automation** — สร้าง `words.json`, `visemes.json`, และ `job.json`
-   - **Step 4: Render & Delivery** — เรนเดอร์วิดีโอและตรวจ QC ผ่าน `renderer/kit.py qc`
-2. อ้างอิงสเปกภาพและจานสี Warodom ได้จาก [AGENTS.md](AGENTS.md)
+   - **Step 2: Pre-production Beat Sheet** — ออกแบบฉาก วิดเจ็ต กล้อง และท่ามาสคอตส่งให้ฟิลิปอนุมัติ
+   - **Step 3: Assembly & Automation** — สร้าง `words.json`, `visemes.json`, และ job spec
+   - **Step 4: Render & Delivery** — เรนเดอร์ด้วยเอนจิน v3.4 (เมื่อนำเข้าแล้ว) และตรวจ QC ตามเกณฑ์ v3.4
+2. อ้างอิงสเปกภาพและจานสี Warodom ได้จาก [AGENTS.md](AGENTS.md) (สเปกยุคแรก — อ่านหมายเหตุหัวไฟล์ก่อนใช้)
 
 ---
 

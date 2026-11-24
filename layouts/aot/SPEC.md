@@ -6,6 +6,16 @@
 > They prove the old engine runs. They are NOT a style reference for new
 > clips. Do not copy their topic, their card layout, or their chip position
 > into a new clip.
+>
+> **v3.4 supersedes this spec for new work (locked 2026-11-24).** The
+> locked standard for new clips is the v3.4 architecture in root
+> `SKILL.md`: Full-Canvas Paper Stage 720x1280 @ 24fps (CDP), 12
+> micro-widgets, Lemo TV slot, centred subtitles at y=672. This file
+> documents the proven `compose.py` compositor (1080x1920 @ 30fps);
+> its coordinates, dimensions and loudness target describe that
+> compositor only. Where this file and root `SKILL.md` conflict for new
+> work, root `SKILL.md` wins. The Images rule below has been updated to
+> the v3.4 code-only + TV-slot rule.
 
 ## Where this layout came from
 
@@ -35,19 +45,36 @@ the top frame. The mascot gap below is the hard rule (see the table).
 
 ## Images
 
-- **AI-generated images are the main illustration for every project**
-  (locked 2026-11-02). Generate a new image per beat, in the style of that
-  project, with no text baked into the image.
-- For a story/recap project, the approved reference is cinematic fan-art
-  style: strong light and shadow, no direct copy of a character's costume
-  or logo, no text.
-- Every image used must be listed in the job's image manifest with its
-  exact filename, its status (`accepted` only), and its SHA-256. A missing
-  beat, a non-accepted image, or a SHA mismatch is a hard failure.
+> **กฎภาพประกอบฉบับปัจจุบัน (อัปเดต 2026-11-24, v3.4): ภาพประกอบของงานใหม่
+> = ภาพโค้ดล้วน (HTML/CSS/SVG + Animated Micro-Widgets) + ช่องทีวี Lemo
+> เท่านั้น ห้ามใช้ภาพ AI-generated เป็นภาพหลัก** — กฎเดิมที่ระบุว่า
+> "AI-generated images are the main illustration" ถูกยกเลิกแล้วสำหรับงานใหม่
+> (ดู `SKILL.md` ที่ราก repo) เนื้อหาส่วนที่เหลือของหัวข้อนี้อธิบาย
+> ตัวประกอบเดิม `compose.py` ซึ่งยังใช้ภาพต่อบีต — สำหรับงานใหม่ให้ถือว่า
+> "ภาพต่อบีต" คือแผงภาพที่วาดด้วยโค้ด ไม่ใช่ไฟล์ภาพ AI
+
+- **Code-drawn panels are the main illustration for new work** (locked
+  2026-11-24, v3.4). Draw every beat's panel with code (HTML/CSS/SVG +
+  Animated Micro-Widgets), in the style of that project, with no text
+  baked into a raster image. AI-generated images must NOT be the main
+  illustration of a new clip.
+- **Lemo TV Slot (`media_clip_frame`):** a paper-framed TV slot may play
+  a short 4–6 second clip from the Lemo-Opuscar skill (all 25 styles),
+  with camera `focus_tv` while it plays. The clip must have clear usage
+  rights and its provenance recorded in the job manifest. A TV clip never
+  replaces the code-drawn stage — it plays inside the slot only.
+- For a story/recap project made with the legacy compositor, the approved
+  reference was cinematic fan-art style: strong light and shadow, no
+  direct copy of a character's costume or logo, no text. (Legacy path only.)
+- Every image/clip used must be listed in the job's image manifest with
+  its exact filename, its status (`accepted` only), and its SHA-256. A
+  missing beat, a non-accepted image, or a SHA mismatch is a hard failure.
   Never fall back to a glob search that could silently pick a rejected
   or stale file.
-- Minimum image size: 1024x768. Images are centre-crop covered to 984x784,
-  never stretched.
+- Minimum raster size (legacy compositor / TV-slot source frames):
+  1024x768. Legacy images are centre-crop covered to 984x784, never
+  stretched. Code-drawn panels have no raster minimum — they are drawn
+  at render resolution.
 - Beats change every 2-3 seconds in a story clip. The beat sheet, not the
   renderer, decides where each image starts and ends.
 
@@ -252,6 +279,8 @@ the top frame. The mascot gap below is the hard rule (see the table).
   rule and it overrides everything else.
 - Target loudness for a finished clip: -16 LUFS, true peak at most
   -1.0 dBTP. Check the finished MP4 itself, not just the WAV.
+  (This -16 LUFS target is the legacy `compose.py` gate. New v3.4 work
+  uses 2-pass -14.5 LUFS per root `SKILL.md`.)
 - **P2 guard — OFF = 0.08:** chip and pose timing in this layout uses
   `OFF = 0.08` seconds. Do not change it without Philip's own sync-test
   decision. It is not a tuning knob.
@@ -271,6 +300,9 @@ the top frame. The mascot gap below is the hard rule (see the table).
   specifically.
 
 ## How to make a new clip with this layout
+
+For new work, follow root `SKILL.md` (v3.4) first — the steps below are
+the legacy `compose.py` path for existing jobs.
 
 1. Philip approves the script and the voice first. No rendering before
    that approval.
