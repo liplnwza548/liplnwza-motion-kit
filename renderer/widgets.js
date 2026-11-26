@@ -260,8 +260,20 @@
   }
 
   function w_media_clip_frame(w, age) {
-    const sc = springScale(age, 0.18);
     const tvSrc = (window.__LEMO_TV_FRAME__) || '';
+    if (w.fit === 'full_bleed') {
+      const innerFb = tvSrc
+        ? `<img src="${tvSrc}" style="width:100%;height:100%;object-fit:cover;display:block;"/>`
+        : `<div style="width:100%;height:100%;background:#0F172A;color:#FFD648;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;">LEMO FULL-BLEED SLOT</div>`;
+      const badge = w.channel_label
+        ? `<div style="position:absolute;top:18px;left:22px;background:rgba(15,23,42,0.78);color:#F8FAFC;border:1.5px solid rgba(255,255,255,0.2);border-radius:999px;padding:6px 16px;font-size:16px;font-weight:700;backdrop-filter:blur(6px);">${w.channel_label}</div>`
+        : '';
+      const credit = w.credit
+        ? `<div style="position:absolute;top:18px;right:22px;background:rgba(15,23,42,0.78);color:#CBD5E1;border-radius:999px;padding:6px 14px;font-size:15px;font-weight:700;">${w.credit}</div>`
+        : '';
+      return `<div style="position:relative;width:100%;height:100%;overflow:hidden;">${innerFb}${badge}${credit}</div>`;
+    }
+    const sc = springScale(age, 0.18);
     const inner = tvSrc
       ? `<img src="${tvSrc}" style="width:100%;height:100%;object-fit:cover;display:block;"/>`
       : `<div style="width:100%;height:100%;background:#0F172A;color:#FFD648;display:flex;align-items:center;justify-content:center;font-size:24px;">LEMO TV SLOT</div>`;
@@ -310,7 +322,100 @@
     </div>`;
   }
 
+  function w_custom_html(w, age, beatDur) {
+    const p = clamp(age / Math.max(0.25, beatDur || 1.0), 0, 1);
+    const sc = w.no_pop ? 1.0 : springScale(age, 0.18);
+    const cssTag = w.css ? `<style>${w.css}</style>` : '';
+    let html = String(w.html || '');
+    // Dynamic value substitution for smooth 24/30fps data-driven animation
+    html = html
+      .replaceAll('{{AGE}}', age.toFixed(3))
+      .replaceAll('{{PROGRESS}}', p.toFixed(4))
+      .replaceAll('{{PCT}}', (p * 100).toFixed(1));
+    return `${cssTag}<div class="v35-custom-wrap" style="--age:${age.toFixed(3)};--progress:${p.toFixed(4)};width:100%;height:100%;transform:scale(${sc.toFixed(3)});transform-origin:center center;">${html}</div>`;
+  }
+
+  // === v3.6 Built-in Living Comic Widgets ===
+  function w_evidence_card(w, age) {
+    const sc = springScale(age, 0.16);
+    const items = w.items || [];
+    const badgeColor = w.badge_color || '#2264D8';
+    const rowsHtml = items.map((it, i) => {
+      const at = (typeof it === 'object' && it.at != null) ? it.at : (0.18 + i * 0.45);
+      const txt = (typeof it === 'object') ? it.text : String(it);
+      const val = (typeof it === 'object' && it.value) ? it.value : '';
+      const hl = (typeof it === 'object' && it.highlight) ? it.highlight : '';
+      return `<div data-at="${at}" data-anim="slide-left" style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-radius:12px;border:2.5px solid #181B26;background:${hl || '#FFFDF6'};box-shadow:3px 4px 0 #181B26;font-size:23px;font-weight:800;">
+        <span>${txt}</span>${val ? `<span style="color:#E5483B;font-weight:900;">${val}</span>` : ''}
+      </div>`;
+    }).join('');
+    const stampHtml = w.stamp ? `<div data-at="${w.stamp_at != null ? w.stamp_at : 1.2}" data-anim="slam" data-rot="-6" class="comic-stamp" style="right:18px;bottom:14px;background:${w.stamp_bg || '#E5483B'};color:#FFFDF6;font-size:28px;">${w.stamp}</div>` : '';
+    return `<div class="paper-card" style="width:100%;height:100%;padding:22px 24px;display:flex;flex-direction:column;gap:12px;transform:scale(${sc.toFixed(3)});">
+      <div class="tape-strip" style="top:-12px;left:50%;transform:translateX(-50%) rotate(-2deg);"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px dashed #181B26;padding-bottom:10px;">
+        <span style="background:${badgeColor};color:#FFFDF6;border:2.5px solid #181B26;border-radius:10px;padding:4px 14px;font-size:20px;font-weight:900;">${w.badge || 'หลักฐานตัวเลข'}</span>
+        ${w.kicker ? `<span style="font-size:17px;font-weight:800;color:#475569;">${w.kicker}</span>` : ''}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px;flex:1;justify-content:center;">${rowsHtml}</div>
+      ${stampHtml}
+    </div>`;
+  }
+
+  function w_live_calc_receipt(w, age) {
+    const sc = springScale(age, 0.16);
+    const lines = w.lines || [];
+    const rows = lines.map((ln, i) => {
+      const at = ln.at != null ? ln.at : (0.15 + i * 0.45);
+      return `<div data-at="${at}" data-anim="slide-up" style="display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:2px dashed rgba(24,27,38,0.22);font-size:23px;font-weight:800;">
+        <span style="color:#334155;">${ln.label}</span>
+        <span style="color:${ln.color || '#181B26'};font-weight:900;font-size:25px;">${ln.value}</span>
+      </div>`;
+    }).join('');
+    const tot = w.total || {};
+    const totAt = tot.at != null ? tot.at : 1.4;
+    return `<div class="comic-receipt" style="width:100%;height:100%;padding:20px 24px;display:flex;flex-direction:column;justify-content:space-between;transform:scale(${sc.toFixed(3)});">
+      <div style="display:flex;justify-content:space-between;align-items:center;background:#181B26;color:#FFD648;padding:9px 16px;border-radius:10px;font-size:21px;font-weight:900;">
+        <span>🧾 ${w.title || 'บิลจ่ายจริง'}</span>
+        <span style="font-size:16px;color:#FFFDF6;">${w.subtitle || 'ตัวอย่างสมมติ'}</span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:4px;margin:8px 0;">${rows}</div>
+      ${tot.label ? `<div data-at="${totAt}" data-anim="slam" data-rot="-1.5" style="background:${tot.bg || '#E5483B'};color:${tot.fg || '#FFFDF6'};border:3.5px solid #181B26;border-radius:14px;padding:12px 18px;box-shadow:5px 6px 0 #181B26;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:23px;font-weight:800;">${tot.label}</span>
+        <span data-at="${totAt}" data-anim="count" data-from="${tot.from || 0}" data-to="${tot.to || 0}" data-dur="0.55" data-suffix="${tot.suffix || ' บ.'}" style="font-size:38px;font-weight:900;">${tot.value || ''}</span>
+      </div>` : ''}
+    </div>`;
+  }
+
+  function w_bar_compare(w, age) {
+    const sc = springScale(age, 0.16);
+    const bars = w.bars || [];
+    const rows = bars.map((b, i) => {
+      const at = b.at != null ? b.at : (0.18 + i * 0.42);
+      return `<div data-at="${at}" data-anim="slide-up" style="display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:22px;font-weight:900;">
+          <span>${b.label}</span>
+          <span style="color:${b.color || '#E5483B'};">${b.value} ${b.tag ? `<span style="background:${b.color || '#E5483B'};color:#FFFDF6;font-size:15px;padding:2px 9px;border-radius:999px;border:2px solid #181B26;margin-left:6px;">${b.tag}</span>` : ''}</span>
+        </div>
+        <div style="width:100%;height:34px;background:#E2E8F0;border:3px solid #181B26;border-radius:10px;overflow:hidden;box-shadow:3px 4px 0 #181B26;">
+          <div data-at="${at + 0.08}" data-anim="bar" data-pct="${b.pct || 50}" data-dur="0.48" style="height:100%;width:0%;background:${b.color || '#2264D8'};border-right:3px solid #181B26;"></div>
+        </div>
+      </div>`;
+    }).join('');
+    return `<div class="paper-card" style="width:100%;height:100%;padding:22px 26px;display:flex;flex-direction:column;justify-content:space-between;transform:scale(${sc.toFixed(3)});">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:24px;font-weight:900;">${w.title || 'เทียบสัดส่วนภาระ'}</span>
+        ${w.kicker ? `<span style="background:#FFD648;border:2.5px solid #181B26;border-radius:999px;padding:3px 12px;font-size:16px;font-weight:900;">${w.kicker}</span>` : ''}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px;flex:1;justify-content:center;">${rows}</div>
+      ${w.footer ? `<div style="font-size:18px;font-weight:800;color:#475569;text-align:center;">${w.footer}</div>` : ''}
+    </div>`;
+  }
+
   const WIDGET_MAP = {
+    custom_html: w_custom_html,
+    evidence_card: w_evidence_card,
+    live_calc_receipt: w_live_calc_receipt,
+    bar_compare: w_bar_compare,
     rating_stars: w_rating_stars,
     chat_bubbles: w_chat_bubbles,
     calendar_flip: w_calendar_flip,
@@ -324,6 +429,279 @@
     cta_comment_box: w_cta_comment_box,
     vote_buttons: w_vote_buttons,
   };
+
+  // === v3.6 Deterministic Sub-Beat Choreography Engine (30fps-ready) ===
+  function formatGroupedInt(val) {
+    return Math.round(val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function applySubBeatAnimations(root, age) {
+    if (!root) return;
+    const nodes = root.querySelectorAll('[data-at], [data-anim]');
+    nodes.forEach(el => {
+      const at = parseFloat(el.getAttribute('data-at') || '0');
+      const untilAttr = el.getAttribute('data-until');
+      const until = untilAttr !== null ? parseFloat(untilAttr) : Infinity;
+      const anim = el.getAttribute('data-anim') || 'pop';
+      const dur = parseFloat(el.getAttribute('data-dur') || '0.20');
+      const baseRot = parseFloat(el.getAttribute('data-rot') || '0');
+
+      if (age < at || age >= until) {
+        if (anim === 'bar') {
+          el.style.width = '0%';
+        } else if (anim === 'strike') {
+          el.style.width = '0%';
+          el.style.opacity = '0';
+        } else if (anim === 'count') {
+          const fr = parseFloat(el.getAttribute('data-from') || '0');
+          const pre = el.getAttribute('data-prefix') || '';
+          const suf = el.getAttribute('data-suffix') || '';
+          if (age < at) {
+            el.style.opacity = '0';
+            el.textContent = pre + formatGroupedInt(fr) + suf;
+          } else {
+            el.style.opacity = '0';
+          }
+        } else {
+          el.style.opacity = '0';
+          el.style.visibility = 'hidden';
+        }
+        return;
+      }
+
+      const local = Math.max(0, age - at);
+      el.style.visibility = 'visible';
+
+      if (anim === 'pop') {
+        const sc = springScale(local, dur || 0.18);
+        el.style.opacity = clamp(local / 0.08, 0, 1).toFixed(3);
+        el.style.transform = `scale(${sc.toFixed(3)}) rotate(${baseRot}deg)`;
+      } else if (anim === 'slam') {
+        const p = clamp(local / (dur || 0.15), 0, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        const sc = 2.35 - 1.35 * ease;
+        const rot = baseRot + (1 - ease) * -14;
+        el.style.opacity = clamp(p * 2.5, 0, 1).toFixed(3);
+        el.style.transform = `scale(${sc.toFixed(3)}) rotate(${rot.toFixed(2)}deg)`;
+      } else if (anim === 'slide-up') {
+        const p = clamp(local / (dur || 0.22), 0, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.style.opacity = ease.toFixed(3);
+        el.style.transform = `translateY(${((1 - ease) * 34).toFixed(1)}px) rotate(${baseRot}deg)`;
+      } else if (anim === 'slide-left') {
+        const p = clamp(local / (dur || 0.22), 0, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.style.opacity = ease.toFixed(3);
+        el.style.transform = `translateX(${((1 - ease) * 48).toFixed(1)}px) rotate(${baseRot}deg)`;
+      } else if (anim === 'slide-right') {
+        const p = clamp(local / (dur || 0.22), 0, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.style.opacity = ease.toFixed(3);
+        el.style.transform = `translateX(${(-(1 - ease) * 48).toFixed(1)}px) rotate(${baseRot}deg)`;
+      } else if (anim === 'count') {
+        const fr = parseFloat(el.getAttribute('data-from') || '0');
+        const to = parseFloat(el.getAttribute('data-to') || '0');
+        const cDur = parseFloat(el.getAttribute('data-dur') || '0.55');
+        const pre = el.getAttribute('data-prefix') || '';
+        const suf = el.getAttribute('data-suffix') || '';
+        const p = clamp(local / Math.max(0.08, cDur), 0, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        const val = fr + (to - fr) * ease;
+        el.style.opacity = '1';
+        el.textContent = pre + formatGroupedInt(val) + suf;
+      } else if (anim === 'bar') {
+        const pct = parseFloat(el.getAttribute('data-pct') || '100');
+        const bDur = parseFloat(el.getAttribute('data-dur') || '0.45');
+        const p = clamp(local / Math.max(0.08, bDur), 0, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.style.opacity = '1';
+        el.style.width = (pct * ease).toFixed(2) + '%';
+      } else if (anim === 'strike') {
+        const sDur = parseFloat(el.getAttribute('data-dur') || '0.22');
+        const p = clamp(local / Math.max(0.06, sDur), 0, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.style.opacity = '1';
+        el.style.width = (100 * ease).toFixed(1) + '%';
+      } else if (anim === 'type') {
+        const full = el.getAttribute('data-text') || '';
+        const cps = parseFloat(el.getAttribute('data-cps') || '18');
+        const nChars = Math.min(full.length, Math.floor(local * cps));
+        const caret = (nChars < full.length || Math.floor(local * 4) % 2 === 0) ? '|' : '';
+        el.style.opacity = '1';
+        el.textContent = full.slice(0, nChars) + caret;
+      } else if (anim === 'fade') {
+        const p = clamp(local / (dur || 0.2), 0, 1);
+        el.style.opacity = p.toFixed(3);
+      }
+    });
+  }
+
+  // === v3.6 Built-in Comic FX Overlay Renderer ===
+  // Oversized centered square SVG (r=1600, 3200x3200) so rotating 0..360deg around (cx,cy)
+  // NEVER exposes clipped SVG box edges or leaves bottom corners uncovered (max corner dist ~923px).
+  function sunburstSVG(color, rays = 16, r = 1600) {
+    let paths = '';
+    const size = r * 2;
+    for (let i = 0; i < rays; i++) {
+      const a1 = (i * 2 * Math.PI) / rays;
+      const a2 = ((i + 0.48) * 2 * Math.PI) / rays;
+      const x1 = (Math.cos(a1) * r).toFixed(1);
+      const y1 = (Math.sin(a1) * r).toFixed(1);
+      const x2 = (Math.cos(a2) * r).toFixed(1);
+      const y2 = (Math.sin(a2) * r).toFixed(1);
+      paths += `<polygon points="0,0 ${x1},${y1} ${x2},${y2}" fill="${color}"/>`;
+    }
+    return `<svg width="${size}" height="${size}" viewBox="${-r} ${-r} ${size} ${size}" style="display:block;overflow:visible;">${paths}</svg>`;
+  }
+
+  function speedLinesSVG(color = 'rgba(24,27,38,0.16)') {
+    let lines = '';
+    const cx = 360, cy = 435;
+    for (let i = 0; i < 36; i++) {
+      const ang = (i * 2 * Math.PI) / 36;
+      const rIn = 235 + (i % 3) * 28;
+      const rOut = 1400;
+      const w = (i % 2 === 0) ? 4.5 : 2.5;
+      const x1 = (cx + Math.cos(ang) * rIn).toFixed(1);
+      const y1 = (cy + Math.sin(ang) * rIn).toFixed(1);
+      const x2 = (cx + Math.cos(ang) * rOut).toFixed(1);
+      const y2 = (cy + Math.sin(ang) * rOut).toFixed(1);
+      lines += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/>`;
+    }
+    return `<svg width="720" height="1280" viewBox="0 0 720 1280">${lines}</svg>`;
+  }
+
+  function comicBurstSVG(bg, size = 148, points = 12) {
+    let d = '';
+    const cx = size / 2, cy = size / 2;
+    const rOut = size * 0.47, rIn = size * 0.31;
+    for (let i = 0; i < points * 2; i++) {
+      const ang = (i * Math.PI) / points - Math.PI / 2;
+      const r = i % 2 === 0 ? rOut : rIn;
+      d += (i === 0 ? 'M' : 'L') + (cx + Math.cos(ang) * r).toFixed(1) + ',' + (cy + Math.sin(ang) * r).toFixed(1);
+    }
+    return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="filter:drop-shadow(4px 5px 0 #181B26);"><path d="${d}Z" fill="${bg}" stroke="#181B26" stroke-width="3.5" stroke-linejoin="round"/></svg>`;
+  }
+
+  function renderComicFX(beat, age, t, mascotShot) {
+    const bgFx = document.getElementById('bg-fx-layer');
+    const stFx = document.getElementById('stage-fx-layer');
+    const acFx = document.getElementById('actor-fx-layer');
+    if (!bgFx || !stFx || !acFx) return;
+
+    let bgHtml = '';
+    let stHtml = '';
+    let acHtml = '';
+
+    const fxList = Array.isArray(beat.comic_fx) ? beat.comic_fx.slice() : [];
+    // Shorthand mascot_bubble / sidekick_bubble
+    if (beat.mascot_bubble) {
+      const mb = typeof beat.mascot_bubble === 'string' ? { text: beat.mascot_bubble } : beat.mascot_bubble;
+      fxList.push(Object.assign({ type: 'speech_bubble', target: 'mascot', at: 0.25 }, mb));
+    }
+    if (beat.sidekick_bubble) {
+      const sb = typeof beat.sidekick_bubble === 'string' ? { text: beat.sidekick_bubble } : beat.sidekick_bubble;
+      fxList.push(Object.assign({ type: 'speech_bubble', target: 'sidekick', at: 0.45 }, sb));
+    }
+
+    fxList.forEach(fx => {
+      const at = fx.at != null ? fx.at : 0;
+      const until = fx.until != null ? fx.until : Infinity;
+      if (age < at || age >= until) return;
+      const local = age - at;
+
+      if (fx.type === 'sunburst') {
+        const cx = fx.cx != null ? fx.cx : 360;
+        const cy = fx.cy != null ? fx.cy : 430;
+        const r = 1600;
+        const size = r * 2;
+        const sc = 0.94 + 0.06 * springScale(local, 0.22);
+        const rot = (t * (fx.speed || 16)) % 360;
+        const op = fx.opacity != null ? fx.opacity : 0.24;
+        const col = fx.color || '#FFD648';
+        bgHtml += `<div style="position:absolute;left:${cx - r}px;top:${cy - r}px;width:${size}px;height:${size}px;opacity:${(op * Math.min(1, local / 0.16)).toFixed(3)};transform-origin:50% 50%;transform:scale(${sc.toFixed(3)}) rotate(${rot.toFixed(1)}deg);">${sunburstSVG(col, fx.rays || 16, r)}</div>`;
+      } else if (fx.type === 'speed_lines') {
+        const pulse = 0.85 + 0.15 * Math.sin(t * 18);
+        const col = fx.color || 'rgba(24,27,38,0.16)';
+        bgHtml += `<div style="position:absolute;inset:0;opacity:${(pulse * Math.min(1, local / 0.1)).toFixed(3)};">${speedLinesSVG(col)}</div>`;
+      } else if (fx.type === 'stamp_slam') {
+        const p = clamp(local / 0.14, 0, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        const sc = 2.4 - 1.4 * ease;
+        const rot = (fx.rot != null ? fx.rot : -8) + (1 - ease) * -12;
+        const x = fx.x != null ? fx.x : 445;
+        const y = fx.y != null ? fx.y : 550;
+        const bg = fx.bg || '#E5483B';
+        const fg = fx.fg || '#FFFDF6';
+        const fz = fx.font_size || 30;
+        stHtml += `<div class="comic-stamp" style="left:${x}px;top:${y}px;background:${bg};color:${fg};font-size:${fz}px;opacity:${clamp(p*2.5,0,1).toFixed(3)};transform:translate(-50%,-50%) scale(${sc.toFixed(3)}) rotate(${rot.toFixed(1)}deg);">${fx.text || 'ปัง!'}</div>`;
+      } else if (fx.type === 'comic_burst') {
+        const sc = springScale(local, 0.18);
+        const x = fx.x != null ? fx.x : 590;
+        const y = fx.y != null ? fx.y : 240;
+        const sz = fx.size || 142;
+        const rot = (fx.rot != null ? fx.rot : 8) + Math.sin(t * 4.5) * 3.5;
+        const bg = fx.bg || '#FFD648';
+        const fg = fx.fg || '#181B26';
+        stHtml += `<div style="position:absolute;left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;transform:translate(-50%,-50%) scale(${sc.toFixed(3)}) rotate(${rot.toFixed(1)}deg);display:flex;align-items:center;justify-content:center;">
+          <div style="position:absolute;inset:0;">${comicBurstSVG(bg, sz, fx.points || 12)}</div>
+          <div style="position:relative;z-index:2;text-align:center;color:${fg};font-size:${fx.font_size || 24}px;font-weight:900;line-height:1.1;padding:0 12px;">${fx.text || '!'}</div>
+        </div>`;
+      } else if (fx.type === 'magnifying_lens') {
+        const dur = fx.dur || 1.6;
+        const p = clamp(local / dur, 0, 1);
+        const ease = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+        const x = (fx.x1 != null ? fx.x1 : 170) + ((fx.x2 != null ? fx.x2 : 520) - (fx.x1 != null ? fx.x1 : 170)) * ease;
+        const y = (fx.y1 != null ? fx.y1 : 340) + ((fx.y2 != null ? fx.y2 : 460) - (fx.y1 != null ? fx.y1 : 340)) * ease + Math.sin(p * Math.PI * 2) * 14;
+        const sc = springScale(local, 0.2);
+        stHtml += `<div style="position:absolute;left:${x.toFixed(1)}px;top:${y.toFixed(1)}px;transform:translate(-50%,-50%) scale(${sc.toFixed(3)});filter:drop-shadow(4px 6px 0 rgba(24,27,38,0.35));">
+          <svg width="116" height="116" viewBox="0 0 116 116">
+            <circle cx="48" cy="48" r="34" fill="rgba(255,214,72,0.22)" stroke="#181B26" stroke-width="7"/>
+            <path d="M 32,34 Q 44,24 58,32" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
+            <line x1="74" y1="74" x2="104" y2="104" stroke="#181B26" stroke-width="12" stroke-linecap="round"/>
+            <line x1="74" y1="74" x2="104" y2="104" stroke="#E5483B" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+        </div>`;
+      } else if (fx.type === 'arrow_callout') {
+        const sc = springScale(local, 0.18);
+        const x = fx.x != null ? fx.x : 500;
+        const y = fx.y != null ? fx.y : 290;
+        const bg = fx.bg || '#FFD648';
+        stHtml += `<div style="position:absolute;left:${x}px;top:${y}px;transform:translate(-50%,-50%) scale(${sc.toFixed(3)}) rotate(${fx.rot || -4}deg);background:${bg};color:#181B26;border:3.5px solid #181B26;border-radius:14px;padding:7px 16px;font-size:21px;font-weight:900;box-shadow:4px 5px 0 #181B26;white-space:nowrap;">${fx.text || 'ดูตรงนี้!'}</div>`;
+      } else if (fx.type === 'speech_bubble') {
+        const sc = springScale(local, 0.18);
+        const bob = Math.sin(t * 3.2) * 3;
+        const isRightMascot = (mascotShot === 'right_standard' || mascotShot === 'closeup_right' || mascotShot === 'peek_right');
+        const isCenterMascot = (mascotShot === 'center_stage' || mascotShot === 'closeup_center');
+        const styleCls = fx.style === 'shout' ? 'bubble-shout' : (fx.style === 'alert' ? 'bubble-alert' : '');
+        let x, y, tailCls;
+        if (fx.x != null && fx.y != null) {
+          x = fx.x; y = fx.y;
+          tailCls = fx.tail === 'right' ? 'comic-bubble-tail-right' : (fx.tail === 'none' ? '' : 'comic-bubble-tail-left');
+        } else if (fx.target === 'sidekick') {
+          if (isRightMascot) {
+            x = 185; y = 850; tailCls = 'comic-bubble-tail-left';
+          } else {
+            x = 290; y = 850; tailCls = 'comic-bubble-tail-right';
+          }
+        } else {
+          // Mascot bubble — strictly BELOW y=768 so it never touches y=672..758 subtitle!
+          if (isRightMascot) {
+            x = 40; y = 805; tailCls = 'comic-bubble-tail-right';
+          } else if (isCenterMascot) {
+            x = 435; y = 785; tailCls = 'comic-bubble-tail-left';
+          } else {
+            x = 395; y = 805; tailCls = 'comic-bubble-tail-left';
+          }
+        }
+        acHtml += `<div class="comic-bubble ${styleCls} ${tailCls}" style="left:${x}px;top:${y}px;transform:translateY(${bob.toFixed(1)}px) scale(${sc.toFixed(3)}) rotate(${fx.rot || (isRightMascot ? -1.5 : 1.5)}deg);">${fx.text || ''}</div>`;
+      }
+    });
+
+    bgFx.innerHTML = bgHtml;
+    stFx.innerHTML = stHtml;
+    acFx.innerHTML = acHtml;
+  }
 
   function renderWords(t) {
     const layer = document.getElementById('chips-layer');
@@ -348,7 +726,6 @@
       layer.style.transform = `scale(${ratio.toFixed(3)})`;
     }
   }
-
 
   function applyCameraAndTransition(beat, age, beatDur) {
     const rig = document.getElementById('camera-rig');
@@ -416,39 +793,100 @@
     const beat = beats.find(b => t >= b.start && t < b.end) || beats[beats.length - 1];
     const age = Math.max(0, t - beat.start);
 
-    const stage = document.getElementById('stage');
-    const bgName = beat.bg || 'cream_graph';
-    stage.className = 'bg-' + bgName;
+    const theme = Object.assign({}, spec.theme || {}, beat.theme || {});
+    const layout = beat.layout || theme.layout || 'standard';
+    const mascotShot = beat.mascot_shot || theme.mascot_shot || '';
+    const mascotMode = beat.mascot_mode || theme.mascot_mode || (layout === 'full_stage' ? 'mini_left' : 'standard');
 
-    renderDecorations(t, bgName);
+    const stage = document.getElementById('stage');
+    const bgName = beat.bg || theme.bg || 'cream_graph';
+    const cls = ['bg-' + bgName, 'layout-' + layout];
+    if (mascotShot) cls.push('shot-' + mascotShot);
+    else if (mascotMode && mascotMode !== 'standard') cls.push('mascot-' + mascotMode);
+    stage.className = cls.join(' ');
+
+    if (theme.bg_css) {
+      stage.style.background = theme.bg_css;
+    } else if (theme.bg_color) {
+      stage.style.backgroundImage = 'none';
+      stage.style.backgroundColor = theme.bg_color;
+    } else {
+      stage.style.background = '';
+      stage.style.backgroundImage = '';
+      stage.style.backgroundColor = '';
+    }
+
+    const customStyleEl = document.getElementById('custom-theme-style');
+    if (customStyleEl) customStyleEl.textContent = theme.css || '';
+
+    const chipsOuter = document.getElementById('chips-outer');
+    if (chipsOuter) {
+      if (theme.chips_y != null) chipsOuter.style.top = theme.chips_y + 'px';
+      else chipsOuter.style.top = '';
+    }
+
+    if (theme.show_stars === false) {
+      document.getElementById('deco-layer').innerHTML = '';
+    } else {
+      renderDecorations(t, bgName);
+    }
 
     const rLayer = document.getElementById('ribbon-layer');
-    if (beat.ribbon) {
+    if (beat.ribbon && theme.show_ribbon !== false) {
       const rCol = RIBBON_COLORS[beat.ribbon_color || 'red'] || RIBBON_COLORS.red;
-      rLayer.innerHTML = `<div class="torn-ribbon" style="background:${rCol.bg};color:${rCol.fg};transform:scale(${springScale(age, 0.16).toFixed(3)}) rotate(-1.2deg);">${beat.ribbon}</div>`;
+      if (theme.ribbon_style === 'pill') {
+        rLayer.innerHTML = `<div class="pill-ribbon" style="background:${rCol.bg};color:${rCol.fg};transform:scale(${springScale(age, 0.16).toFixed(3)});">${beat.ribbon}</div>`;
+      } else {
+        rLayer.innerHTML = `<div class="torn-ribbon" style="background:${rCol.bg};color:${rCol.fg};transform:scale(${springScale(age, 0.16).toFixed(3)}) rotate(-1.2deg);">${beat.ribbon}</div>`;
+      }
     } else {
       rLayer.innerHTML = '';
     }
 
     const wStage = document.getElementById('widget-stage');
     const wObj = beat.widget;
-    wStage.innerHTML = (wObj && WIDGET_MAP[wObj.type]) ? WIDGET_MAP[wObj.type](wObj, age) : '';
+    const beatDur = Math.max(0.2, beat.end - beat.start);
+    wStage.innerHTML = (wObj && WIDGET_MAP[wObj.type]) ? WIDGET_MAP[wObj.type](wObj, age, beatDur) : '';
+    applySubBeatAnimations(wStage, age);
 
-    // Preloaded Mascot + SVG Mouth
+    // Preloaded Mascot + SVG Mouth + v3.6 Stage Blocking & Flip
     const mLayer = document.getElementById('mascot-layer');
+    const mFlip = document.getElementById('mascot-flip');
     const mImg = document.getElementById('mascot-img');
     const pKey = poseName || 'wave';
     if (pKey !== lastPose && assets.mascots[pKey]) {
       mImg.src = assets.mascots[pKey];
       lastPose = pKey;
     }
+    const isCenteredShot = (mascotShot === 'center_stage' || mascotShot === 'closeup_center');
     const bobY = Math.sin(t * 2.8) * 2.2;
     const sway = Math.sin(t * 1.6) * 0.6;
-    mLayer.style.transform = `translateY(${bobY.toFixed(1)}px) rotate(${sway.toFixed(2)}deg)`;
+    let enterX = 0, enterY = 0, enterSc = 1.0;
+    const mEnter = beat.mascot_enter || '';
+    if (mEnter && age < 0.24) {
+      const ep = clamp(age / 0.24, 0, 1);
+      const ease = 1 - Math.pow(1 - ep, 3);
+      if (mEnter === 'slide_left') enterX = -(1 - ease) * 140;
+      else if (mEnter === 'slide_right') enterX = (1 - ease) * 140;
+      else if (mEnter === 'rise') enterY = (1 - ease) * 120;
+      else if (mEnter === 'pop') enterSc = springScale(age, 0.22);
+    }
+    const baseTx = isCenteredShot ? `translateX(calc(-50% + ${enterX.toFixed(1)}px))` : `translateX(${enterX.toFixed(1)}px)`;
+    mLayer.style.transform = `${baseTx} translateY(${(bobY + enterY).toFixed(1)}px) scale(${enterSc.toFixed(3)}) rotate(${sway.toFixed(2)}deg)`;
+
+    if (mFlip) {
+      mFlip.style.transform = beat.mascot_flip ? 'scaleX(-1)' : '';
+    }
     renderProceduralMouth(mouthShape || 'CLOSED', assets.anchors[pKey] || assets.anchors.wave);
 
-    // Preloaded Sidekick Prop
+    // Preloaded Sidekick Prop + v3.6 Auto-Opposite Blocking
+    const skLayer = document.getElementById('sidekick-layer');
     const skImg = document.getElementById('sidekick-img');
+    const isRightMascot = (mascotShot === 'right_standard' || mascotShot === 'closeup_right' || mascotShot === 'peek_right');
+    const skPos = beat.sidekick_pos || (isRightMascot ? 'left' : '');
+    if (skLayer) {
+      skLayer.className = skPos ? ('sk-' + skPos) : '';
+    }
     if (sidekickName && assets.props[sidekickName]) {
       if (sidekickName !== lastSidekick) {
         skImg.src = assets.props[sidekickName];
@@ -463,7 +901,8 @@
       lastSidekick = '';
     }
 
-    applyCameraAndTransition(beat, age, (beat.end - beat.start));
+    renderComicFX(beat, age, t, mascotShot);
+    applyCameraAndTransition(beat, age, beatDur);
     renderWords(t);
   };
 })();

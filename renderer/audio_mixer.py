@@ -22,7 +22,7 @@ from scipy.signal import butter, sosfilt
 
 SR = 48000
 SKILL_ROOT = Path(__file__).resolve().parent.parent
-BGM_DIR = Path("/tmp/liplnwza_v3_bgm")
+BGM_DIR = Path("/tmp/liplnwza_v3_bgm") if Path("/tmp").exists() else Path(tempfile.gettempdir()) / "liplnwza_v3_bgm"
 
 
 def probe_duration(path: Path) -> float:
@@ -355,6 +355,28 @@ def synth_chime():
     return (0.6 * np.sin(2 * np.pi * 880 * t) + 0.4 * np.sin(2 * np.pi * 1318.5 * t)) * np.exp(-t * 9.5)
 
 
+def synth_stamp_thud():
+    n = int(SR * 0.16)
+    t = np.linspace(0, 0.16, n, endpoint=False)
+    freq = 145.0 * np.exp(-t * 14.0) + 46.0
+    thump = np.sin(2 * np.pi * np.cumsum(freq) / SR) * np.exp(-t * 18.0) * 0.85
+    slap = np.random.default_rng(7).standard_normal(n) * np.exp(-t * 55.0) * 0.30
+    return thump + slap
+
+
+def synth_boing():
+    n = int(SR * 0.14)
+    t = np.linspace(0, 0.14, n, endpoint=False)
+    freq = 280.0 + 340.0 * (1.0 - np.exp(-t * 22.0))
+    return np.sin(2 * np.pi * np.cumsum(freq) / SR) * np.exp(-t * 16.0) * 0.55
+
+
+def synth_cash_ding():
+    n = int(SR * 0.36)
+    t = np.linspace(0, 0.36, n, endpoint=False)
+    return (0.55 * np.sin(2 * np.pi * 1568.0 * t) + 0.45 * np.sin(2 * np.pi * 2093.0 * t)) * np.exp(-t * 8.5)
+
+
 def apply_vo_midband_ducking(bgm: np.ndarray, vo: np.ndarray) -> np.ndarray:
     n = len(bgm)
     vo_mono = vo[:n].mean(axis=1)
@@ -399,6 +421,8 @@ def build_audio_track(spec: dict, duration: float, out_wav: Path):
 
     foley = np.zeros((n, 2), dtype=np.float64)
     whoosh, pop_hi, pop_lo, tick, chime = synth_whoosh(), synth_pop(540.0), synth_pop(420.0), synth_tick(), synth_chime()
+    thud, boing, ding = synth_stamp_thud(), synth_boing(), synth_cash_ding()
+    sfx_map = {"whoosh": whoosh, "pop": pop_hi, "tick": tick, "chime": chime, "thud": thud, "boing": boing, "ding": ding}
     f_scale = 0.62 if has_vo else 1.0
 
     for idx, beat in enumerate(spec.get("beats", [])):
@@ -412,6 +436,22 @@ def build_audio_track(spec: dict, duration: float, out_wav: Path):
                 _add_mono(foley, t_b + 0.26 + s * 0.22, tick, gain=0.19 * f_scale, pan=0.15)
         elif wtype in ("cta_comment_box", "media_clip_frame"):
             _add_mono(foley, t_b + 0.30, chime, gain=0.22 * f_scale, pan=0.0)
+        # v3.6 Comic FX synced Foley
+        for fx in beat.get("comic_fx") or []:
+            ft = t_b + float(fx.get("at", 0.0))
+            ftype = fx.get("type", "")
+            if ftype == "stamp_slam":
+                _add_mono(foley, ft, thud, gain=0.40 * f_scale, pan=0.0)
+            elif ftype == "comic_burst":
+                _add_mono(foley, ft, boing, gain=0.26 * f_scale, pan=0.18)
+            elif ftype == "sunburst":
+                _add_mono(foley, ft, ding, gain=0.20 * f_scale, pan=0.0)
+            elif ftype == "speech_bubble":
+                _add_mono(foley, ft, pop_hi, gain=0.18 * f_scale, pan=-0.15)
+        for cue in beat.get("sfx_cues") or []:
+            snd = sfx_map.get(cue.get("kind", "tick"))
+            if snd is not None:
+                _add_mono(foley, t_b + float(cue.get("at", 0.0)), snd, gain=float(cue.get("gain", 0.24)) * f_scale, pan=float(cue.get("pan", 0.0)))
 
     for row in spec.get("word_rows", []):
         for wi, w in enumerate(row.get("words", [])):

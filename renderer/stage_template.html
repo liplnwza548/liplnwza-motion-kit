@@ -28,6 +28,33 @@ html, body {
   height: 1280px;
   transform-origin: 50% 42%;
 }
+#bg-fx-layer {
+  position: absolute;
+  inset: 0;
+  width: 720px;
+  height: 1280px;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+#stage-fx-layer {
+  position: absolute;
+  inset: 0;
+  width: 720px;
+  height: 1280px;
+  pointer-events: none;
+  z-index: 18;
+  overflow: hidden;
+}
+#actor-fx-layer {
+  position: absolute;
+  inset: 0;
+  width: 720px;
+  height: 1280px;
+  pointer-events: none;
+  z-index: 26;
+  overflow: hidden;
+}
 #trans-curtain {
   position: absolute;
   inset: 0;
@@ -125,7 +152,7 @@ html, body {
   position: relative;
 }
 
-/* Full-Body Warodom-Scale Mascot Layer (Bottom-Left, 500px height) */
+/* Full-Body Warodom-Scale Mascot Layer (Bottom-Left default, 500px height) */
 #mascot-layer {
   position: absolute;
   left: 8px;
@@ -139,6 +166,13 @@ html, body {
   position: relative;
   display: inline-block;
   height: 500px;
+  transform-origin: bottom center;
+}
+#mascot-flip {
+  position: relative;
+  display: inline-block;
+  height: 500px;
+  transform-origin: center center;
 }
 #mascot-img {
   height: 500px;
@@ -165,13 +199,42 @@ html, body {
   align-items: center;
   justify-content: center;
 }
+#sidekick-layer.sk-left {
+  left: 26px;
+  right: auto;
+  bottom: 165px;
+}
+#sidekick-layer.sk-lower_right {
+  right: 24px;
+  left: auto;
+  bottom: 58px;
+}
+#sidekick-layer.sk-lower_left {
+  left: 24px;
+  right: auto;
+  bottom: 58px;
+}
+#sidekick-layer.sk-center_right {
+  right: 52px;
+  left: auto;
+  bottom: 130px;
+  width: 176px;
+  height: 176px;
+}
+#sidekick-layer.sk-center_left {
+  left: 52px;
+  right: auto;
+  bottom: 130px;
+  width: 176px;
+  height: 176px;
+}
 #sidekick-img {
-  max-width: 145px;
-  max-height: 145px;
+  max-width: 100%;
+  max-height: 100%;
   filter: drop-shadow(4px 6px 0 rgba(24,27,38,0.28));
 }
 
-/* Centered Progressive Word Chips with Overflow Auto-Fit Guard */
+/* Centered Progressive Word Chips with Overflow Auto-Fit Guard (LOCKED y=672) */
 #chips-outer {
   position: absolute;
   left: 43px;
@@ -203,24 +266,180 @@ html, body {
   white-space: nowrap;
   transform-origin: center center;
 }
+
+/* === v3.5 Modular Layout & Theme Knobs (opt-in; standard = v3.4 identical) === */
+.pill-ribbon {
+  padding: 10px 28px;
+  font-size: 24px;
+  font-weight: 800;
+  border-radius: 999px;
+  border: 2.5px solid rgba(255,255,255,0.22);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.24);
+  letter-spacing: 0.2px;
+  transform-origin: center center;
+}
+#stage.layout-split #ribbon-layer { top: 96px; }
+#stage.layout-split #widget-stage {
+  top: 162px;
+  left: 24px;
+  width: 672px;
+  height: 540px;
+}
+#stage.layout-split #chips-outer { top: 726px; }
+#stage.layout-split #mascot-layer { left: 14px; bottom: 14px; height: 500px; }
+#stage.layout-split #mascot-wrap { transform: scale(0.76); transform-origin: bottom left; }
+
+#stage.layout-full_stage #ribbon-layer { top: 96px; z-index: 30; }
+#stage.layout-full_stage #widget-stage {
+  top: 0;
+  left: 0;
+  width: 720px;
+  height: 1280px;
+  z-index: 10;
+}
+#stage.layout-full_stage #chips-outer { top: 875px; z-index: 35; }
+
+#stage.mascot-mini_left #mascot-layer { left: 16px; right: auto; bottom: 20px; height: 500px; }
+#stage.mascot-mini_left #mascot-wrap { transform: scale(0.52); transform-origin: bottom left; }
+
+#stage.mascot-mini_right #mascot-layer { left: auto; right: 16px; bottom: 20px; height: 500px; }
+#stage.mascot-mini_right #mascot-wrap { transform: scale(0.52); transform-origin: bottom right; }
+
+#stage.mascot-hidden #mascot-layer { display: none; }
+
+/* === v3.6 Living Stage: Mascot Blocking Presets (ALL clear y=672..758 subtitle strip) === */
+#stage.shot-left_standard #mascot-layer { left: 8px; right: auto; bottom: 20px; }
+#stage.shot-left_standard #mascot-wrap { transform: scale(1.0); transform-origin: bottom left; }
+
+#stage.shot-right_standard #mascot-layer { left: auto; right: 8px; bottom: 20px; }
+#stage.shot-right_standard #mascot-wrap { transform: scale(1.0); transform-origin: bottom right; }
+
+#stage.shot-center_stage #mascot-layer { left: 50%; right: auto; bottom: 20px; }
+#stage.shot-center_stage #mascot-wrap { transform: scale(1.02); transform-origin: bottom center; }
+
+#stage.shot-closeup_left #mascot-layer { left: -6px; right: auto; bottom: -165px; }
+#stage.shot-closeup_left #mascot-wrap { transform: scale(1.36); transform-origin: bottom left; }
+
+#stage.shot-closeup_right #mascot-layer { left: auto; right: -6px; bottom: -165px; }
+#stage.shot-closeup_right #mascot-wrap { transform: scale(1.36); transform-origin: bottom right; }
+
+#stage.shot-closeup_center #mascot-layer { left: 50%; right: auto; bottom: -158px; }
+#stage.shot-closeup_center #mascot-wrap { transform: scale(1.34); transform-origin: bottom center; }
+
+#stage.shot-peek_left #mascot-layer { left: -46px; right: auto; bottom: 12px; }
+#stage.shot-peek_left #mascot-wrap { transform: scale(0.95) rotate(7deg); transform-origin: bottom left; }
+
+#stage.shot-peek_right #mascot-layer { left: auto; right: -46px; bottom: 12px; }
+#stage.shot-peek_right #mascot-wrap { transform: scale(0.95) rotate(-7deg); transform-origin: bottom right; }
+
+/* === v3.6 Comic Toys Styling === */
+.comic-bubble {
+  position: absolute;
+  max-width: 295px;
+  padding: 13px 20px;
+  background: #FFFDF6;
+  color: #181B26;
+  border: 3.5px solid #181B26;
+  border-radius: 22px;
+  box-shadow: 5px 6px 0px #181B26;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1.28;
+  text-align: center;
+  transform-origin: center center;
+}
+.comic-bubble.bubble-shout {
+  background: #FFD648;
+  color: #181B26;
+  border-width: 4px;
+}
+.comic-bubble.bubble-alert {
+  background: #E5483B;
+  color: #FFFDF6;
+  border-width: 4px;
+}
+.comic-bubble-tail-left::after {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: 52%;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 18px solid #181B26;
+}
+.comic-bubble-tail-right::after {
+  content: '';
+  position: absolute;
+  right: -18px;
+  top: 52%;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 18px solid #181B26;
+}
+.comic-stamp {
+  position: absolute;
+  padding: 10px 26px;
+  border-radius: 14px;
+  border: 5px solid #181B26;
+  box-shadow: 6px 7px 0px #181B26;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-align: center;
+  white-space: nowrap;
+  transform-origin: center center;
+}
+.comic-stamp::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 2.5px dashed rgba(255,255,255,0.55);
+  border-radius: 8px;
+  pointer-events: none;
+}
+.tape-strip {
+  position: absolute;
+  width: 96px;
+  height: 24px;
+  background: rgba(255, 224, 130, 0.85);
+  border: 2px solid #181B26;
+  box-shadow: 2px 3px 0 rgba(24,27,38,0.22);
+  pointer-events: none;
+}
+.comic-receipt {
+  background: #FFFDF6;
+  border: 3.5px solid #181B26;
+  border-radius: 14px;
+  box-shadow: 7px 8px 0px #181B26;
+  position: relative;
+}
 </style>
+<style id="custom-theme-style"></style>
 </head>
 <body>
 <div id="stage" class="bg-cream_graph">
   <div id="camera-rig">
+    <div id="bg-fx-layer"></div>
     <div id="deco-layer"></div>
     <div id="ribbon-layer"></div>
     <div id="widget-stage"></div>
+    <div id="stage-fx-layer"></div>
   </div>
   <div id="mascot-layer">
     <div id="mascot-wrap">
-      <img id="mascot-img" alt="mascot" />
-      <svg id="mascot-mouth-svg" width="60" height="44" viewBox="-30 -22 60 44"></svg>
+      <div id="mascot-flip">
+        <img id="mascot-img" alt="mascot" />
+        <svg id="mascot-mouth-svg" width="60" height="44" viewBox="-30 -22 60 44"></svg>
+      </div>
     </div>
   </div>
   <div id="sidekick-layer">
     <img id="sidekick-img" alt="" style="display:none;" />
   </div>
+  <div id="actor-fx-layer"></div>
   <div id="trans-curtain"></div>
   <div id="chips-outer">
     <div id="chips-layer"></div>

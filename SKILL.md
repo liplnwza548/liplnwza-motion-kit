@@ -1,6 +1,6 @@
 ---
 name: liplnwza-motion
-description: "LiplnwZa Motion Kit v3.4 (Lean & Punchy): vertical 9:16 720x1280 @ 24fps Full-Canvas Paper Stage rendered with Headless Chromium CDP, full-body LiplnwZa mascot (16 poses, SVG mouths), 12 animated micro-widgets, Lemo TV slot, per-word colour subtitles and automated technical QC."
+description: "LiplnwZa Motion Kit v3.6 Living Stage (backward-compatible with v3.4/v3.5): vertical 9:16 720x1280 @ 30fps/24fps Paper Stage (locked y=672 subtitles), 8 mascot blocking shots, 7 comic FX + sub-beat choreography, 16 poses + SVG mouths, custom_html + 15 widgets, Lemo TV/full_bleed slot, and 2-pass -14.5 LUFS audio."
 ---
 
 # 🎬 LiplnwZa Motion Kit — Master Skill Specification (v3.4)
@@ -193,3 +193,30 @@ liplnwza-motion-kit/
 - **v0.2.1** — เครื่องยนต์กระดาษ `renderer/kit.py` + Clean Plate rig 6 ท่า (สเปกเดิมอยู่ใน `AGENTS.md`)
 - **AoT layout (ล็อก 2026-11-02)** — เลย์เอาต์หลักของงานเดิม: บนกรอบภาพ / กลางซับชิป / ล่างมาสคอต 1080×1920 @ 30fps ตัวประกอบ `layouts/aot/compose.py`
 - **v3.4 (ล็อก 2026-11-24; เอนจินนำเข้าแล้ว 2026-11-24)** — มาตรฐานงานใหม่ในไฟล์นี้: Full-Canvas Paper Stage 720×1280 @ 24fps + CDP + 12 วิดเจ็ต + ช่องทีวี Lemo — รายละเอียดการเปลี่ยนแต่ละครั้งดูใน `CHANGELOG.md`
+---
+
+## 🚀 อัปเกรด v3.5 Modular & v3.6 "Living Stage" (ต่อยอดจากฐาน v3.4 — Backward-Compatible 100%)
+
+> **ฟิลิปล็อกทิศทาง 2026-11-26:** คงเอกลักษณ์ **พื้นกระดาษตาราง v3.4 + ริบบิ้น + ดาว + ซับสีรายคำกลางจอ `y=672` (พ้น UI TikTok)** ไว้ครบ 100% แต่ปลดล็อกให้เวทีมีชีวิตไม่ซ้ำเทมเพลตเดิม (ทุกสเปก v3.4 เดิมยังรันได้เหมือนเดิมทุกพิกเซล)
+
+### 1. v3.5 Modular Knobs (opt-in)
+- `theme` (ระดับ spec หรือราย beat): `show_stars`, `show_ribbon`, `ribbon_style` (`torn` | `pill`), `bg_color`, `bg_css`, `css`, `chips_y`, `mascot_mode` (`standard` | `mini_left` | `mini_right` | `hidden`)
+- `layout` (ราย beat): `standard` (v3.4 เดิม) | `split` | `full_stage`
+- `widget.type: "custom_html"`: สร้างฉากเฉพาะตอนด้วย HTML/CSS/SVG ได้อิสระ (รองรับ `{{AGE}}`, `{{PROGRESS}}`, `{{PCT}}`)
+- `media_clip_frame`: รองรับ `fit: "full_bleed"` (720×1280 เต็มจอสำหรับคลิป Lemo-Opuscar 100 สไตล์)
+
+### 2. v3.6 Living Stage (แนะนำสำหรับงานใหม่)
+- **30fps + สีมาตรฐานสตรีมมิง:** ส่ง `--fps 30` หรือใส่ `"fps": 30` ใน `scene_spec.json` — เรนเดอร์ออก `yuv420p` (`color_range=tv`, `bt709`) และซิงก์ `visemes.json` + Lemo clips ที่ 30fps อัตโนมัติ
+- **8 มุมกล้องมาสคอต (`beat.mascot_shot` — ทุกมุมเว้นพ้นซับ `y=672`):** `left_standard`, `right_standard`, `center_stage`, `closeup_left`, `closeup_right`, `closeup_center`, `peek_left`, `peek_right` + ท่าเปิดตัว `mascot_enter` (`pop` | `slide_left` | `slide_right` | `rise`) และสลับฝั่งคู่หู `sidekick_pos` อัตโนมัติไม่ให้ชนกัน
+- **7 Comic FX (`beat.comic_fx`) + ฟองคำพูด (`mascot_bubble` / `sidekick_bubble`):** `sunburst`, `speed_lines`, `stamp_slam`, `comic_burst`, `magnifying_lens`, `arrow_callout`, `speech_bubble` พร้อมเสียง Foley อัตโนมัติใน `audio_mixer.py` (`synth_stamp_thud`, `synth_boing`, `synth_cash_ding`) และ `beat.sfx_cues`
+- **Sub-Beat Choreography (`data-at` / `data-anim` ใน `custom_html`):** รองรับ `pop`, `slam`, `slide-up/left/right`, `count`, `bar`, `strike`, `type`, `fade` (deterministic 100% ทุกเฟรม)
+- **3 วิดเจ็ตคอมมิกใหม่ใน `WIDGET_MAP`:** `evidence_card`, `live_calc_receipt`, `bar_compare`
+
+### 3. กฎป้องกันบั๊กถาวร (Regression Guards)
+1. **ห้ามใช้ `mascot_flip: true` กับมาสคอตที่เสื้อมีตัวหนังสือ** (เช่นคำว่า `LipinwZa` บนฮู้ด จะกลับด้านอ่านไม่ออก)
+2. **ห้ามซ้ำ `mascot_shot` ติดกันเกิน 2 บีต** และทุกบีตที่ยาวเกิน 2.5 วิ ควรมีจังหวะภาพย่อย (`data-at` หรือ `comic_fx`) อย่างน้อย 2 จุด
+3. **เอฟเฟกต์หมุนเต็มจอ (`sunburst` ฯลฯ — `PM-v36-sunburst-clip`):** ต้องใช้ `<svg>` สี่เหลี่ยมจัตุรัสศูนย์กลาง `(0,0)` ขนาดใหญ่กว่า `2 × (max_corner_dist + camera_margin)` (`3200×3200`, `r=1600`) และให้ `#bg-fx-layer` เป็นตัวคลิปหลังหมุนเท่านั้น (`speed_lines` ต้อง `rOut >= 1400`)
+4. **พร็อพสติกเกอร์ (`assets_v3/props/*.webp`):** ทุกไฟล์ต้องมีขอบโปร่งใสครบทั้ง 4 ด้าน (`edge_touch == 0`, ตรวจด้วย `tests/test_v36_living_stage.py`)
+5. **ความปลอดภัยโค้ด/คลังสาธารณะ:** ห้ามใส่ API keys หรือรายละเอียดโคลนเสียง (voice ID / model / stability / reference audio) ลงใน repo เด็ดขาด
+
+- **v3.5 Modular & v3.6 Living Stage (2026-11-26)** — เพิ่ม `theme`/`layout`/`custom_html`/`full_bleed` (v3.5), 8 มุมมาสคอต + 7 Comic FX + Sub-Beat + 3 วิดเจ็ตใหม่ + `30fps` + `yuv420p tv` + แก้ `sunburst`/`speed_lines` ครอบเต็มจอ (`PM-v36-sunburst-clip`) + ซ่อมขอบบอท 3 ตัว (`edge_touch == 0`) — เทสต์ผ่าน 22/22 ข้อ
