@@ -1,0 +1,1695 @@
+{
+  "title": "Pilot EP.1 v5 (Full Sunburst + Repaired Bots) (v3.6 Living Stage @ 30fps): ผ่อนรถ 7 แสน จ่ายจริงเท่าไรต่อเดือน",
+  "fps": 30,
+  "duration": 67.6,
+  "audio": {
+    "vo_path": "C:\\Users\\Administrator\\OpenBot\\Shared\\pilot-ep1-v1\\voice-v1.wav",
+    "visemes_path": "C:\\Users\\Administrator\\OpenBot\\Shared\\pilot-ep1-v1\\cues\\visemes.json",
+    "bgm_preset": "funk_brass",
+    "bgm_gain": 0.2
+  },
+  "beats": [
+    {
+      "id": "B01",
+      "start": 0.0,
+      "end": 3.8,
+      "qa_at": 2.95,
+      "bg": "dark_navy_grid",
+      "ribbon": "ป้ายผ่อนรถ 7 แสน",
+      "ribbon_color": "red",
+      "pose": "shocked",
+      "mascot_shot": "closeup_center",
+      "mascot_enter": "pop",
+      "sidekick": "",
+      "camera": "punch_in",
+      "transition": "ink_flash",
+      "mascot_bubble": {
+        "text": "เดี๋ยวก่อน! 😱",
+        "style": "shout",
+        "at": 2.35
+      },
+      "comic_fx": [
+        {
+          "type": "speed_lines",
+          "color": "rgba(255,214,72,0.18)",
+          "at": 1.8
+        },
+        {
+          "type": "comic_burst",
+          "text": "กับดัก!",
+          "bg": "#FFD648",
+          "fg": "#181B26",
+          "x": 620,
+          "y": 244,
+          "size": 112,
+          "rot": 10,
+          "font_size": 21,
+          "at": 1.85
+        },
+        {
+          "type": "stamp_slam",
+          "text": "อย่าเพิ่งคิดว่าไหว!",
+          "bg": "#E5483B",
+          "fg": "#FFFDF6",
+          "x": 565,
+          "y": 510,
+          "rot": -4,
+          "font_size": 28,
+          "at": 2.25
+        }
+      ],
+      "widget": {
+        "type": "custom_html",
+        "html": "\n            <div class=\"paper-card\" style=\"width:100%;height:100%;padding:18px 24px 72px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:#FFFDF6;\">\n              <div class=\"tape-strip\" style=\"top:-12px;left:50%;transform:translateX(-50%) rotate(-2deg);\"></div>\n              <div style=\"width:100%;display:flex;align-items:center;gap:10px;\">\n                <span style=\"background:#181B26;color:#FFD648;padding:4px 14px;border-radius:999px;font-size:17px;font-weight:900;\">🚗 ป้ายโชว์รูม</span>\n                <span style=\"background:#F1F5F9;border:2px solid #181B26;padding:3px 12px;border-radius:999px;font-size:15px;font-weight:800;color:#334155;\">ตัวอย่างคำนวณสมมติ</span>\n              </div>\n              <div data-at=\"0.75\" data-anim=\"slide-up\" style=\"display:flex;align-items:center;gap:14px;background:#E7F1FC;border:3px solid #181B26;border-radius:14px;padding:9px 22px;box-shadow:4px 4px 0 #181B26;\">\n                <span style=\"font-size:22px;font-weight:800;color:#1E3A8A;\">ราคารถป้ายแดง</span>\n                <span style=\"font-size:32px;font-weight:900;color:#2264D8;\">700,000 บ.</span>\n              </div>\n              <div style=\"text-align:center;position:relative;padding:2px 16px;\">\n                <div style=\"font-size:20px;font-weight:800;color:#64748B;\">ผ่อนเริ่มต้นบนป้าย</div>\n                <div style=\"position:relative;display:inline-block;\">\n                  <span data-at=\"1.55\" data-anim=\"count\" data-from=\"0\" data-to=\"9751\" data-dur=\"0.45\" data-suffix=\" บ./ด.\" style=\"font-size:66px;font-weight:900;color:#181B26;line-height:1.05;\">9,751 บ./ด.</span>\n                  <div data-at=\"2.20\" data-anim=\"strike\" data-dur=\"0.22\" style=\"position:absolute;left:-6px;top:52%;height:9px;background:#E5483B;border:2px solid #181B26;border-radius:6px;transform:rotate(-3.5deg);\"></div>\n                </div>\n              </div>\n            </div>\n            "
+      }
+    },
+    {
+      "id": "B02",
+      "start": 3.8,
+      "end": 7.46,
+      "qa_at": 6.85,
+      "bg": "pale_pink_grid",
+      "ribbon": "4 ค่าแฝงเกือบแสน/ปี",
+      "ribbon_color": "red",
+      "pose": "pointer",
+      "mascot_shot": "left_standard",
+      "mascot_enter": "slide_left",
+      "sidekick": "bot_shock",
+      "sidekick_pos": "right",
+      "camera": "push_in",
+      "transition": "paper_slide",
+      "sidekick_bubble": {
+        "text": "เกือบแสนเลย?!",
+        "style": "alert",
+        "at": 1.45
+      },
+      "comic_fx": [
+        {
+          "type": "sunburst",
+          "color": "#E5483B",
+          "opacity": 0.14,
+          "at": 1.1
+        },
+        {
+          "type": "comic_burst",
+          "text": "+94.8k",
+          "bg": "#FFD648",
+          "fg": "#181B26",
+          "x": 620,
+          "y": 244,
+          "size": 108,
+          "rot": 8,
+          "font_size": 21,
+          "at": 1.35
+        }
+      ],
+      "sfx_cues": [
+        {
+          "at": 2.1,
+          "kind": "tick"
+        },
+        {
+          "at": 2.38,
+          "kind": "tick"
+        },
+        {
+          "at": 2.66,
+          "kind": "tick"
+        },
+        {
+          "at": 2.94,
+          "kind": "tick"
+        }
+      ],
+      "widget": {
+        "type": "custom_html",
+        "html": "\n            <div class=\"paper-card\" style=\"width:100%;height:100%;padding:20px 22px;display:flex;flex-direction:column;justify-content:space-between;\">\n              <div style=\"text-align:left;padding-right:86px;\">\n                <div style=\"font-size:20px;font-weight:800;color:#475569;\">รายจ่ายแฝงเพิ่มต่อปี (ตัวอย่างสมมติ)</div>\n                <div data-at=\"1.05\" data-anim=\"count\" data-from=\"0\" data-to=\"94800\" data-dur=\"0.55\" data-prefix=\"+\" data-suffix=\" บ./ปี\" style=\"font-size:56px;font-weight:900;color:#E5483B;line-height:1.12;text-shadow:3px 3px 0 #FFD648;\">+94,800 บ./ปี</div>\n              </div>\n              <div style=\"display:grid;grid-template-columns:1fr 1fr;gap:14px;\">\n                <div data-at=\"2.10\" data-anim=\"pop\" style=\"background:#FFF3C4;border:3px solid #181B26;border-radius:14px;padding:15px 16px;box-shadow:4px 5px 0 #181B26;font-size:23px;font-weight:900;\">⛽ 1. ค่าน้ำมัน</div>\n                <div data-at=\"2.38\" data-anim=\"pop\" style=\"background:#DBEAFE;border:3px solid #181B26;border-radius:14px;padding:15px 16px;box-shadow:4px 5px 0 #181B26;font-size:23px;font-weight:900;\">🛡️ 2. ประกัน/ภาษี</div>\n                <div data-at=\"2.66\" data-anim=\"pop\" style=\"background:#D1FAE5;border:3px solid #181B26;border-radius:14px;padding:15px 16px;box-shadow:4px 5px 0 #181B26;font-size:23px;font-weight:900;\">🔧 3. ซ่อม/ยาง</div>\n                <div data-at=\"2.94\" data-anim=\"pop\" style=\"background:#FCE7F3;border:3px solid #181B26;border-radius:14px;padding:15px 16px;box-shadow:4px 5px 0 #181B26;font-size:23px;font-weight:900;\">🛣️ 4. ทางด่วน/จอด</div>\n              </div>\n            </div>\n            "
+      }
+    },
+    {
+      "id": "B03",
+      "start": 7.46,
+      "end": 12.8,
+      "qa_at": 12.1,
+      "bg": "cream_graph",
+      "ribbon": "ตั้งโจทย์คำนวณสมมติ",
+      "ribbon_color": "blue",
+      "pose": "clipboard",
+      "mascot_shot": "right_standard",
+      "mascot_enter": "slide_right",
+      "sidekick": "clipboard",
+      "sidekick_pos": "left",
+      "camera": "push_in",
+      "transition": "page_peel",
+      "mascot_bubble": {
+        "text": "จดตามเลยนะ ✍️",
+        "at": 0.75
+      },
+      "comic_fx": [
+        {
+          "type": "arrow_callout",
+          "text": "ตัวอย่างสมมติ",
+          "bg": "#FFD648",
+          "x": 558,
+          "y": 246,
+          "rot": 4,
+          "at": 0.7
+        }
+      ],
+      "sfx_cues": [
+        {
+          "at": 1.8,
+          "kind": "pop"
+        },
+        {
+          "at": 3.05,
+          "kind": "tick"
+        },
+        {
+          "at": 4.2,
+          "kind": "thud"
+        }
+      ],
+      "widget": {
+        "type": "custom_html",
+        "html": "\n            <div class=\"paper-card\" style=\"width:100%;height:100%;padding:22px 26px;display:flex;flex-direction:column;justify-content:space-between;\">\n              <div style=\"display:flex;align-items:center;gap:10px;border-bottom:3px dashed #181B26;padding-bottom:10px;\">\n                <span style=\"background:#2264D8;color:#FFFDF6;border:2.5px solid #181B26;border-radius:10px;padding:4px 14px;font-size:20px;font-weight:900;\">STEP 1</span>\n                <span style=\"font-size:23px;font-weight:900;\">หักเงินดาวน์ออกก่อน</span>\n              </div>\n              <div style=\"display:flex;flex-direction:column;gap:16px;flex:1;justify-content:center;\">\n                <div data-at=\"1.80\" data-anim=\"slide-left\" style=\"display:flex;justify-content:space-between;align-items:center;padding:18px 22px;background:#E7F1FC;border:3px solid #181B26;border-radius:16px;box-shadow:4px 5px 0 #181B26;\">\n                  <span style=\"font-size:26px;font-weight:900;\">🚗 ราคารถ</span>\n                  <span data-at=\"1.85\" data-anim=\"count\" data-from=\"0\" data-to=\"700000\" data-dur=\"0.45\" data-suffix=\" บ.\" style=\"font-size:36px;font-weight:900;color:#2264D8;\">700,000 บ.</span>\n                </div>\n                <div data-at=\"3.05\" data-anim=\"slide-right\" style=\"display:flex;justify-content:space-between;align-items:center;padding:18px 22px;background:#FFF3C4;border:3px solid #181B26;border-radius:16px;box-shadow:4px 5px 0 #181B26;\">\n                  <span style=\"font-size:26px;font-weight:900;\">💵 ดาวน์ 15%</span>\n                  <span data-at=\"4.20\" data-anim=\"slam\" data-rot=\"-3\" style=\"font-size:36px;font-weight:900;color:#E5483B;\">− 105,000 บ.</span>\n                </div>\n              </div>\n              <div style=\"font-size:19px;font-weight:800;color:#475569;text-align:center;\">จ่ายเงินก้อนวันรับรถ 105,000 บาท → ส่วนที่เหลือเข้าไฟแนนซ์</div>\n            </div>\n            "
+      }
+    },
+    {
+      "id": "B04",
+      "start": 12.8,
+      "end": 15.32,
+      "qa_at": 14.7,
+      "bg": "pale_blue_grid",
+      "ribbon": "ยอดจัด 595,000 บาท",
+      "ribbon_color": "blue",
+      "pose": "thinking_chin",
+      "mascot_shot": "peek_left",
+      "mascot_enter": "slide_left",
+      "sidekick": "lightbulb",
+      "sidekick_pos": "center_right",
+      "camera": "pull_out",
+      "transition": "paper_slide",
+      "comic_fx": [
+        {
+          "type": "sunburst",
+          "color": "#2264D8",
+          "opacity": 0.14,
+          "at": 0.85
+        },
+        {
+          "type": "comic_burst",
+          "text": "กู้ 85%",
+          "bg": "#FFD648",
+          "fg": "#181B26",
+          "x": 616,
+          "y": 252,
+          "size": 112,
+          "rot": 9,
+          "font_size": 22,
+          "at": 1.0
+        }
+      ],
+      "widget": {
+        "type": "custom_html",
+        "html": "\n            <div class=\"paper-card\" style=\"width:100%;height:100%;padding:22px 26px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;\">\n              <div style=\"font-size:23px;font-weight:800;color:#475569;\">700,000 − 105,000 =</div>\n              <div data-at=\"0.75\" data-anim=\"pop\" style=\"width:100%;background:#1B2742;color:#FFFDF6;border:3.5px solid #181B26;border-radius:18px;padding:22px;text-align:center;box-shadow:6px 7px 0 #181B26;\">\n                <div style=\"font-size:22px;color:#93C5FD;font-weight:800;\">ยอดจัดไฟแนนซ์ (เงินต้นคิดดอก)</div>\n                <div data-at=\"0.80\" data-anim=\"count\" data-from=\"700000\" data-to=\"595000\" data-dur=\"0.55\" data-suffix=\" บ.\" style=\"font-size:66px;font-weight:900;color:#FFD648;line-height:1.1;\">595,000 บ.</div>\n              </div>\n              <div style=\"width:100%;\">\n                <div style=\"display:flex;justify-content:space-between;font-size:19px;font-weight:900;margin-bottom:6px;\">\n                  <span>สัดส่วนยอดจัดไฟแนนซ์</span><span style=\"color:#2264D8;\">85% ของราคารถ</span>\n                </div>\n                <div style=\"width:100%;height:28px;background:#E2E8F0;border:3px solid #181B26;border-radius:10px;overflow:hidden;\">\n                  <div data-at=\"0.95\" data-anim=\"bar\" data-pct=\"85\" data-dur=\"0.55\" style=\"height:100%;width:0%;background:#2264D8;\"></div>\n                </div>\n              </div>\n            </div>\n            "
+      }
+    },
+    {
+      "id": "B05",
+      "start": 15.32,
+      "end": 21.12,
+      "qa_at": 20.3,
+      "bg": "yellow_lined",
+      "ribbon": "ดอกเบี้ย 3% · ผ่อน 6 ปี",
+      "ribbon_color": "yellow",
+      "pose": "laptop_focus",
+      "mascot_shot": "left_standard",
+      "mascot_enter": "rise",
+      "sidekick": "laptop",
+      "sidekick_pos": "right",
+      "camera": "push_in",
+      "transition": "page_peel",
+      "comic_fx": [
+        {
+          "type": "magnifying_lens",
+          "x1": 190,
+          "y1": 345,
+          "x2": 530,
+          "y2": 455,
+          "at": 1.15,
+          "dur": 2.3,
+          "until": 3.85
+        }
+      ],
+      "sfx_cues": [
+        {
+          "at": 0.95,
+          "kind": "tick"
+        },
+        {
+          "at": 1.8,
+          "kind": "tick"
+        },
+        {
+          "at": 2.75,
+          "kind": "tick"
+        },
+        {
+          "at": 4.0,
+          "kind": "ding"
+        }
+      ],
+      "widget": {
+        "type": "live_calc_receipt",
+        "title": "สูตรดอกเบี้ยคงที่ (72 งวด)",
+        "subtitle": "ตัวอย่างสมมติ",
+        "lines": [
+          {
+            "label": "ยอดจัดไฟแนนซ์",
+            "value": "595,000 บ.",
+            "at": 0.12
+          },
+          {
+            "label": "ดอกเบี้ย 3% × 6 ปี",
+            "value": "+107,100 บ.",
+            "color": "#E5483B",
+            "at": 1.0
+          },
+          {
+            "label": "เงินต้น + ดอกเบี้ยรวม",
+            "value": "702,100 บ.",
+            "color": "#2264D8",
+            "at": 1.85
+          },
+          {
+            "label": "หาร 72 งวด (ก่อน VAT)",
+            "value": "เลขบนป้าย",
+            "color": "#64748B",
+            "at": 2.75
+          }
+        ],
+        "total": {
+          "label": "ค่างวดบนป้าย",
+          "from": 0,
+          "to": 9751,
+          "suffix": " บ./ด.",
+          "bg": "#FFD648",
+          "fg": "#181B26",
+          "at": 4.0
+        }
+      }
+    },
+    {
+      "id": "B06",
+      "start": 21.12,
+      "end": 25.42,
+      "qa_at": 24.4,
+      "bg": "dark_navy_grid",
+      "ribbon": "บวก VAT เช่าซื้อ 7%",
+      "ribbon_color": "red",
+      "pose": "idea_finger",
+      "mascot_shot": "closeup_right",
+      "mascot_enter": "pop",
+      "sidekick": "badge_alert",
+      "sidekick_pos": "left",
+      "camera": "punch_in",
+      "transition": "whip_zoom",
+      "mascot_bubble": {
+        "text": "โดน +683 บ./ด.!",
+        "style": "alert",
+        "at": 1.95
+      },
+      "comic_fx": [
+        {
+          "type": "speed_lines",
+          "color": "rgba(255,214,72,0.20)",
+          "at": 1.85
+        },
+        {
+          "type": "stamp_slam",
+          "text": "+VAT 7%",
+          "bg": "#FFD648",
+          "fg": "#181B26",
+          "x": 584,
+          "y": 420,
+          "rot": 10,
+          "font_size": 26,
+          "at": 0.85
+        }
+      ],
+      "sfx_cues": [
+        {
+          "at": 1.9,
+          "kind": "thud"
+        }
+      ],
+      "widget": {
+        "type": "custom_html",
+        "html": "\n            <div class=\"paper-card\" style=\"width:100%;height:100%;padding:20px 26px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;\">\n              <div style=\"width:100%;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#F1F5F9;border:3px solid #181B26;border-radius:14px;\">\n                <span style=\"font-size:22px;font-weight:800;color:#475569;\">ค่างวดก่อน VAT</span>\n                <span style=\"position:relative;display:inline-block;font-size:38px;font-weight:900;color:#475569;\">\n                  9,751 บ.\n                  <span data-at=\"0.72\" data-anim=\"strike\" data-dur=\"0.20\" style=\"position:absolute;left:-4px;top:48%;height:7px;background:#E5483B;border-radius:4px;transform:rotate(-5deg);\"></span>\n                </span>\n              </div>\n              <div data-at=\"1.10\" data-anim=\"pop\" style=\"width:100%;text-align:left;padding-left:14px;font-size:25px;font-weight:900;color:#E5483B;\">⬇️ บวก VAT 7% (+683 บ./ด.)</div>\n              <div data-at=\"1.88\" data-anim=\"slam\" data-rot=\"-1.5\" style=\"width:100%;background:#E5483B;color:#FFFDF6;border:4px solid #181B26;border-radius:18px;padding:18px 22px;text-align:center;box-shadow:6px 7px 0 #181B26;\">\n                <div style=\"font-size:21px;font-weight:800;color:#FFE9A8;\">ค่างวดจ่ายจริงทุกเดือน (ตลอด 6 ปี)</div>\n                <div data-at=\"1.92\" data-anim=\"count\" data-from=\"9751\" data-to=\"10434\" data-dur=\"0.50\" data-suffix=\" บ./ด.\" style=\"font-size:64px;font-weight:900;line-height:1.08;\">10,434 บ./ด.</div>\n              </div>\n            </div>\n            "
+      }
+    },
+    {
+      "id": "B07",
+      "start": 25.42,
+      "end": 30.62,
+      "qa_at": 29.95,
+      "bg": "yellow_lined",
+      "ribbon": "ค่าแฝง #1 · ค่าน้ำมัน",
+      "ribbon_color": "red",
+      "pose": "magnify",
+      "mascot_shot": "left_standard",
+      "mascot_enter": "slide_left",
+      "sidekick": "magnifying_glass",
+      "sidekick_pos": "right",
+      "camera": "push_in",
+      "transition": "paper_slide",
+      "comic_fx": [
+        {
+          "type": "comic_burst",
+          "text": "#1",
+          "bg": "#E5483B",
+          "fg": "#FFFDF6",
+          "x": 76,
+          "y": 236,
+          "size": 92,
+          "rot": -10,
+          "font_size": 26,
+          "at": 0.15
+        },
+        {
+          "type": "stamp_slam",
+          "text": "42,000/ปี!",
+          "bg": "#E5483B",
+          "fg": "#FFFDF6",
+          "x": 554,
+          "y": 566,
+          "rot": -6,
+          "font_size": 24,
+          "at": 4.05
+        }
+      ],
+      "sfx_cues": [
+        {
+          "at": 2.2,
+          "kind": "pop"
+        }
+      ],
+      "widget": {
+        "type": "custom_html",
+        "html": "\n            <div class=\"paper-card\" style=\"width:100%;height:100%;padding:22px 26px;display:flex;flex-direction:column;justify-content:space-between;\">\n              <div style=\"display:flex;justify-content:space-between;align-items:center;padding-left:64px;\">\n                <span style=\"font-size:26px;font-weight:900;\">⛽ ค่าน้ำมันรายเดือน</span>\n                <span style=\"background:#FFF3C4;border:2px solid #181B26;border-radius:999px;padding:3px 12px;font-size:15px;font-weight:800;\">ตัวอย่างสมมติ</span>\n              </div>\n              <div data-at=\"2.15\" data-anim=\"slide-left\" style=\"background:#E7F1FC;border:3px solid #181B26;border-radius:16px;padding:16px 20px;box-shadow:4px 5px 0 #181B26;\">\n                <div style=\"display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;\">\n                  <span style=\"font-size:22px;font-weight:900;\">🛣️ ระยะวิ่งในเมือง</span>\n                  <span style=\"font-size:30px;font-weight:900;color:#2264D8;\">~1,200 กม./ด.</span>\n                </div>\n                <div style=\"width:100%;height:26px;background:#FFFDF6;border:3px solid #181B26;border-radius:999px;overflow:hidden;\">\n                  <div data-at=\"2.30\" data-anim=\"bar\" data-pct=\"78\" data-dur=\"0.65\" style=\"height:100%;width:0%;background:linear-gradient(90deg,#FFD648,#E5483B);\"></div>\n                </div>\n              </div>\n              <div data-at=\"3.90\" data-anim=\"pop\" style=\"display:flex;flex-direction:column;align-items:flex-start;\">\n                <span style=\"font-size:20px;font-weight:800;color:#475569;\">ตกเฉลี่ยเดือนละ</span>\n                <span data-at=\"3.95\" data-anim=\"count\" data-from=\"0\" data-to=\"3500\" data-dur=\"0.45\" data-suffix=\" บ./ด.\" style=\"font-size:50px;font-weight:900;color:#E5483B;line-height:1.1;\">3,500 บ./ด.</span>\n              </div>\n            </div>\n            "
+      }
+    },
+    {
+      "id": "B08",
+      "start": 30.62,
+      "end": 34.56,
+      "qa_at": 34.1,
+      "bg": "pale_blue_grid",
+      "ribbon": "ค่าแฝง #2 · ประกัน/ภาษี",
+      "ribbon_color": "blue",
+      "pose": "newspaper_hold",
+      "mascot_shot": "right_standard",
+      "mascot_enter": "slide_right",
+      "sidekick": "newspaper",
+      "sidekick_pos": "left",
+      "camera": "pull_out",
+      "transition": "page_peel",
+      "comic_fx": [
+        {
+          "type": "comic_burst",
+          "text": "#2",
+          "bg": "#2264D8",
+          "fg": "#FFFDF6",
+          "x": 76,
+          "y": 236,
+          "size": 92,
+          "rot": -8,
+          "font_size": 26,
+          "at": 0.15
+        },
+        {
+          "type": "stamp_slam",
+          "text": "จ่ายทุกปี!",
+          "bg": "#E5483B",
+          "fg": "#FFFDF6",
+          "x": 556,
+          "y": 608,
+          "rot": -5,
+          "font_size": 24,
+          "at": 3.3
+        }
+      ],
+      "sfx_cues": [
+        {
+          "at": 0.72,
+          "kind": "tick"
+        },
+        {
+          "at": 1.78,
+          "kind": "tick"
+        },
+        {
+          "at": 3.05,
+          "kind": "tick"
+        }
+      ],
+      "widget": {
+        "type": "custom_html",
+        "html": "\n            <div class=\"paper-card\" style=\"width:100%;height:100%;padding:18px 24px 66px;display:flex;flex-direction:column;justify-content:space-between;\">\n              <div class=\"tape-strip\" style=\"top:-12px;left:50%;transform:translateX(-50%) rotate(-2deg);\"></div>\n              <div style=\"display:flex;justify-content:space-between;align-items:center;border-bottom:3px dashed #181B26;padding-bottom:8px;padding-left:58px;\">\n                <span style=\"background:#2264D8;color:#FFFDF6;border:2.5px solid #181B26;border-radius:10px;padding:4px 14px;font-size:19px;font-weight:900;\">บิลรายปีที่เลี่ยงไม่ได้</span>\n                <span style=\"font-size:16px;font-weight:800;color:#475569;\">ค่าแฝงข้อ 2</span>\n              </div>\n              <div style=\"display:flex;flex-direction:column;gap:11px;flex:1;justify-content:center;\">\n                <div data-at=\"0.70\" data-anim=\"slide-left\" style=\"display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-radius:12px;border:2.5px solid #181B26;background:#E7F1FC;box-shadow:3px 4px 0 #181B26;font-size:23px;font-weight:900;\">\n                  <span>🛡️ ประกันภัยชั้น 1</span><span style=\"color:#2264D8;\">ต่อทุกปี</span>\n                </div>\n                <div data-at=\"1.78\" data-anim=\"slide-left\" style=\"display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-radius:12px;border:2.5px solid #181B26;background:#FFFDF6;box-shadow:3px 4px 0 #181B26;font-size:23px;font-weight:900;\">\n                  <span>📄 พ.ร.บ. รถยนต์</span><span style=\"color:#E5483B;\">ภาคบังคับ</span>\n                </div>\n                <div data-at=\"3.05\" data-anim=\"slide-left\" style=\"display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-radius:12px;border:2.5px solid #181B26;background:#FFF3C4;box-shadow:3px 4px 0 #181B26;font-size:23px;font-weight:900;\">\n                  <span>🏛️ ภาษีรถยนต์ประจำปี</span><span style=\"color:#B45309;\">ห้ามขาด!</span>\n                </div>\n              </div>\n            </div>\n            "
+      }
+    },
+    {
+      "id": "B09",
+      "start": 34.56,
+      "end": 38.3,
+      "qa_at": 37.6,
+      "bg": "pale_blue_grid",
+      "ribbon": "ประกัน+ภาษี เฉลี่ยรายเดือน",
+      "ribbon_color": "blue",
+      "pose": "confident",
+      "mascot_shot": "peek_right",
+      "mascot_enter": "slide_right",
+      "sidekick": "badge_check",
+      "sidekick_pos": "left",
+      "camera": "push_in",
+      "transition": "paper_slide",
+      "mascot_bubble": {
+        "text": "หาร 12 เตรียมไว้เลย!",
+        "at": 2.4
+      },
+      "comic_fx": [
+        {
+          "type": "sunburst",
+          "color": "#2264D8",
+          "opacity": 0.14,
+          "at": 2.5
+        }
+      ],
+      "sfx_cues": [
+        {
+          "at": 0.85,
+          "kind": "pop"
+        },
+        {
+          "at": 2.55,
+          "kind": "ding"
+        }
+      ],
+      "widget": {
+        "type": "custom_html",
+        "html": "\n            <div class=\"paper-card\" style=\"width:100%;height:100%;padding:22px 26px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;\">\n              <div data-at=\"0.75\" data-anim=\"slide-up\" style=\"width:100%;background:#E7F1FC;border:3px solid #181B26;border-radius:16px;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;box-shadow:4px 5px 0 #181B26;\">\n                <span style=\"font-size:23px;font-weight:900;\">📅 ก้อนรายปี</span>\n                <span data-at=\"0.80\" data-anim=\"count\" data-from=\"0\" data-to=\"20400\" data-dur=\"0.50\" data-suffix=\" บ./ปี\" style=\"font-size:40px;font-weight:900;color:#2264D8;\">20,400 บ./ปี</span>\n              </div>\n              <div data-at=\"1.90\" data-anim=\"pop\" style=\"background:#FFD648;border:3px solid #181B26;border-radius:999px;padding:6px 24px;font-size:24px;font-weight:900;box-shadow:3px 4px 0 #181B26;\">÷ 12 เดือน</div>\n              <div data-at=\"2.52\" data-anim=\"slam\" data-rot=\"-2\" style=\"width:100%;background:#2264D8;color:#FFFDF6;border:3.5px solid #181B26;border-radius:16px;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;box-shadow:5px 6px 0 #181B26;\">\n                <span style=\"font-size:23px;font-weight:800;\">ตกเดือนละ</span>\n                <span style=\"font-size:48px;font-weight:900;color:#FFD648;\">+1,700 บ./ด.</span>\n              </div>\n              <div data-at=\"2.95\" data-anim=\"fade\" style=\"font-size:19px;font-weight:800;color:#475569;\">สะสม 2 ข้อแฝง (น้ำมัน + ประกัน/ภาษี) = 5,200 บ./ด.</div>\n            </div>\n            "
+      }
+    },
+    {
+      "id": "B10",
+      "start": 38.3,
+      "end": 43.48,
+      "qa_at": 42.8,
+      "bg": "pale_green_grid",
+      "ribbon": "ค่าแฝง #3 · เช็กระยะ/ยาง",
+      "ribbon_color": "green",
+      "pose": "holding_card",
+      "mascot_shot": "left_standard",
+      "mascot_enter": "slide_left",
+      "sidekick": "bot_curious",
+      "sidekick_pos": "right",
+      "camera": "push_in",
+      "transition": "page_peel",
+      "sidekick_bubble": {
+        "text": "ยาง+แบตมาเป็นก้อน!",
+        "at": 2.4
+      },
+      "comic_fx": [
+        {
+          "type": "comic_burst",
+          "text": "#3",
+          "bg": "#2EAE6D",
+          "fg": "#FFFDF6",
+          "x": 76,
+          "y": 236,
+          "size": 92,
+          "rot": -10,
+          "font_size": 26,
+          "at": 0.15
+        },
+        {
+          "type": "stamp_slam",
+          "text": "+1,200 บ./ด.",
+          "bg": "#2EAE6D",
+          "fg": "#FFFDF6",
+          "x": 546,
+          "y": 586,
+          "rot": -5,
+          "font_size": 24,
+          "at": 3.95
+        }
+      ],
+      "sfx_cues": [
+        {
+          "at": 1.25,
+          "kind": "tick"
+        },
+        {
+          "at": 2.05,
+          "kind": "tick"
+        },
+        {
+          "at": 2.65,
+          "kind": "tick"
+        }
+      ],
+      "widget": {
+        "type": "custom_html",
+        "html": "\n            <div class=\"paper-card\" style=\"width:100%;height:100%;padding:20px 24px;display:flex;flex-direction:column;justify-content:space-between;\">\n              <div style=\"padding-left:64px;font-size:23px;font-weight:900;\">🔧 กองทุนซ่อมบำรุง (14,400 บ./ปี)</div>\n              <div style=\"display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;\">\n                <div data-at=\"1.25\" data-anim=\"pop\" style=\"background:#E6F6EC;border:3px solid #181B26;border-radius:16px;padding:18px 10px;text-align:center;box-shadow:4px 5px 0 #181B26;\">\n                  <div style=\"font-size:44px;\">🔧</div>\n                  <div style=\"font-size:21px;font-weight:900;margin-top:6px;\">เช็กระยะ</div>\n                </div>\n                <div data-at=\"2.05\" data-anim=\"pop\" style=\"background:#FFF3C4;border:3px solid #181B26;border-radius:16px;padding:18px 10px;text-align:center;box-shadow:4px 5px 0 #181B26;\">\n                  <div style=\"font-size:44px;\">🛞</div>\n                  <div style=\"font-size:21px;font-weight:900;margin-top:6px;\">เปลี่ยนยาง</div>\n                </div>\n                <div data-at=\"2.65\" data-anim=\"pop\" style=\"background:#DBEAFE;border:3px solid #181B26;border-radius:16px;padding:18px 10px;text-align:center;box-shadow:4px 5px 0 #181B26;\">\n                  <div style=\"font-size:44px;\">🔋</div>\n                  <div style=\"font-size:21px;font-weight:900;margin-top:6px;\">แบตเตอรี่</div>\n                </div>\n              </div>\n              <div data-at=\"3.85\" data-anim=\"slide-up\" style=\"font-size:22px;font-weight:900;color:#181B26;padding-right:220px;\">กันเงินไว้เฉลี่ยเดือนละ</div>\n            </div>\n            "
+      }
+    },
+    {
+      "id": "B11",
+      "start": 43.48,
+      "end": 48.42,
+      "qa_at": 47.65,
+      "bg": "pale_pink_grid",
+      "ribbon": "ค่าแฝง #4 · จอด/ทางด่วน",
+      "ribbon_color": "yellow",
+      "pose": "shrug",
+      "mascot_shot": "right_standard",
+      "mascot_enter": "slide_right",
+      "sidekick": "badge_question",
+      "sidekick_pos": "left",
+      "camera": "pull_out",
+      "transition": "paper_slide",
+      "comic_fx": [
+        {
+          "type": "comic_burst",
+          "text": "#4",
+          "bg": "#FFD648",
+          "fg": "#181B26",
+          "x": 76,
+          "y": 236,
+          "size": 92,
+          "rot": -8,
+          "font_size": 26,
+          "at": 0.15
+        },
+        {
+          "type": "stamp_slam",
+          "text": "+1,500 บ./ด.",
+          "bg": "#E5483B",
+          "fg": "#FFFDF6",
+          "x": 546,
+          "y": 592,
+          "rot": 4,
+          "font_size": 24,
+          "at": 3.55
+        }
+      ],
+      "sfx_cues": [
+        {
+          "at": 0.6,
+          "kind": "pop"
+        },
+        {
+          "at": 1.38,
+          "kind": "pop"
+        },
+        {
+          "at": 2.08,
+          "kind": "pop"
+        }
+      ],
+      "widget": {
+        "type": "custom_html",
+        "html": "\n            <div class=\"paper-card\" style=\"width:100%;height:100%;padding:18px 24px 16px;display:flex;flex-direction:column;justify-content:space-between;\">\n              <div style=\"padding-left:64px;font-size:23px;font-weight:900;\">🎟️ บิลจุกจิกรายวัน (เผลอแป๊บเดียวหมด)</div>\n              <div style=\"display:flex;flex-direction:column;gap:10px;\">\n                <div data-at=\"0.60\" data-anim=\"slide-left\" style=\"background:#FFF3C4;border:3px solid #181B26;border-radius:14px;padding:11px 18px;box-shadow:4px 4px 0 #181B26;display:flex;justify-content:space-between;font-size:23px;font-weight:900;\">\n                  <span>🛣️ ค่าทางด่วน</span><span style=\"color:#B45309;\">จ่ายทุกสัปดาห์</span>\n                </div>\n                <div data-at=\"1.38\" data-anim=\"slide-right\" style=\"background:#DBEAFE;border:3px solid #181B26;border-radius:14px;padding:11px 18px;box-shadow:4px 4px 0 #181B26;display:flex;justify-content:space-between;font-size:23px;font-weight:900;\">\n                  <span>🅿️ ค่าจอดรถห้าง/ออฟฟิศ</span><span style=\"color:#1D4ED8;\">ทีละ 40–100</span>\n                </div>\n                <div data-at=\"2.08\" data-anim=\"slide-left\" style=\"background:#FCE7F3;border:3px solid #181B26;border-radius:14px;padding:11px 18px;box-shadow:4px 4px 0 #181B26;display:flex;justify-content:space-between;font-size:23px;font-weight:900;\">\n                  <span>🫧 ค่าล้างรถ</span><span style=\"color:#BE185D;\">เดือนละ 1–2 ครั้ง</span>\n                </div>\n              </div>\n              <div data-at=\"3.45\" data-anim=\"fade\" style=\"font-size:20px;font-weight:900;color:#475569;padding-right:225px;\">ตีรวม 3 อย่างนี้เฉลี่ยเดือนละ</div>\n            </div>\n            "
+      }
+    },
+    {
+      "id": "B12",
+      "start": 48.42,
+      "end": 53.84,
+      "qa_at": 52.9,
+      "bg": "dark_navy_grid",
+      "ribbon": "รวมเฉพาะ 4 ค่าแฝง!",
+      "ribbon_color": "red",
+      "pose": "facepalm",
+      "mascot_shot": "closeup_left",
+      "mascot_enter": "pop",
+      "sidekick": "bot_shock",
+      "sidekick_pos": "right",
+      "camera": "punch_in",
+      "transition": "whip_zoom",
+      "mascot_bubble": {
+        "text": "ยังไม่รวมค่างวดนะ! 😵",
+        "style": "shout",
+        "at": 1.9
+      },
+      "comic_fx": [
+        {
+          "type": "speed_lines",
+          "color": "rgba(255,214,72,0.16)",
+          "at": 1.85
+        },
+        {
+          "type": "comic_burst",
+          "text": "94.8k/ปี!",
+          "bg": "#E5483B",
+          "fg": "#FFFDF6",
+          "x": 615,
+          "y": 605,
+          "size": 116,
+          "rot": 9,
+          "font_size": 20,
+          "at": 3.55
+        }
+      ],
+      "sfx_cues": [
+        {
+          "at": 0.2,
+          "kind": "tick"
+        },
+        {
+          "at": 0.45,
+          "kind": "tick"
+        },
+        {
+          "at": 0.7,
+          "kind": "tick"
+        },
+        {
+          "at": 0.95,
+          "kind": "tick"
+        },
+        {
+          "at": 1.85,
+          "kind": "thud"
+        }
+      ],
+      "widget": {
+        "type": "live_calc_receipt",
+        "title": "รวมเฉพาะ 4 ค่าแฝง",
+        "subtitle": "",
+        "lines": [
+          {
+            "label": "1. ค่าน้ำมัน",
+            "value": "3,500 บ.",
+            "at": 0.18
+          },
+          {
+            "label": "2. ประกัน + พ.ร.บ. + ภาษี",
+            "value": "1,700 บ.",
+            "at": 0.42
+          },
+          {
+            "label": "3. เช็กระยะ + ยาง + แบต",
+            "value": "1,200 บ.",
+            "at": 0.66
+          },
+          {
+            "label": "4. ทางด่วน + จอด + ล้างรถ",
+            "value": "1,500 บ.",
+            "at": 0.9
+          }
+        ],
+        "total": {
+          "label": "เฉพาะค่าแฝง",
+          "from": 0,
+          "to": 7900,
+          "suffix": " บ./ด.",
+          "bg": "#E5483B",
+          "fg": "#FFFDF6",
+          "at": 1.85
+        }
+      }
+    },
+    {
+      "id": "B13",
+      "start": 53.84,
+      "end": 58.92,
+      "qa_at": 57.6,
+      "bg": "cream_graph",
+      "ribbon": "ยอดจ่ายจริงต่อเดือน!",
+      "ribbon_color": "red",
+      "pose": "shocked",
+      "mascot_shot": "closeup_center",
+      "mascot_enter": "pop",
+      "sidekick": "",
+      "camera": "punch_in",
+      "transition": "ink_flash",
+      "mascot_bubble": {
+        "text": "พุ่งเกือบ 2 เท่า! 💥",
+        "style": "alert",
+        "at": 2.55
+      },
+      "comic_fx": [
+        {
+          "type": "sunburst",
+          "color": "#FFD648",
+          "opacity": 0.3,
+          "at": 2.35
+        },
+        {
+          "type": "stamp_slam",
+          "text": "จ่ายจริง!",
+          "bg": "#E5483B",
+          "fg": "#FFFDF6",
+          "x": 584,
+          "y": 402,
+          "rot": 10,
+          "font_size": 28,
+          "at": 2.65
+        }
+      ],
+      "sfx_cues": [
+        {
+          "at": 0.18,
+          "kind": "pop"
+        },
+        {
+          "at": 0.72,
+          "kind": "pop"
+        },
+        {
+          "at": 2.35,
+          "kind": "thud"
+        }
+      ],
+      "widget": {
+        "type": "custom_html",
+        "html": "\n            <div class=\"paper-card\" style=\"width:100%;height:100%;padding:20px 24px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;\">\n              <div style=\"display:flex;align-items:center;gap:12px;width:100%;justify-content:center;\">\n                <div data-at=\"0.15\" data-anim=\"pop\" style=\"background:#E7F1FC;border:3px solid #181B26;border-radius:14px;padding:10px 18px;box-shadow:4px 4px 0 #181B26;text-align:center;\">\n                  <div style=\"font-size:17px;font-weight:800;color:#1E40AF;\">ค่างวดรวม VAT</div>\n                  <div style=\"font-size:30px;font-weight:900;color:#2264D8;\">10,434 บ.</div>\n                </div>\n                <div style=\"font-size:38px;font-weight:900;\">+</div>\n                <div data-at=\"0.70\" data-anim=\"pop\" style=\"background:#FCE9EC;border:3px solid #181B26;border-radius:14px;padding:10px 18px;box-shadow:4px 4px 0 #181B26;text-align:center;\">\n                  <div style=\"font-size:17px;font-weight:800;color:#991B1B;\">4 ค่าแฝง</div>\n                  <div style=\"font-size:30px;font-weight:900;color:#E5483B;\">7,900 บ.</div>\n                </div>\n              </div>\n              <div data-at=\"2.30\" data-anim=\"slam\" data-rot=\"-1.5\" style=\"width:100%;background:#FFD648;border:4px solid #181B26;border-radius:20px;padding:20px 22px;text-align:center;box-shadow:7px 8px 0 #181B26;\">\n                <div style=\"font-size:21px;font-weight:900;color:#181B26;\">ยอดจ่ายจริงต่อเดือน (ตัวอย่างสมมติ)</div>\n                <div data-at=\"2.35\" data-anim=\"count\" data-from=\"10434\" data-to=\"18334\" data-dur=\"0.55\" data-suffix=\" บ.\" style=\"font-size:78px;font-weight:900;color:#E5483B;line-height:1.05;\">18,334 บ.</div>\n                <div style=\"font-size:20px;font-weight:900;color:#181B26;margin-top:4px;\">แพงกว่าเลขบนป้าย 9,751 เกือบ 2 เท่า!</div>\n              </div>\n            </div>\n            "
+      }
+    },
+    {
+      "id": "B14",
+      "start": 58.92,
+      "end": 62.28,
+      "qa_at": 61.95,
+      "bg": "pale_blue_grid",
+      "ribbon": "เทียบ 3 ฐานเงินเดือน",
+      "ribbon_color": "blue",
+      "pose": "laptop_smile",
+      "mascot_shot": "left_standard",
+      "mascot_enter": "slide_left",
+      "sidekick": "bot_curious",
+      "sidekick_pos": "right",
+      "camera": "push_in",
+      "transition": "paper_slide",
+      "sfx_cues": [
+        {
+          "at": 0.98,
+          "kind": "tick"
+        },
+        {
+          "at": 1.85,
+          "kind": "tick"
+        },
+        {
+          "at": 2.75,
+          "kind": "tick"
+        }
+      ],
+      "widget": {
+        "type": "bar_compare",
+        "title": "สัดส่วนค่ารถต่อเงินเดือน",
+        "kicker": "หักประกันสังคม 750 บ.",
+        "bars": [
+          {
+            "label": "เงินเดือน 25,000 บ.",
+            "value": "75.6%",
+            "pct": 76,
+            "color": "#E5483B",
+            "tag": "อันตราย!",
+            "at": 0.95
+          },
+          {
+            "label": "เงินเดือน 35,000 บ.",
+            "value": "53.5%",
+            "pct": 54,
+            "color": "#F59E0B",
+            "tag": "ตึงมือ",
+            "at": 1.82
+          },
+          {
+            "label": "เงินเดือน 50,000 บ.",
+            "value": "37.2%",
+            "pct": 37,
+            "color": "#2EAE6D",
+            "tag": "พอไหว",
+            "at": 2.72
+          }
+        ],
+        "footer": "คิดจากยอดจ่ายจริง 18,334 บ./ด. (ตัวอย่างสมมติ)"
+      }
+    },
+    {
+      "id": "B15",
+      "start": 62.28,
+      "end": 64.24,
+      "qa_at": 63.65,
+      "bg": "yellow_lined",
+      "ribbon": "คลิปเต็ม 9 นาที YouTube",
+      "ribbon_color": "red",
+      "pose": "cheer",
+      "mascot_shot": "right_standard",
+      "mascot_enter": "pop",
+      "sidekick": "bot_cheer",
+      "sidekick_pos": "left",
+      "camera": "focus_tv",
+      "transition": "page_peel",
+      "comic_fx": [
+        {
+          "type": "sunburst",
+          "color": "#FFD648",
+          "opacity": 0.24,
+          "at": 0.1
+        },
+        {
+          "type": "comic_burst",
+          "text": "9 นาที!",
+          "bg": "#E5483B",
+          "fg": "#FFFDF6",
+          "x": 612,
+          "y": 248,
+          "size": 112,
+          "rot": 9,
+          "font_size": 22,
+          "at": 0.55
+        }
+      ],
+      "widget": {
+        "type": "custom_html",
+        "html": "\n            <div class=\"paper-card\" style=\"width:100%;height:100%;padding:20px 24px;display:flex;flex-direction:column;justify-content:space-between;\">\n              <div style=\"width:100%;height:260px;background:linear-gradient(135deg,#1B2742,#0F172A);border:3.5px solid #181B26;border-radius:16px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;text-align:center;\">\n                <div data-at=\"0.20\" data-anim=\"pop\" style=\"width:88px;height:62px;background:#E5483B;border:3.5px solid #FFFDF6;border-radius:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 0 #181B26;\">\n                  <div style=\"width:0;height:0;border-top:15px solid transparent;border-bottom:15px solid transparent;border-left:26px solid #FFFDF6;margin-left:6px;\"></div>\n                </div>\n                <div style=\"margin-top:16px;font-size:27px;font-weight:900;color:#FFD648;line-height:1.25;\">ผ่อนรถ 7 แสน: เทียบผ่อน 4 / 6 / 7 ปี</div>\n                <div style=\"margin-top:6px;font-size:19px;font-weight:700;color:#CBD5E1;\">เจาะครบ 3 เงินเดือน + ตารางค่าใช้จ่ายจริง</div>\n                <div style=\"position:absolute;right:14px;bottom:12px;background:#181B26;color:#FFFDF6;padding:4px 12px;border-radius:8px;font-size:18px;font-weight:900;border:2px solid #FFFDF6;\">09:30</div>\n              </div>\n              <div style=\"display:flex;justify-content:space-between;align-items:center;\">\n                <span style=\"font-size:22px;font-weight:900;\">📺 ดูคลิปเต็มบน YouTube</span>\n                <span style=\"background:#E5483B;color:#FFFDF6;border:2.5px solid #181B26;border-radius:999px;padding:6px 16px;font-size:19px;font-weight:900;box-shadow:3px 4px 0 #181B26;\">กดตามไปดูเลย ▶</span>\n              </div>\n            </div>\n            "
+      }
+    },
+    {
+      "id": "B16",
+      "start": 64.24,
+      "end": 67.6,
+      "qa_at": 66.85,
+      "bg": "pale_green_grid",
+      "ribbon": "คอมเมนต์เคสของคุณเลย",
+      "ribbon_color": "green",
+      "pose": "thumbs_up_full",
+      "mascot_shot": "center_stage",
+      "mascot_enter": "rise",
+      "sidekick": "",
+      "camera": "pull_out",
+      "transition": "paper_slide",
+      "mascot_bubble": {
+        "text": "เดี๋ยวคิดเลขให้! 💬",
+        "style": "shout",
+        "at": 1.35
+      },
+      "comic_fx": [
+        {
+          "type": "sunburst",
+          "color": "#38B577",
+          "opacity": 0.16,
+          "at": 0.75
+        }
+      ],
+      "widget": {
+        "type": "cta_comment_box",
+        "keyword": "35,000 + Civic",
+        "sublabel": "คอมเมนต์เงินเดือน + รุ่นรถไว้เลย!"
+      }
+    }
+  ],
+  "word_rows": [
+    {
+      "start": 0.0,
+      "end": 0.82,
+      "words": [
+        {
+          "text": "เห็นป้าย",
+          "start": 0.0
+        },
+        {
+          "text": "ผ่อนรถ",
+          "start": 0.38
+        }
+      ]
+    },
+    {
+      "start": 0.82,
+      "end": 1.8,
+      "words": [
+        {
+          "text": "7 แสน",
+          "start": 0.82,
+          "role": "tool"
+        },
+        {
+          "text": "เดือนละ",
+          "start": 1.44,
+          "role": "connector"
+        }
+      ]
+    },
+    {
+      "start": 1.8,
+      "end": 3.1,
+      "words": [
+        {
+          "text": "9,751",
+          "start": 1.8,
+          "role": "emphasis"
+        },
+        {
+          "text": "อย่าเพิ่งคิด",
+          "start": 2.48,
+          "role": "verb"
+        }
+      ]
+    },
+    {
+      "start": 3.1,
+      "end": 3.8,
+      "words": [
+        {
+          "text": "ว่าไหวครับ",
+          "start": 3.1,
+          "role": "verb"
+        }
+      ]
+    },
+    {
+      "start": 3.8,
+      "end": 4.86,
+      "words": [
+        {
+          "text": "ปีนึง",
+          "start": 3.8
+        },
+        {
+          "text": "คุณอาจ",
+          "start": 4.44
+        }
+      ]
+    },
+    {
+      "start": 4.86,
+      "end": 6.14,
+      "words": [
+        {
+          "text": "จ่ายเพิ่ม",
+          "start": 4.86
+        },
+        {
+          "text": "เกือบแสน",
+          "start": 5.38,
+          "role": "verb"
+        }
+      ]
+    },
+    {
+      "start": 6.14,
+      "end": 7.46,
+      "words": [
+        {
+          "text": "จาก",
+          "start": 6.14,
+          "role": "connector"
+        },
+        {
+          "text": "4 ค่าแฝงนี้",
+          "start": 6.48,
+          "role": "verb"
+        }
+      ]
+    },
+    {
+      "start": 7.46,
+      "end": 8.18,
+      "words": [
+        {
+          "text": "ลองคิดเลข",
+          "start": 7.46
+        }
+      ]
+    },
+    {
+      "start": 8.18,
+      "end": 9.26,
+      "words": [
+        {
+          "text": "ตัวอย่างสมมติ",
+          "start": 8.18
+        },
+        {
+          "text": "ดูครับ",
+          "start": 8.82,
+          "role": "connector"
+        }
+      ]
+    },
+    {
+      "start": 9.26,
+      "end": 10.5,
+      "words": [
+        {
+          "text": "รถ 7 แสน",
+          "start": 9.26,
+          "role": "tool"
+        }
+      ]
+    },
+    {
+      "start": 10.5,
+      "end": 11.72,
+      "words": [
+        {
+          "text": "ดาวน์",
+          "start": 10.5
+        },
+        {
+          "text": "15%",
+          "start": 10.92,
+          "role": "emphasis"
+        }
+      ]
+    },
+    {
+      "start": 11.72,
+      "end": 12.8,
+      "words": [
+        {
+          "text": "105,000",
+          "start": 11.72,
+          "role": "emphasis"
+        }
+      ]
+    },
+    {
+      "start": 12.8,
+      "end": 13.7,
+      "words": [
+        {
+          "text": "เหลือยอดจัด",
+          "start": 12.8
+        }
+      ]
+    },
+    {
+      "start": 13.7,
+      "end": 15.32,
+      "words": [
+        {
+          "text": "595,000",
+          "start": 13.7,
+          "role": "tool"
+        }
+      ]
+    },
+    {
+      "start": 15.32,
+      "end": 16.28,
+      "words": [
+        {
+          "text": "ดอกเบี้ยสมมติ",
+          "start": 15.32
+        }
+      ]
+    },
+    {
+      "start": 16.28,
+      "end": 17.12,
+      "words": [
+        {
+          "text": "3%",
+          "start": 16.28,
+          "role": "emphasis"
+        }
+      ]
+    },
+    {
+      "start": 17.12,
+      "end": 18.0,
+      "words": [
+        {
+          "text": "ผ่อน 6 ปี",
+          "start": 17.12
+        }
+      ]
+    },
+    {
+      "start": 18.0,
+      "end": 19.34,
+      "words": [
+        {
+          "text": "ค่างวดบนป้าย",
+          "start": 18.0
+        },
+        {
+          "text": "คือ",
+          "start": 18.96,
+          "role": "connector"
+        }
+      ]
+    },
+    {
+      "start": 19.34,
+      "end": 21.12,
+      "words": [
+        {
+          "text": "9,751 บ.",
+          "start": 19.34,
+          "role": "emphasis"
+        }
+      ]
+    },
+    {
+      "start": 21.12,
+      "end": 21.78,
+      "words": [
+        {
+          "text": "แต่รวม VAT",
+          "start": 21.12
+        }
+      ]
+    },
+    {
+      "start": 21.78,
+      "end": 23.06,
+      "words": [
+        {
+          "text": "7%",
+          "start": 21.78,
+          "role": "verb"
+        },
+        {
+          "text": "จ่ายจริง",
+          "start": 22.48,
+          "role": "verb"
+        }
+      ]
+    },
+    {
+      "start": 23.06,
+      "end": 24.94,
+      "words": [
+        {
+          "text": "10,434 บ.",
+          "start": 23.06,
+          "role": "verb"
+        }
+      ]
+    },
+    {
+      "start": 24.94,
+      "end": 25.16,
+      "words": [
+        {
+          "text": "ครับ",
+          "start": 24.94,
+          "role": "connector"
+        }
+      ]
+    },
+    {
+      "start": 25.42,
+      "end": 26.38,
+      "words": [
+        {
+          "text": "ค่าแฝงข้อแรก",
+          "start": 25.42
+        }
+      ]
+    },
+    {
+      "start": 26.38,
+      "end": 27.68,
+      "words": [
+        {
+          "text": "ค่าน้ำมัน",
+          "start": 26.38
+        },
+        {
+          "text": "วิ่งเดือนละ",
+          "start": 27.0
+        }
+      ]
+    },
+    {
+      "start": 27.68,
+      "end": 28.64,
+      "words": [
+        {
+          "text": "1,200 กม.",
+          "start": 27.68
+        }
+      ]
+    },
+    {
+      "start": 28.64,
+      "end": 29.44,
+      "words": [
+        {
+          "text": "ตกเดือนละ",
+          "start": 28.64
+        }
+      ]
+    },
+    {
+      "start": 29.44,
+      "end": 30.62,
+      "words": [
+        {
+          "text": "3,500 บ.",
+          "start": 29.44,
+          "role": "emphasis"
+        }
+      ]
+    },
+    {
+      "start": 30.62,
+      "end": 31.34,
+      "words": [
+        {
+          "text": "ข้อสอง",
+          "start": 30.62
+        }
+      ]
+    },
+    {
+      "start": 31.34,
+      "end": 32.4,
+      "words": [
+        {
+          "text": "ประกันชั้น 1",
+          "start": 31.34
+        }
+      ]
+    },
+    {
+      "start": 32.4,
+      "end": 33.92,
+      "words": [
+        {
+          "text": "พ.ร.บ.",
+          "start": 32.4
+        }
+      ]
+    },
+    {
+      "start": 33.92,
+      "end": 34.56,
+      "words": [
+        {
+          "text": "และภาษี",
+          "start": 33.92,
+          "role": "connector"
+        }
+      ]
+    },
+    {
+      "start": 34.56,
+      "end": 35.4,
+      "words": [
+        {
+          "text": "เฉลี่ยปีละ",
+          "start": 34.56
+        }
+      ]
+    },
+    {
+      "start": 35.4,
+      "end": 36.46,
+      "words": [
+        {
+          "text": "20,400",
+          "start": 35.4
+        }
+      ]
+    },
+    {
+      "start": 36.46,
+      "end": 37.14,
+      "words": [
+        {
+          "text": "ตกเดือนละ",
+          "start": 36.46
+        }
+      ]
+    },
+    {
+      "start": 37.14,
+      "end": 38.3,
+      "words": [
+        {
+          "text": "1,700 บ.",
+          "start": 37.14,
+          "role": "tool"
+        }
+      ]
+    },
+    {
+      "start": 38.3,
+      "end": 39.6,
+      "words": [
+        {
+          "text": "ข้อสาม",
+          "start": 38.3
+        },
+        {
+          "text": "กันเงิน",
+          "start": 39.02
+        }
+      ]
+    },
+    {
+      "start": 39.6,
+      "end": 40.94,
+      "words": [
+        {
+          "text": "เช็กระยะ",
+          "start": 39.6
+        },
+        {
+          "text": "เปลี่ยนยาง",
+          "start": 40.2
+        }
+      ]
+    },
+    {
+      "start": 40.94,
+      "end": 41.42,
+      "words": [
+        {
+          "text": "แบตเตอรี่",
+          "start": 40.94
+        }
+      ]
+    },
+    {
+      "start": 41.42,
+      "end": 42.32,
+      "words": [
+        {
+          "text": "เฉลี่ยเดือนละ",
+          "start": 41.42
+        }
+      ]
+    },
+    {
+      "start": 42.32,
+      "end": 43.48,
+      "words": [
+        {
+          "text": "1,200 บ.",
+          "start": 42.32,
+          "role": "result"
+        }
+      ]
+    },
+    {
+      "start": 43.48,
+      "end": 44.08,
+      "words": [
+        {
+          "text": "ข้อสี่",
+          "start": 43.48
+        }
+      ]
+    },
+    {
+      "start": 44.08,
+      "end": 44.86,
+      "words": [
+        {
+          "text": "ทางด่วน",
+          "start": 44.08
+        }
+      ]
+    },
+    {
+      "start": 44.86,
+      "end": 45.56,
+      "words": [
+        {
+          "text": "ค่าจอด",
+          "start": 44.86
+        }
+      ]
+    },
+    {
+      "start": 45.56,
+      "end": 46.24,
+      "words": [
+        {
+          "text": "ค่าล้างรถ",
+          "start": 45.56
+        }
+      ]
+    },
+    {
+      "start": 46.24,
+      "end": 47.12,
+      "words": [
+        {
+          "text": "ตีรวมเดือนละ",
+          "start": 46.24
+        }
+      ]
+    },
+    {
+      "start": 47.12,
+      "end": 48.24,
+      "words": [
+        {
+          "text": "1,500 บ.",
+          "start": 47.12,
+          "role": "emphasis"
+        }
+      ]
+    },
+    {
+      "start": 48.42,
+      "end": 49.26,
+      "words": [
+        {
+          "text": "เฉพาะค่าแฝง",
+          "start": 48.42
+        }
+      ]
+    },
+    {
+      "start": 49.26,
+      "end": 50.32,
+      "words": [
+        {
+          "text": "ปาเข้าไป",
+          "start": 49.26
+        },
+        {
+          "text": "เดือนละ",
+          "start": 49.9,
+          "role": "connector"
+        }
+      ]
+    },
+    {
+      "start": 50.32,
+      "end": 51.38,
+      "words": [
+        {
+          "text": "7,900",
+          "start": 50.32,
+          "role": "verb"
+        }
+      ]
+    },
+    {
+      "start": 51.38,
+      "end": 52.08,
+      "words": [
+        {
+          "text": "หรือปีละ",
+          "start": 51.38,
+          "role": "connector"
+        }
+      ]
+    },
+    {
+      "start": 52.08,
+      "end": 53.84,
+      "words": [
+        {
+          "text": "94,800 บ.",
+          "start": 52.08,
+          "role": "verb"
+        }
+      ]
+    },
+    {
+      "start": 53.84,
+      "end": 54.82,
+      "words": [
+        {
+          "text": "พอบวกค่างวด",
+          "start": 53.84
+        }
+      ]
+    },
+    {
+      "start": 54.82,
+      "end": 55.92,
+      "words": [
+        {
+          "text": "ยอดจริง",
+          "start": 54.82
+        },
+        {
+          "text": "พุ่งเป็น",
+          "start": 55.42,
+          "role": "verb"
+        }
+      ]
+    },
+    {
+      "start": 55.92,
+      "end": 56.28,
+      "words": [
+        {
+          "text": "เดือนละ",
+          "start": 55.92,
+          "role": "connector"
+        }
+      ]
+    },
+    {
+      "start": 56.28,
+      "end": 58.66,
+      "words": [
+        {
+          "text": "18,334 บ.",
+          "start": 56.28,
+          "role": "verb"
+        }
+      ]
+    },
+    {
+      "start": 58.66,
+      "end": 58.92,
+      "words": [
+        {
+          "text": "ครับ",
+          "start": 58.66,
+          "role": "connector"
+        }
+      ]
+    },
+    {
+      "start": 58.92,
+      "end": 59.98,
+      "words": [
+        {
+          "text": "ผมเทียบ",
+          "start": 58.92
+        },
+        {
+          "text": "เงินเดือน",
+          "start": 59.54
+        }
+      ]
+    },
+    {
+      "start": 59.98,
+      "end": 60.82,
+      "words": [
+        {
+          "text": "25,000",
+          "start": 59.98,
+          "role": "emphasis"
+        }
+      ]
+    },
+    {
+      "start": 60.82,
+      "end": 61.74,
+      "words": [
+        {
+          "text": "35,000",
+          "start": 60.82,
+          "role": "emphasis"
+        }
+      ]
+    },
+    {
+      "start": 61.74,
+      "end": 62.28,
+      "words": [
+        {
+          "text": "50,000",
+          "start": 61.74,
+          "role": "result"
+        }
+      ]
+    },
+    {
+      "start": 62.28,
+      "end": 63.58,
+      "words": [
+        {
+          "text": "ไว้ในคลิปเต็ม",
+          "start": 62.28
+        },
+        {
+          "text": "9 นาที",
+          "start": 63.0
+        }
+      ]
+    },
+    {
+      "start": 63.58,
+      "end": 64.24,
+      "words": [
+        {
+          "text": "บน YouTube",
+          "start": 63.58,
+          "role": "verb"
+        }
+      ]
+    },
+    {
+      "start": 64.24,
+      "end": 65.12,
+      "words": [
+        {
+          "text": "กดตามไปดู",
+          "start": 64.24,
+          "role": "result"
+        }
+      ]
+    },
+    {
+      "start": 65.12,
+      "end": 66.24,
+      "words": [
+        {
+          "text": "หรือคอมเมนต์",
+          "start": 65.12,
+          "role": "tool"
+        },
+        {
+          "text": "เงินเดือน",
+          "start": 65.82
+        }
+      ]
+    },
+    {
+      "start": 66.24,
+      "end": 67.32,
+      "words": [
+        {
+          "text": "กับรุ่นรถ",
+          "start": 66.24
+        },
+        {
+          "text": "ไว้เลยครับ",
+          "start": 66.78,
+          "role": "connector"
+        }
+      ]
+    }
+  ]
+}
