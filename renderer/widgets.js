@@ -834,10 +834,24 @@
     const rLayer = document.getElementById('ribbon-layer');
     if (beat.ribbon && theme.show_ribbon !== false) {
       const rCol = RIBBON_COLORS[beat.ribbon_color || 'red'] || RIBBON_COLORS.red;
+      const rStyle = theme.ribbon_style || 'glass_tag';
+      const rScale = springScale(age, 0.16).toFixed(3);
       if (theme.ribbon_style === 'pill') {
-        rLayer.innerHTML = `<div class="pill-ribbon" style="background:${rCol.bg};color:${rCol.fg};transform:scale(${springScale(age, 0.16).toFixed(3)});">${beat.ribbon}</div>`;
+        rLayer.innerHTML = `<div class="pill-ribbon" style="background:${rCol.bg};color:${rCol.fg};transform:scale(${rScale});">${beat.ribbon}</div>`;
+      } else if (rStyle === 'torn') {
+        rLayer.innerHTML = `<div class="torn-ribbon" style="background:${rCol.bg};color:${rCol.fg};transform:scale(${rScale}) rotate(-1.2deg);">${beat.ribbon}</div>`;
       } else {
-        rLayer.innerHTML = `<div class="torn-ribbon" style="background:${rCol.bg};color:${rCol.fg};transform:scale(${springScale(age, 0.16).toFixed(3)}) rotate(-1.2deg);">${beat.ribbon}</div>`;
+        const raw = String(beat.ribbon);
+        const sepIdx = raw.indexOf('·') !== -1 ? raw.indexOf('·') : raw.indexOf(':');
+        let innerHtml = '';
+        if (sepIdx > 0 && sepIdx < raw.length - 1) {
+          const leftPart = raw.slice(0, sepIdx).trim();
+          const rightPart = raw.slice(sepIdx + 1).trim();
+          innerHtml = `<span class="glass-tag-pill" style="background:${rCol.bg};color:${rCol.fg};">${leftPart}</span><span class="glass-tag-text">${rightPart}</span>`;
+        } else {
+          innerHtml = `<span class="glass-tag-dot" style="background:${rCol.bg};"></span><span class="glass-tag-text">${raw}</span>`;
+        }
+        rLayer.innerHTML = `<div class="glass-tag-ribbon" style="transform:scale(${rScale});">${innerHtml}</div>`;
       }
     } else {
       rLayer.innerHTML = '';

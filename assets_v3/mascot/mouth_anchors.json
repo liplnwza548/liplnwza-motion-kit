@@ -1,82 +1,82 @@
 {
   "wave": {
-    "mx": 0.545,
-    "my": 0.365,
-    "scale": 1.0
+    "mx": 0.548,
+    "my": 0.364,
+    "scale": 0.74
   },
   "pointer": {
-    "mx": 0.375,
-    "my": 0.368,
-    "scale": 1.0
+    "mx": 0.372,
+    "my": 0.366,
+    "scale": 0.72
   },
   "clipboard": {
-    "mx": 0.568,
-    "my": 0.368,
-    "scale": 1.0
+    "mx": 0.565,
+    "my": 0.364,
+    "scale": 0.74
   },
   "confident": {
-    "mx": 0.528,
-    "my": 0.368,
-    "scale": 1.0
+    "mx": 0.525,
+    "my": 0.37,
+    "scale": 0.74
   },
   "magnify": {
     "mx": 0.54,
     "my": 0.368,
-    "scale": 1.0
+    "scale": 0.72
   },
   "laptop_focus": {
-    "mx": 0.44,
-    "my": 0.388,
-    "scale": 0.96
+    "mx": 0.438,
+    "my": 0.371,
+    "scale": 0.7
   },
   "laptop_smile": {
-    "mx": 0.555,
-    "my": 0.388,
-    "scale": 0.96
+    "mx": 0.542,
+    "my": 0.368,
+    "scale": 0.7
   },
   "cheer": {
-    "mx": 0.502,
-    "my": 0.362,
-    "scale": 1.04
+    "mx": 0.5,
+    "my": 0.366,
+    "scale": 0.76
   },
   "facepalm": {
-    "mx": 0.54,
-    "my": 0.37,
-    "scale": 0.96
+    "mx": 0.542,
+    "my": 0.372,
+    "scale": 0.72
   },
   "thinking_chin": {
-    "mx": 0.515,
-    "my": 0.365,
-    "scale": 0.96
+    "mx": 0.528,
+    "my": 0.368,
+    "scale": 0.72
   },
   "shocked": {
-    "mx": 0.505,
-    "my": 0.37,
-    "scale": 1.02
+    "mx": 0.503,
+    "my": 0.372,
+    "scale": 0.74
   },
   "holding_card": {
-    "mx": 0.56,
-    "my": 0.368,
-    "scale": 1.0
+    "mx": 0.558,
+    "my": 0.37,
+    "scale": 0.72
   },
   "thumbs_up_full": {
-    "mx": 0.555,
-    "my": 0.368,
-    "scale": 1.0
+    "mx": 0.545,
+    "my": 0.37,
+    "scale": 0.72
   },
   "newspaper_hold": {
-    "mx": 0.46,
-    "my": 0.378,
-    "scale": 0.96
+    "mx": 0.472,
+    "my": 0.369,
+    "scale": 0.7
   },
   "shrug": {
-    "mx": 0.502,
+    "mx": 0.438,
     "my": 0.372,
-    "scale": 0.98
+    "scale": 0.72
   },
   "idea_finger": {
-    "mx": 0.55,
-    "my": 0.368,
-    "scale": 1.0
+    "mx": 0.542,
+    "my": 0.37,
+    "scale": 0.72
   }
 }

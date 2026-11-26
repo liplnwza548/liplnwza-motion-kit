@@ -178,7 +178,7 @@ html, body {
   height: 500px;
   width: auto;
   display: block;
-  filter: drop-shadow(5px 8px 0 rgba(24,27,38,0.28));
+  filter: drop-shadow(0px 10px 18px rgba(24,27,38,0.22));
 }
 #mascot-mouth-svg {
   position: absolute;
@@ -277,6 +277,46 @@ html, body {
   box-shadow: 0 8px 24px rgba(0,0,0,0.24);
   letter-spacing: 0.2px;
   transform-origin: center center;
+}
+.glass-tag-ribbon {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 20px 8px 10px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border: 2px solid rgba(24, 27, 38, 0.14);
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.12);
+  color: #181B26;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  transform-origin: center center;
+  max-width: 656px;
+}
+.glass-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 9px;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.glass-tag-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  flex: 0 0 12px;
+  margin-left: 6px;
+}
+.glass-tag-text {
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 #stage.layout-split #ribbon-layer { top: 96px; }
 #stage.layout-split #widget-stage {

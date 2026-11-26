@@ -200,7 +200,7 @@ liplnwza-motion-kit/
 > **ฟิลิปล็อกทิศทาง 2026-11-26:** คงเอกลักษณ์ **พื้นกระดาษตาราง v3.4 + ริบบิ้น + ดาว + ซับสีรายคำกลางจอ `y=672` (พ้น UI TikTok)** ไว้ครบ 100% แต่ปลดล็อกให้เวทีมีชีวิตไม่ซ้ำเทมเพลตเดิม (ทุกสเปก v3.4 เดิมยังรันได้เหมือนเดิมทุกพิกเซล)
 
 ### 1. v3.5 Modular Knobs (opt-in)
-- `theme` (ระดับ spec หรือราย beat): `show_stars`, `show_ribbon`, `ribbon_style` (`torn` | `pill`), `bg_color`, `bg_css`, `css`, `chips_y`, `mascot_mode` (`standard` | `mini_left` | `mini_right` | `hidden`)
+- `theme` (ระดับ spec หรือราย beat): `show_stars`, `show_ribbon`, `ribbon_style` (`glass_tag` ค่าเริ่มต้นใหม่ | `pill` | `torn`), `bg_color`, `bg_css`, `css`, `chips_y`, `mascot_mode` (`standard` | `mini_left` | `mini_right` | `hidden`)
 - `layout` (ราย beat): `standard` (v3.4 เดิม) | `split` | `full_stage`
 - `widget.type: "custom_html"`: สร้างฉากเฉพาะตอนด้วย HTML/CSS/SVG ได้อิสระ (รองรับ `{{AGE}}`, `{{PROGRESS}}`, `{{PCT}}`)
 - `media_clip_frame`: รองรับ `fit: "full_bleed"` (720×1280 เต็มจอสำหรับคลิป Lemo-Opuscar 100 สไตล์)
@@ -219,4 +219,4 @@ liplnwza-motion-kit/
 4. **พร็อพสติกเกอร์ (`assets_v3/props/*.webp`):** ทุกไฟล์ต้องมีขอบโปร่งใสครบทั้ง 4 ด้าน (`edge_touch == 0`, ตรวจด้วย `tests/test_v36_living_stage.py`)
 5. **ความปลอดภัยโค้ด/คลังสาธารณะ:** ห้ามใส่ API keys หรือรายละเอียดโคลนเสียง (voice ID / model / stability / reference audio) ลงใน repo เด็ดขาด
 
-- **v3.5 Modular & v3.6 Living Stage (2026-11-26)** — เพิ่ม `theme`/`layout`/`custom_html`/`full_bleed` (v3.5), 8 มุมมาสคอต + 7 Comic FX + Sub-Beat + 3 วิดเจ็ตใหม่ + `30fps` + `yuv420p tv` + แก้ `sunburst`/`speed_lines` ครอบเต็มจอ (`PM-v36-sunburst-clip`) + ซ่อมขอบบอท 3 ตัว (`edge_touch == 0`) — เทสต์ผ่าน 22/22 ข้อ
+- **v3.5 Modular & v3.6 Living Stage (2026-11-26)** — เพิ่ม `theme`/`layout`/`custom_html`/`full_bleed` (v3.5), 8 มุมมาสคอต + 7 Comic FX + Sub-Beat + 3 วิดเจ็ตใหม่ + `30fps` + `yuv420p tv` + แก้ `sunburst`/`speed_lines` ครอบเต็มจอ (`PM-v36-sunburst-clip`) + ซ่อมขอบบอท 3 ตัว (`edge_touch == 0`) + ปรับพาดหัว `Glass Floating Tag` + Clean Cutout มาสคอต 16 ท่าไร้ขอบขาว & จูน `mouth_anchors.json` — เทสต์ผ่าน 22/22 ข้อ
